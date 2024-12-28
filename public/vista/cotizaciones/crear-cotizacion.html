@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taxatio - Crear Cotizacion</title>
+    <link rel="stylesheet" href="http://localhost:3001/estilos/global.css">
+    <link rel="stylesheet" href="http://localhost:3001/estilos/botones.css">
+    <style>
+        .sugerencias {
+            position: absolute;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            width: 43%;
+            max-height: 150px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .sugerencia {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .sugerencia:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="text-center">Crear Cotizacion</h1>
+    <div class="row">
+        <a href="http://localhost:3001/" class="back-link">Volver</a>
+    </div>
+    <form id="crearCotizacion">
+        <h3 class="text-center">Datos Cliente</h3>
+        <table>
+            <tr>
+                <td>
+                    Buscar Cliente por Nombre
+                </td>
+                <td>
+                    <input type="text" name="nombreCliente" id="nombreCliente" placeholder="Nombre">
+                    <div id="sugerenciasCliente" class="sugerencias"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Tipo de Cliente 
+                </td>
+                <td>
+                    <select name="tipoCliente" id="tipoCliente" disabled>
+                        <option>no se a seleccionado cliente</option>
+                        <option value="persona">Persona</option>
+                        <option value="empresa">Empresa</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Rut Cliente
+                </td>
+                <td>
+                    <input type="text" name="rutCliente" id="rutCliente" disabled>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Teléfono Cliente
+                </td>
+                <td>
+                    <input type="text" name="telefonoCliente" id="telefonoCliente" disabled>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Correo Cliente
+                </td>
+                <td>
+                    <input type="email" name="correoCliente" id="correoCliente" disabled>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Dirección Cliente
+                </td>
+                <td>
+                    <input type="text" name="direccionCliente" id="direccionCliente" disabled>
+                </td>
+            </tr>
+            <tr id="isEmpresa" style="display: none;">
+                <td>
+                    Representante Cliente
+                </td>
+                <td>
+                    <select name="representanteCliente" id="representanteCliente"></select>
+                </td>
+            </tr>
+        </table>
+        <div id="divRepresentante" style="display: none;">
+            <h3>
+                Datos Representante cliente
+            </h3>
+            <table>
+                <tr>
+                    <td>
+                        Nombre representante
+                    </td>
+                    <td>
+                        <input type="text" name="nombreRepresentante" id="nombreRepresentante" disabled>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Rut representante
+                    </td>
+                    <td>
+                        <input type="text" name="rutRepresentante" id="rutRepresentante" disabled
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Correo representante
+                    </td>
+                    <td>
+                        <input type="email" name="correoRepresentante" id="correoRepresentante" disabled
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Telefono representante
+                    </td>
+                    <td>
+                        <input type="text" name="telefonoRepresentante" id="telefonoRepresentante" disabled
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Direccion representante
+                    </td>
+                    <td>
+                        <input type="text" name="direccionRepresentante" id="direccionRepresentante" disabled
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <h3 class="text-center">Productos / Servicios</h3>
+        <table>
+            <tr>
+                <td>
+                    Buscar Producto por Nombre
+                </td>
+                <td>
+                    <input type="text" id="nombreProducto" placeholder="Nombre del producto">
+                    <div id="sugerenciasProducto" class="sugerencias"></div>
+                </td>
+            </tr>
+        </table>
+        <div>
+            <h4>Productos Agregados:</h4>
+            <table id="productosAgregados">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Cantidad</th>
+                        <th>medida</th>
+                        <th>Precio Unitario</th>
+                        <th>Total</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Productos se agregan aquí dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <table>
+                <tr>
+                    <td class="text-right">
+                        <b>Agregar Descuento</b>
+                    </td>
+                    <td>
+                        <input type="text" id="descuento" placeholder="Descuento" >  
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right"><b>Totales:</b></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="text-left">
+                        <p>Total sin IVA: <span id="totalSinIVA">0.00</span></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="text-left">
+                        <p>Valor IVA: <span id="valorIVA">0.00</span></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="text-left">
+                        <p>Total General: <span id="totalGeneral">0.00</span></p>
+                    </td>
+                </tr>
+                <tr id="descuentoValor" style="display: none;">
+                    <td></td>
+                    <td>
+                        <p>Valor Descuento: <span id="totalDescuento">0.00</span> </p>
+                    </td>
+                </tr>
+                <tr id="valorDescuentoTotal" style="display: none;">
+                    <td></td>
+                    <td>
+                        <p>Valor Total con Descuento <span id="totalConDescuento">0.0</span> </p>
+                    </td>
+                </tr>
+            </table>            
+        </div>
+        <div>
+            <table>
+                <tr>
+                    <td colspan="2" class="text-center">
+                        <b>Cotización Disponible:</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">
+                        <label for="desde"><b>Desde:</b> </label>
+                    </td>
+                    <td>
+                        <input type="date" id="cotizacionDesde">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">
+                        <label for="hasta"><b>Hasta: </b></label>
+                    </td>
+                    <td>
+                        <input type="date" id="cotizacionHasta">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <button class="btn btn-primary" type="button" onclick="generarCotizacion(event)">Generar Cotizacion</button>
+        </div>
+    </form>
+</body>
+<script src="http://localhost:3001/scripts/apis/productos.js"></script>
+<script src="http://localhost:3001/scripts/apis/clientes.js"></script>
+<script src="http://localhost:3001/scripts/apis/empresa.js"></script>
+<script src="http://localhost:3001/scripts/apis/cotizaciones.js"></script>
+<script src="http://localhost:3001/scripts/apis/logo.js"></script>
+<script src="http://localhost:3001/scripts/apis/unidadMedida.js"></script>
+<script src="http://localhost:3001/vista/cotizaciones/scripts/crearCotizacion.js"></script>
+</html>

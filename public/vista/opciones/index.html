@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taxatio - Configuración entidad</title>
+    <link rel="stylesheet" href="http://localhost:3001/estilos/global.css">
+    <link rel="stylesheet" href="http://localhost:3001/estilos/botones.css">
+</head>
+<body>
+    <h1 class="text-center">Configuración</h1>
+    <div class="container">
+        <div class="row">
+            <a href="http://localhost:3001/" class="back-link">Volver</a>
+        </div>
+        <div class="row">
+            <h2 class="text-center">Datos de la entidad</h2>
+        </div>
+        <div class="listado-datos">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Dato</th>
+                        <th>Valor</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <p>Nombre</p>
+                        </td>
+                        <td>
+                            <input type="text" id="nombreEmpresa" placeholder="Nombre de la empresa">
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Rut</p>
+                        </td>
+                        <td>
+                            <input type="text" id="rutEmpresa" placeholder="Rut de la empresa">
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Dirección</p>
+                        </td>
+                        <td>
+                            <input type="text" id="direccionEmpresa" placeholder="Dirección de la empresa">
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Teléfono</p>
+                        </td>
+                        <td>
+                            <input type="tel" id="telefonoEmpresa" placeholder="Teléfono de contacto">
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Correo electrónico</p>
+                        </td>
+                        <td>
+                            <input type="email" id="correoEmpresa" placeholder="Correo electrónico">
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Color encabezado tabla cotizacion</p>
+                        </td>
+                        <td>
+                            <input type="text" id="colorTabla" placeholder="color que llevará el encabezado de la tabla al cotizar">
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Color letra encabezado tabla cotizacion</p>
+                        </td>
+                        <td>
+                            <input type="text" id="colorLetras" placeholder="color que llevaran las letras del encabezado de la tabla al cotizar">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><p>Logo</p></td>
+                        <td>
+                            <input type="file" id="logoEmpresa" accept="image/*">
+                        </td>
+                        <td><button onclick="cargarLogo()" class="btn btn-warning">Cargar Logo</button></td>
+                    </tr>
+                    <tr>
+                        <td><p>Vista previa del logo</p></td>
+                        <td>
+                            <img id="logoEmpresaImagen" alt="Logo de la empresa" style="max-width: 200px; max-height: 100px;">
+                        </td>
+                    </tr>                    
+                </tbody>
+            </table>
+            <button class="btn btn-secondary" onclick="agregarCampoPersonalizado()">Agregar campo personalizado</button>
+            <br><br>
+            <button class="btn btn-primary" onclick="guardarDatos()">Guardar datos de su empresa</button>
+        </div>
+    </div>
+</body>
+<script src="/scripts/apis/empresa.js"></script>
+<script src="/vista/opciones/scripts/datosEmpresa.js"></script>
+</html>

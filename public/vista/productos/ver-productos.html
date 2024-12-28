@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taxatio - Ver Productos / Servicios</title>
+    <link rel="stylesheet" href="http://localhost:3001/estilos/global.css">
+    <link rel="stylesheet" href="http://localhost:3001/estilos/botones.css">
+    <link rel="stylesheet" href="http://localhost:3001/estilos/paginacion.css">
+</head>
+<body>
+    <h1 class="text-center">Ver Productos / Servicios</h1>
+    <div class="row">
+        <a href="http://localhost:3001/" class="back-link">Volver</a>
+    </div>
+    <table>
+        <tr>
+            <td class="ajustar-tabla">
+                <p>Filtrar por categoría</p>
+                <select name="filtrarCategoria" id="filtrarCategoria">
+                    <option value="todos">Todos</option>
+                    <option value="producto">Productos</option>
+                    <option value="servicio">Servicios</option>
+                </select>
+            </td>
+            <td class="ajustar-tabla">
+                <p>Filtrar por nombre</p>
+                <div class="ajustar-ajustar">
+                    <select name="buscarProducto" id="buscarProducto">
+                        <option value="nombre">Nombre</option>
+                    </select>
+                    <input type="text" name="buscadorProducto" id="buscadorProducto">
+                </div>
+            </td>
+        </tr>
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre Producto</th>
+                <th>Categoría</th>
+                <th>Precio</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tablaMostrarProductos">
+        </tbody>
+    </table>
+    <div class="contenedor-paginacion">
+        <div id="controlesPaginacion" class="botones-paginacion"></div>
+    </div>
+
+    <!-- Modal para ver detalles del producto -->
+    <div id="modalProducto" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2 id="tituloDetalles" class="text-center">Detalles del Producto</h2>
+            <form id="formProducto">
+                <table>
+                    <tr>
+                        <td>
+                            <label for="productoNombre">Nombre:</label>
+                        </td>
+                        <td>
+                            <input type="text" id="productoNombre" name="nombre">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="productoPrecio">Precio:</label>
+                        </td>
+                        <td>
+                            <input type="number" id="productoPrecio" name="precio">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="productoPrecioSinIva">Precio sin iva:</label>
+                        </td>
+                        <td>
+                            <input type="text" id="productoPrecioSinIva" name="productoPrecioSinIva" disabled>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="productoDescripcion">Descripción:</label>
+                        </td>
+                        <td>
+                            <textarea id="productoDescripcion" name="productoDescripcion"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="monedaProducto">Mondeda del producto</label>
+                        </td>
+                        <td>
+                            <select name="monedaProducto" id="monedaProducto"></select>
+                        </td>
+                    </tr>
+                    <tr style="display: none;" id="unidadMedidaTable">
+                        <td>
+                            <label for="unidadMedida" id="unidadMedidaLabel">Unidad de medida</label>
+                        </td>
+                        <td>
+                            <select name="unidadMedida" id="unidadMedida"></select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Tipo
+                        </td>
+                        <td>
+                            <select id="productoCategoria" name="categoria" disabled>
+                                <option value="producto">Producto</option>
+                                <option value="servicio">Servicio</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+                <div class="modal-buttons-section">
+                    <button type="button" id="guardarProducto" class="btn btn-success">Guardar Cambios</button>
+                    <button type="button" id="eliminarProducto" class="btn btn-danger">Eliminar Producto</button>
+                </div>
+            </form>
+            <button type="button" id="cerrarModal" onclick="cerrarModal()" class="btn btn-secondary">Cerrar</button>
+        </div>
+    </div>
+    
+</body>
+<script src="http://localhost:3001/scripts/apis/productos.js"></script>
+<script src="http://localhost:3001/scripts/apis/iva.js"></script>
+<script src="http://localhost:3001/scripts/apis/monedas.js"></script>
+<script src="http://localhost:3001/scripts/apis/unidadMedida.js"></script>
+<script src="http://localhost:3001/vista/productos/scripts/verProductos.js"></script>
+</html>

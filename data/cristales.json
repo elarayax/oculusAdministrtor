@@ -1,0 +1,165 @@
+[
+    {
+        "idCristal": 1,
+        "nombreCristal": "Mineral",
+        "descripcion": "",
+        "observacion": "",
+        "variantes": [
+            {
+                "idVariante": 1,
+                "nombreVariante": "Blanco",
+                "descripcion": "",
+                "observacion": ""
+            },
+            {
+                "idVariante": 2,
+                "nombreVariante": "Antirreflejo",
+                "descripcion": "",
+                "observacion": ""
+            },
+            {
+                "idVariante": 3,
+                "nombreVariante": "Polarizada",
+                "descripcion": "",
+                "observacion": ""
+            }
+        ],
+        "cilindros": [
+            {
+                "cilindro": 2,
+                "esferas": [
+                    {
+                        "esfera": 2,
+                        "precios": [
+                            {
+                                "idVariante": 1,
+                                "precioNeto": 0,
+                                "precioLista": 0
+                            },
+                            {
+                                "idVariante": 2,
+                                "precioNeto": 0,
+                                "precioLista": 0
+                            },
+                            {
+                                "idVariante": 3,
+                                "precioNeto": 0,
+                                "precioLista": 0
+                            }
+                        ]
+                    },
+                    {
+                        "esfera": 4,
+                        "precios": [
+                            {
+                                "idVariante": 1,
+                                "precioNeto": 0,
+                                "precioLista": 0
+                            },
+                            {
+                                "idVariante": 2,
+                                "precioNeto": 0,
+                                "precioLista": 0
+                            },
+                            {
+                                "idVariante": 3,
+                                "precioNeto": 0,
+                                "precioLista": 0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "cilindro": 4,
+                "esferas": [
+                    {
+                        "esfera": 2,
+                        "precios": [
+                            {
+                                "idVariante": 1,
+                                "precioNeto": 0,
+                                "precioLista": 0
+                            },
+                            {
+                                "idVariante": 2,
+                                "precioNeto": 0,
+                                "precioLista": 0
+                            },
+                            {
+                                "idVariante": 3,
+                                "precioNeto": 0,
+                                "precioLista": 0
+                            }
+                        ]
+                    },
+                    {
+                        "esfera": 4,
+                        "precios": [
+                            {
+                                "idVariante": 1,
+                                "precioNeto": 0,
+                                "precioLista": 0
+                            },
+                            {
+                                "idVariante": 2,
+                                "precioNeto": 0,
+                                "precioLista": 0
+                            },
+                            {
+                                "idVariante": 3,
+                                "precioNeto": 0,
+                                "precioLista": 0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "cilindro": 6,
+                "esferas": [
+                    {
+                        "esfera": 2,
+                        "precios": [
+                            {
+                                "idVariante": 1,
+                                "precioNeto": 0,
+                                "precioLista": 0
+                            },
+                            {
+                                "idVariante": 2,
+                                "precioNeto": 0,
+                                "precioLista": 0
+                            },
+                            {
+                                "idVariante": 3,
+                                "precioNeto": 0,
+                                "precioLista": 0
+                            }
+                        ]
+                    },
+                    {
+                        "esfera": 4,
+                        "precios": [
+                            {
+                                "idVariante": 1,
+                                "precioNeto": 0,
+                                "precioLista": 0
+                            },
+                            {
+                                "idVariante": 2,
+                                "precioNeto": 0,
+                                "precioLista": 0
+                            },
+                            {
+                                "idVariante": 3,
+                                "precioNeto": 0,
+                                "precioLista": 0
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

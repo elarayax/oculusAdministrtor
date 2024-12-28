@@ -1,0 +1,258 @@
+:root{
+    --principal-color: #FFB74D;
+    --principal-color-hover: #F57C00;
+}
+
+body{
+    padding: 0;
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+h1{
+    font-size: 36px;
+    line-height: 40px;
+}
+
+.text-center{
+    text-align: center;
+}
+
+.text-left{
+    text-align: left;
+}
+
+.text-right{
+    text-align: right;
+}
+
+.center-all {
+    width: 100%;
+    height: 100vh; /* Ocupa toda la altura del viewport */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center; /* Centra el texto horizontalmente si es necesario */
+    margin: 0; /* Elimina márgenes no deseados */
+}
+
+/* Estilo general de la tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Estilo de las celdas del encabezado */
+th {
+    background-color: #4CAF50;  /* Color de fondo */
+    color: white;               /* Color del texto */
+    padding: 10px;
+    text-align: left;           /* Alineación del texto */
+    font-weight: bold;
+}
+
+/* Estilo de las celdas del cuerpo */
+td {
+    padding: 8px;
+    border: 1px solid #ddd;   /* Borde suave */
+    vertical-align: middle;   /* Alineación vertical */
+}
+
+/* Estilo para los elementos <p> dentro de las celdas */
+td p {
+    margin: 0;
+    font-weight: 600;  /* Resaltar el texto */
+    color: #333;
+}
+
+td.ajustar-tabla {
+    width: 50%;
+    text-align: center;
+}
+
+.ajustar-ajustar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.ajustar-tabla p{
+    margin-bottom: 8px;
+}
+
+td.ajustar-tabla select {
+    width: 200px;
+}
+
+td.ajustar-tabla .ajustar-ajustar input {
+    width:150px;
+    height: 40px;
+}
+
+td.ajustar-tabla .ajustar-ajustar select {
+    width: 150px;
+    height: 38px;
+}
+
+/* Estilo de los inputs */
+input[type="text"],
+input[type="tel"],
+input[type="email"] {
+    width: 100%;        /* Aseguramos que los inputs ocupen todo el ancho */
+    padding: 8px;       /* Espaciado dentro del input */
+    border: 1px solid #ccc; /* Borde gris suave */
+    border-radius: 4px;     /* Bordes redondeados */
+    box-sizing: border-box; /* Para incluir el padding en el ancho total */
+    font-size: 14px;
+    margin-top: 4px;    /* Espacio superior */
+}
+
+/* Efecto al enfocar el input */
+input[type="text"]:focus,
+input[type="tel"]:focus,
+input[type="email"]:focus {
+    border-color: #4CAF50; /* Color verde al enfocar */
+    outline: none;         /* Eliminar el borde por defecto */
+}
+
+/* Estilo de la fila de la tabla para mejorar el espaciado */
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9; /* Fila alterna con color gris claro */
+}
+
+/* Estilo de la fila al pasar el ratón por encima */
+tbody tr:hover {
+    background-color: #f1f1f1; /* Color gris claro al pasar el ratón */
+}
+
+/* Estilo de los inputs cuando el formulario está deshabilitado */
+input[disabled] {
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+}
+
+/* Estilo para el enlace */
+.back-link {
+    text-decoration: none;
+    color: var(--principal-color);  /* Color del enlace */
+    font-size: 16px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+}
+
+/* Flecha hacia la izquierda con ::before */
+.back-link::before {
+    content: '←';  /* Flecha hacia la izquierda */
+    margin-right: 4px;  /* Espacio entre la flecha y el texto */
+    font-size: 20px;
+    transition: transform 0.2s ease-in-out;  /* Transición suave para el movimiento */
+}
+
+/* Animación al hacer hover */
+.back-link:hover::before {
+    transform: translateX(-5px);  /* Mueve la flecha hacia la izquierda */
+}
+
+.back-link:hover {
+    color: var(--principal-color-hover);  /* Cambia el color del enlace al hacer hover */
+}
+
+select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    color: #333;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+.modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 100%;
+    height: 91vh;
+    overflow-y: auto;
+}
+
+.modal-buttons-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 4px 0 12px 0;
+}
+
+form#formCliente {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+input[type="number"] {
+    width: 100%;        /* Asegura que ocupe todo el ancho del contenedor */
+    padding: 8px;       /* Espaciado interno */
+    border: 1px solid #ccc; /* Borde gris claro */
+    border-radius: 4px;     /* Bordes redondeados */
+    font-size: 14px;        /* Tamaño de fuente legible */
+    box-sizing: border-box; /* Incluye el padding en el tamaño total */
+    margin-top: 4px;        /* Margen superior */
+    appearance: textfield;  /* Elimina los controles del navegador */
+}
+
+input[type="number"]:focus {
+    border-color: var(--principal-color); /* Color de borde en el foco */
+    outline: none;                       /* Elimina el borde azul del navegador */
+    box-shadow: 0 0 5px rgba(255, 183, 77, 0.5); /* Añade un efecto de sombra */
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none; /* Elimina los botones de ajuste */
+    margin: 0;
+}
+
+textarea {
+    width: 100%;        /* Ancho completo */
+    padding: 8px;       /* Espaciado interno */
+    border: 1px solid #ccc; /* Borde gris claro */
+    border-radius: 4px;     /* Bordes redondeados */
+    font-size: 14px;        /* Tamaño de fuente */
+    box-sizing: border-box; /* Incluye el padding en el tamaño total */
+    margin-top: 4px;        /* Margen superior */
+    resize: vertical;       /* Permite redimensionar solo en la dirección vertical */
+    min-height: 100px;      /* Altura mínima para facilitar la escritura */
+    background-color: #f9f9f9; /* Fondo suave */
+    color: #333;            /* Texto oscuro */
+}
+
+textarea:focus {
+    border-color: var(--principal-color); /* Color de borde al enfocar */
+    outline: none;                       /* Elimina el contorno predeterminado */
+    box-shadow: 0 0 5px rgba(255, 183, 77, 0.5); /* Sombra similar a los inputs */
+}

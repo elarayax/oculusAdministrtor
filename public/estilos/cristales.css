@@ -1,0 +1,37 @@
+input[type="number"] {
+    width: 100px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+    margin-top: 4px;
+    appearance: textfield;
+}
+
+.listado-desplegable-contenido {
+    margin-top: 10px;
+}
+  
+.listado-desplegable h2,
+.tablas-cilindros h3 {
+    cursor: pointer; /* Cambia el cursor para indicar que es interactivo */
+}
+
+.listado-desplegable-contenido {
+    display: none;
+    padding: 0 20px;
+}
+
+.listado-desplegable-contenido.active {
+    display: block;
+}
+
+
+.contenido-cilindro{
+    display: none;
+}
+
+.contenido-cilindro.active{
+    display: block;
+}

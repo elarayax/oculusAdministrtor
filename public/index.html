@@ -1,0 +1,78 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oculus Administrator</title>
+    <script src="scripts/logic/index.js"></script>
+    <link rel="stylesheet" href="estilos/global.css">    
+    <link rel="stylesheet" href="estilos/index.css">
+</head>
+<body>
+    <div class="center-all">
+        <h1>Bienvenido a oculus administrator</h1>
+        <div class="calugas-home">
+            <div class="lista-calugas">
+                <div class="caluga caluga-activa" onclick="toggleCard(this)">
+                    Cotizaciones
+                </div>
+                <div class="caluga oculta" onclick="goTo('crearCotizacion')">
+                    Crear cotización
+                </div>
+                <div class="caluga oculta" onclick="goTo('verCotizaciones')">
+                    Ver cotizaciones
+                </div>
+            </div>
+            <div class="lista-calugas">
+                <div class="caluga caluga-activa" onclick="toggleCard(this)">
+                    Productos
+                </div>
+                <div class="caluga oculta" onclick="goTo('cristales')">
+                    Administrar Cristales
+                </div>
+                <div class="caluga oculta" onclick="goTo('agregarProducto')">
+                    Agregar Productos
+                </div>
+                <div class="caluga oculta" onclick="goTo('verProductos')">
+                    Ver Productos
+                </div>
+            </div>
+            <div class="lista-calugas">
+                <div class="caluga caluga-activa" onclick="toggleCard(this)">
+                    Clientes
+                </div>
+                <div class="caluga oculta" onclick="goTo('agregarCliente')">
+                    Agregar Clientes
+                </div>
+                <div class="caluga oculta" onclick="goTo('verClientes')">
+                    Ver Clientes
+                </div>
+            </div>
+            <div class="lista-calugas">
+                <div class="caluga caluga-activa" onclick="toggleCard(this)">
+                    Convenios / Descuentos
+                </div>
+                <div class="caluga oculta" onclick="goTo('convenios')">
+                    Convenios
+                </div>
+                <div class="caluga oculta" onclick="goTo('descuentos')">
+                    Descuentos
+                </div>
+            </div>
+            <div class="lista-calugas">
+                <div class="caluga caluga-activa" onclick="toggleCard(this)">
+                    Configuración
+                </div>
+                <div class="caluga oculta" onclick="goTo('opciones')">
+                    Datos de la óptica
+                </div>
+                <div class="caluga oculta" onclick="goTo('otrosDatos')">
+                    General 
+                </div>
+            </div>
+        </div>        
+    </div>
+    <div id="mensaje-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
+</body>
+</html>

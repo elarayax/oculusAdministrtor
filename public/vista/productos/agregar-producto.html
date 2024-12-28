@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taxatio - agregar producto / servicio</title>
+    <link rel="stylesheet" href="http://localhost:3001/estilos/global.css">
+    <link rel="stylesheet" href="http://localhost:3001/estilos/botones.css">
+    <style>
+        .hidden {
+            display: none;
+        }
+        form {
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="text-center">Agregar Productos / Servicios</h1>
+    <div class="row">
+        <a href="http://localhost:3001/" class="back-link">Volver</a>
+    </div>
+    <table>
+        <tr>
+            <td>
+                Seleccione tipo
+            </td>
+            <td>
+                <select name="tipoProducto" id="tipoProducto">
+                    <option value="">Seleccionar tipo de producto</option>
+                    <option value="producto">Producto</option>
+                    <option value="servicio">Servicio</option>
+                </select>
+            </td>
+        </tr>
+    </table>
+    <form id="formProducto" class="hidden">
+        <h3 class="text-center">Agregar producto</h3>
+        <table>
+            <tr>
+                <td>
+                    <label for="nombreProducto">Nombre del producto</label>
+                </td>
+                <td>
+                    <input type="text" id="nombreProducto" name="nombreProducto">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="precioProducto">Precio del producto</label>
+                </td>
+                <td>
+                    <input type="number" id="precioProducto" name="precioProducto">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="precioProductoSinIva">Precio del producto sin iva</label>
+                </td>
+                <td>
+                    <input type="number" id="precioProductoSinIva" name="precioProductoSinIva" disabled>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="monedaProducto">Moneda del producto</label>
+                </td>
+                <td>
+                    <select name="monedaProducto" id="monedaProducto"></select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="unidadMedidaProducto">Unidad de medida del producto</label>
+                </td>
+                <td>
+                    <select name="unidadMedidaProducto" id="unidadMedidaProducto"></select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="descripcionProducto">Descripción del producto</label>
+                </td>
+                <td>
+                    <textarea id="descripcionProducto" name="descripcionProducto"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="text-center">
+                    <button class="btn btn-primary" onclick="agregarProducto()">Agregar Producto</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <form id="formServicio" class="hidden">
+        <h3 class="text-center">Agregar servicio</h3>
+        <table>
+            <tr>
+                <td>
+                    <label for="nombreServicio">Nombre del servicio</label>
+                </td>
+                <td>
+                    <input type="text" id="nombreServicio" name="nombreServicio">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="precioServicio">Precio del servicio</label>
+                </td>
+                <td>
+                    <input type="number" id="precioServicio" name="precioServicio">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="precioServicioSinIva">Precio del servicio sin iva</label>
+                </td>
+                <td>
+                    <input type="number" id="precioServicioSinIva" name="precioServicioSinIva" disabled>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="monedaServicio">Moneda del servicio</label>
+                </td>
+                <td>
+                    <select name="monedaServicio" id="monedaServicio"></select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="descripcionServicio">Descripción del servicio</label>
+                </td>
+                <td>
+                    <textarea id="descripcionServicio" name="descripcionServicio"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="text-center">
+                    <button class="btn btn-primary" onclick="agregarServicio()">Agregar Servicio</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+<script src="http://localhost:3001/scripts/apis/monedas.js"></script>
+<script src="http://localhost:3001/scripts/apis/unidadMedida.js"></script>
+<script src="http://localhost:3001/scripts/apis/iva.js"></script>
+<script src="http://localhost:3001/scripts/apis/productos.js"></script>
+<script src="http://localhost:3001/vista/productos/scripts/agregarProducto.js"></script>
+</html>

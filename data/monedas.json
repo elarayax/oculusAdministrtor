@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "nombre": "Peso chileno",
+        "valor": "CLP",
+        "defecto": true
+    },
+    {
+        "id": 2,
+        "nombre": "Unidad de fomento",
+        "valor": "UF",
+        "defecto": false
+    },
+    {
+        "id": 3,
+        "nombre": "Unidad tributaria mensual",
+        "valor": "UTM",
+        "defecto": false
+    },
+    {
+        "id": 4,
+        "nombre": "Dólar estadounidense",
+        "valor": "USD",
+        "defecto": false
+    }
+]

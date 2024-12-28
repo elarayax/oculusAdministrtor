@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taxatio - Ver Cotizaciones</title>
+    <link rel="stylesheet" href="http://localhost:3001/estilos/global.css">
+    <link rel="stylesheet" href="http://localhost:3001/estilos/botones.css">
+    <link rel="stylesheet" href="http://localhost:3001/estilos/paginacion.css">
+</head>
+<body>
+    <h1 class="text-center">Ver Cotizaciones</h1>
+    <div class="row">
+        <a href="http://localhost:3001/" class="back-link">Volver</a>
+    </div>
+    <table>
+        <tr>
+            <td class="ajustar-tabla">
+                <p>Filtrar por cliente</p>
+                <input type="text" name="filtrarCliente" id="filtrarCliente" placeholder="Nombre o RUT del cliente">
+                <input type="text" id="buscarCotizacion" placeholder="Buscar Cotización" style="display: none;">
+            </td>
+            <td class="ajustar-tabla">
+                <p>Filtrar por fecha de inicio</p>
+                <input type="date" name="fechaInicio" id="fechaInicio">
+            </td>
+            <td class="ajustar-tabla">
+                <p>Filtrar por fecha de término</p>
+                <input type="date" name="fechaTermino" id="fechaTermino">
+            </td>
+            <td class="ajustar-tabla">
+                <p>Filtrar entre fechas</p>
+                <button id="filtrarFechas" class="btn btn-primary">Aplicar Filtros</button>
+            </td>
+        </tr>
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha Término</th>
+                <th>Total General</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tablaMostrarCotizaciones">
+        </tbody>
+    </table>
+    <div class="contenedor-paginacion">
+        <div id="controlesPaginacion" class="botones-paginacion"></div>
+    </div>
+
+    <div id="modalCotizacion" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2>Detalles de la Cotización</h2>
+            <form id="formCotizacion">
+                <label for="clienteNombre">Cliente:</label>
+                <input type="text" id="clienteNombre" name="nombre" readonly>
+
+                <label for="fechaInicioModal">Fecha Inicio:</label>
+                <input type="date" id="fechaInicioModal" name="fechaInicio" readonly>
+
+                <label for="fechaTerminoModal">Fecha Término:</label>
+                <input type="date" id="fechaTerminoModal" name="fechaTermino" readonly>
+
+                <label for="productosList">Productos:</label>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Cantidad</th>
+                            <th>Precio Unitario</th>
+                            <th>Precio Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productosList"></tbody>
+                </table>
+
+                <label for="totalSinIva">Total sin iva:</label>
+                <input type="text" id="totalSinIva" name="totalSinIva" readonly>
+
+                <label for="totalGeneral">Total General:</label>
+                <input type="text" id="totalGeneral" name="totalGeneral" readonly>
+
+                <button type="button" id="imprimirCotizacion" class="btn btn-primary">Imprimir Cotizacion</button>
+                <button type="button" id="cerrarModalCotizacion" onclick="cerrarModal()" class="btn btn-secondary">Cerrar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="http://localhost:3001/scripts/apis/cotizaciones.js"></script>
+    <script src="http://localhost:3001/vista/cotizaciones/scripts/verCotizaciones.js"></script>
+</body>
+</html>

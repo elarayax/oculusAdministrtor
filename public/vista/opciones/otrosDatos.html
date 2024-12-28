@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taxatio - Configuración general</title>
+    <link rel="stylesheet" href="http://localhost:3001/estilos/global.css">
+    <link rel="stylesheet" href="http://localhost:3001/estilos/botones.css">
+    <style>
+        /* CSS adicional para los desplegables */
+        .desplegable .contenido {
+            display: none; /* Ocultar por defecto */
+            margin-top: 10px;
+        }
+        .desplegable.abierto .contenido {
+            display: block; /* Mostrar cuando esté abierto */
+        }
+        .desplegable h2 {
+            cursor: pointer; /* Mostrar que es interactivo */
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="text-center">Configuración</h1>
+    <div class="container">
+        <div class="row">
+            <a href="http://localhost:3001/" class="back-link">Volver</a>
+        </div>
+        <div class="row"></div>
+
+        <!-- Unidades de medida -->
+        <div class="desplegable">
+            <h2 class="text-center">Unidades de medida</h2>
+            <div class="contenido">
+                <p class="text-center">Agregar Unidad de Medida</p>
+                <table>
+                    <tr>
+                        <td class="text-center">
+                            <label for="unidadMedida">Nombre unidad de medida</label>
+                            <input type="text" name="unidadMedida" id="unidadMedida">
+                        </td>
+                        <td class="text-center">
+                            <label for="abreviacionUnidad">Abreviación unidad de medida</label>
+                            <input type="text" name="abreviacionUnidad" id="abreviacionUnidad">
+                        </td>
+                        <td>
+                            <button class="btn btn-primary" onclick="agregarUnidadMedida()">Agregar Unidad de medida</button>
+                        </td>
+                    </tr>
+                </table>
+                <p class="text-center">Listado Unidades de medida</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Unidad de medida</th>
+                            <th>Abreviación</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listadoUnidades"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- IVA -->
+        <div class="desplegable">
+            <h2 class="text-center">IVA</h2>
+            <div class="contenido">
+                <table>
+                    <tr>
+                        <td class="text-center">
+                            <label for="iva">Porcentaje IVA</label>
+                        </td>
+                        <td>
+                            <input type="text" name="iva" id="iva" oninput="formatIva(event)">
+                        </td>
+                        <td>
+                            <button class="btn btn-primary" onclick="cambiarIva()">Actualizar IVA</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Moneda -->
+        <div class="desplegable">
+            <h2 class="text-center">Moneda</h2>
+            <div class="contenido">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre Moneda</th>
+                            <th>Abreviación</th>
+                            <th>Por Defecto</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listadoMonedas"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="http://localhost:3001/scripts/apis/unidadMedida.js"></script>
+    <script src="http://localhost:3001/scripts/apis/iva.js"></script>
+    <script src="http://localhost:3001/scripts/apis/monedas.js"></script>
+    <script src="http://localhost:3001/vista/opciones/scripts/unidadMedida.js"></script>
+    <script src="http://localhost:3001/vista/opciones/scripts/iva.js"></script>
+    <script src="http://localhost:3001/vista/opciones/scripts/monedas.js"></script>
+    <script>
+        // JavaScript para la funcionalidad desplegable
+        document.querySelectorAll('.desplegable h2').forEach(titulo => {
+            titulo.addEventListener('click', () => {
+                const contenedor = titulo.parentElement;
+                contenedor.classList.toggle('abierto');
+            });
+        });
+    </script>
+</body>
+</html>

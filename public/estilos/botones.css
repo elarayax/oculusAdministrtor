@@ -1,0 +1,117 @@
+/* Estilo básico para botones */
+.btn {
+    padding: 10px 20px;             /* Espaciado dentro del botón */
+    font-size: 16px;                /* Tamaño de fuente */
+    border: none;                   /* Sin borde por defecto */
+    border-radius: 5px;             /* Bordes redondeados */
+    cursor: pointer;                /* Cambio de cursor al pasar el ratón */
+    text-align: center;             /* Centrado del texto */
+    transition: background-color 0.3s, transform 0.2s;  /* Efectos de transición */
+}
+
+/* Botón primario (por ejemplo, para acciones principales) */
+.btn-primary {
+    background-color: #4CAF50;      /* Color de fondo verde */
+    color: white;                   /* Texto en blanco */
+}
+
+.btn-primary:hover {
+    background-color: #45a049;      /* Color más oscuro al pasar el ratón */
+    transform: translateY(-2px);    /* Efecto de elevación */
+}
+
+.btn-primary:active {
+    background-color: #3e8e41;      /* Aún más oscuro cuando se hace clic */
+    transform: translateY(0);       /* Reestablecer la posición */
+}
+
+/* Botón secundario (para acciones complementarias) */
+.btn-secondary {
+    background-color: #008CBA;      /* Color de fondo azul */
+    color: white;                   /* Texto blanco */
+}
+
+.btn-secondary:hover {
+    background-color: #007bb5;      /* Color más oscuro al pasar el ratón */
+    transform: translateY(-2px);    /* Efecto de elevación */
+}
+
+.btn-secondary:active {
+    background-color: #006f99;      /* Aún más oscuro cuando se hace clic */
+    transform: translateY(0);       /* Reestablecer la posición */
+}
+
+/* Botón de advertencia (para alertas o acciones de cautela) */
+.btn-warning {
+    background-color: #ff9800;      /* Color de fondo naranja */
+    color: white;                   /* Texto blanco */
+}
+
+.btn-warning:hover {
+    background-color: #e68900;      /* Color más oscuro al pasar el ratón */
+    transform: translateY(-2px);    /* Efecto de elevación */
+}
+
+.btn-warning:active {
+    background-color: #e07600;      /* Aún más oscuro cuando se hace clic */
+    transform: translateY(0);       /* Reestablecer la posición */
+}
+
+/* Botón de peligro (para acciones destructivas o irreversibles) */
+.btn-danger {
+    background-color: #f44336;      /* Color de fondo rojo */
+    color: white;                   /* Texto blanco */
+}
+
+.btn-danger:hover {
+    background-color: #d32f2f;      /* Color más oscuro al pasar el ratón */
+    transform: translateY(-2px);    /* Efecto de elevación */
+}
+
+.btn-danger:active {
+    background-color: #c62828;      /* Aún más oscuro cuando se hace clic */
+    transform: translateY(0);       /* Reestablecer la posición */
+}
+
+/* Botón de éxito (para acciones que confirmarán algo positivo) */
+.btn-success {
+    background-color: #4caf50;      /* Color de fondo verde */
+    color: white;                   /* Texto blanco */
+}
+
+.btn-success:hover {
+    background-color: #45a049;      /* Color más oscuro al pasar el ratón */
+    transform: translateY(-2px);    /* Efecto de elevación */
+}
+
+.btn-success:active {
+    background-color: #388e3c;      /* Aún más oscuro cuando se hace clic */
+    transform: translateY(0);       /* Reestablecer la posición */
+}
+
+/* Botón con fondo transparente (para botones sin relleno) */
+.btn-outline {
+    background-color: transparent; /* Fondo transparente */
+    color: #4CAF50;                 /* Color del texto verde */
+    border: 2px solid #4CAF50;      /* Borde verde */
+}
+
+.btn-outline:hover {
+    background-color: #4CAF50;      /* Fondo verde al pasar el ratón */
+    color: white;                   /* Texto blanco */
+    transform: translateY(-2px);    /* Efecto de elevación */
+}
+
+.btn-outline:active {
+    background-color: #45a049;      /* Fondo más oscuro cuando se hace clic */
+    color: white;                   /* Texto blanco */
+    transform: translateY(0);       /* Reestablecer la posición */
+}
+
+/* Botón deshabilitado (para cuando el botón no debe ser clickeable) */
+.btn:disabled {
+    background-color: #ccc;         /* Color gris */
+    color: #888;                    /* Color gris para el texto */
+    cursor: not-allowed;            /* Cursor no permitido */
+    transform: none;                /* Eliminar efectos de transición */
+}
