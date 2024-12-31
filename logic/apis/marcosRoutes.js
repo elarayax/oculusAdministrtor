@@ -52,14 +52,14 @@ module.exports = function(server, userDataPath, actualizarUnidadMedidaWebSocket)
             }
             
             let marcasData = JSON.parse(data);
-            const { nombre, descripcion, idMarca, stock } = req.body;
+            const { nombre, descripcion, idMarca, stock, sku, precioCosto, precioLista } = req.body;
 
             if (!nombre || !idMarca) {
                 return res.status(400).json({ error: 'El nombre del modelo y el id de la marca son obligatorios' });
             }
 
             const nuevaId = marcasData.modelos.length > 0 ? Math.max(...marcasData.modelos.map(m => m.id)) + 1 : 1;
-            const nuevoModelo = { id: nuevaId, nombre, descripcion: descripcion || '', idMarca: parseInt(idMarca), stock: stock || 0 };
+            const nuevoModelo = { id: nuevaId, nombre, descripcion: descripcion || '', idMarca: parseInt(idMarca), stock: stock || 0 , sku: sku || '', precioCosto: parseInt(precioCosto) || 0, precioLista: parseInt(precioLista) || 0};
 
             marcasData.modelos.push(nuevoModelo);
 

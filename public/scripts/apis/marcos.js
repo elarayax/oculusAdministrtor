@@ -37,14 +37,14 @@ async function agregarMarca(nombre, descripcion) {
 }
 
 // Agregar un nuevo modelo
-async function agregarModelo(nombre, descripcion, idMarca, stock) {
+async function agregarModelo(nombre, descripcion, idMarca, stock, sku, precioCosto, precioLista) {
     try {
         const response = await fetch('http://localhost:3001/api/modelos', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ nombre, descripcion, idMarca, stock }),
+            body: JSON.stringify({ nombre, descripcion, idMarca, stock, sku, precioCosto, precioLista }),
         });
 
         if (!response.ok) {

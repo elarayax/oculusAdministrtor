@@ -16,7 +16,7 @@
     </div>
     <div>
         <button id="btnAdministrarMarcas" class="btn btn-primary">Administrar Marcas</button>
-        <button id="btnAgregarCristal" class="btn btn-primary">Agregar Marco</button>
+        <button id="btnAgregarMarco" class="btn btn-primary">Agregar Marco</button>
     </div>
     <div id="popupadministrarMarcas" class="popup">
         <div class="popup-content">
@@ -49,19 +49,89 @@
             <button id="cerrarPopupMarcas" class="btn btn-secondary">Cancelar</button>
         </div>
     </div>
-    <div id="popupAgregarCristal" class="popup">
+    <div id="popupAgregarMarco" class="popup">
         <div class="popup-content">
-            <h3>Agregar Nuevo Marco</h3>
-            <label for="nombreCristal">Nombre del Marco:</label>
-            <input type="text" id="nombreMarco" name="nombreMarco" required>
-            <label for="descripcionCristal">Descripción:</label>
-            <input type="text" id="descripcionCristal" name="descripcionCristal" required>
-            <button id="guardarCristalBtn" class="btn btn-primary">Guardar Cristal</button>
-            <button id="cerrarPopupCristal" class="btn btn-secondary">Cancelar</button>
+            <h3 class="text-center">Agregar Nuevo Marco</h3>
+            <table>
+                <tr>
+                    <td><b>Nombre marco</b></td>
+                    <td><input type="text" id="nombreMarco" name="nombreMarco"></td>
+                </tr>
+                <tr>
+                    <td><b>SKU marco</b></td>
+                    <td><input type="text" id="skuMarco" name="skuMarco"></td>
+                </tr>
+                <tr>
+                    <td><b>Descripción marco</b></td>
+                    <td><input type="text" id="descripcionMarco" name="descripcionMarco"></td>
+                </tr>
+                <tr>
+                    <td><b>Marca Marco</b></td>
+                    <td>
+                        <select id="marcaMarco" name="marcaMarco"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Stock</b></td>
+                    <td><input type="number" id="stockMarco" name="stockMarco"></td
+                </tr>
+                <tr>
+                    <td><b>Precio Costo</b></td>
+                    <td><input type="number" id="precioCostoMarco" name="precioCostoMarco"></td
+                </tr>
+                <tr>
+                    <td><b>Precio Lista</b></td>
+                    <td><input type="number" id="precioListaMarco" name="precioListaMarco"></td
+                </tr>
+                <tr>
+                    <td colspan="2" class="text-center"><button onclick="addMarco()" class="btn btn-primary">Agregar Marco</button></td>
+                </tr>
+            </table>
+            <button id="cerrarPopupMarcos" class="btn btn-secondary">Cancelar</button>
         </div>
     </div>
     <div id="marcos">
-        
+        <h2 class="text-center">Filtros Marcos</h2>
+        <table>
+            <tr>
+                <td>
+                    Filtrar por Marca
+                    <select onchange="filtrarTablaPorMarca()" id="filtroMarca" name="filtroMarca"></select>
+                </td>
+                <td>
+                    Filtrar por SKU / Nombre
+                    <select name="opcionFiltro" id="opcionFiltro">
+                        <option value="sku">SKU</option>
+                        <option value="nombre">Nombre</option>
+                    </select>
+                    <input oninput="filtroEscrito()" type="text" id="filtroNombre" name="filtroNombre">
+                </td>
+            </tr>
+        </table>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>SKU</th>
+                    <th>Descripción</th>
+                    <th>Stock</th>
+                    <th>Marca</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tbodyMarcos">
+                <!-- Cuerpo de la tabla -->
+            </tbody>
+        </table>
+        <div id="pagination">
+            <button id="prev" style="display: none;" onclick="changePage(-1)">Anterior</button>
+            <span id="pageNumber">Página 1</span>
+            <button id="next" onclick="changePage(1)">Siguiente</button>
+        </div>
+    </div>
+    <div id="popupEditarMarco" class="popup">
+        <div class="popup-content" id="contentEditarMarco">    
+        </div>
     </div>
 </body>
 <script src="http://localhost:3001/scripts/apis/marcos.js"></script>
