@@ -14,7 +14,41 @@
     <div class="row">
         <a href="http://localhost:3001/" class="back-link">Volver</a>
     </div>
-    <button id="btnAgregarCristal" class="btn btn-primary">Agregar Marco</button>
+    <div>
+        <button id="btnAdministrarMarcas" class="btn btn-primary">Administrar Marcas</button>
+        <button id="btnAgregarCristal" class="btn btn-primary">Agregar Marco</button>
+    </div>
+    <div id="popupadministrarMarcas" class="popup">
+        <div class="popup-content">
+            <h3 class="text-center">Administrar Marcas</h3>
+            <table>
+                <tr>
+                    <td><b>Nombre marca</b></td>
+                    <td><input type="text" id="nombreMarca" name="nombreMarca"></td>
+                </tr>
+                <tr>
+                    <td><b>Descripción marca</b></td>
+                    <td><input type="text" id="descripcionMarca" name="descripcionMarca"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="text-center"><button onclick="addMarca()" class="btn btn-primary">Agregar Marca</button></td>
+                </tr>
+            </table>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodyMarcas">
+                    <!-- Cuerpo de la tabla -->
+                </tbody>
+            </table>
+            <button id="cerrarPopupMarcas" class="btn btn-secondary">Cancelar</button>
+        </div>
+    </div>
     <div id="popupAgregarCristal" class="popup">
         <div class="popup-content">
             <h3>Agregar Nuevo Marco</h3>

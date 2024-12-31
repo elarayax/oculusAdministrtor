@@ -10,6 +10,7 @@ const productosRoutes = require('./apis/productosRoutes');
 const contizacionesRoutes = require('./apis/cotizacionesRoutes');
 const cristalesRoutes = require('./apis/cristalesRoutes');
 const metodosPagoRoutes = require('./apis/metodosPagoRoutes');
+const marcosRoutes = require('./apis/marcosRoutes');
 
 function setupAppRoutes(server, baseDir, userDataPath, actualizarClientesWebSocket) {
     setupRoutes(server, baseDir);
@@ -23,6 +24,7 @@ function setupAppRoutes(server, baseDir, userDataPath, actualizarClientesWebSock
     contizacionesRoutes(server, userDataPath, actualizarClientesWebSocket);
     cristalesRoutes(server, userDataPath, actualizarClientesWebSocket);
     metodosPagoRoutes(server, userDataPath, actualizarClientesWebSocket);
+    marcosRoutes(server, userDataPath, actualizarClientesWebSocket);
 }
 
 module.exports = setupAppRoutes;
