@@ -33,6 +33,8 @@ function initializeUserData() {
         { fileName: 'productos.json', source: path.join(__dirname, 'data', 'productos.json') },
         { fileName: 'cotizaciones.json', source: path.join(__dirname, 'data', 'cotizaciones.json') },
         { fileName: 'cristales.json', source: path.join(__dirname, 'data', 'cristales.json') },
+        { fileName: 'metodosPago.json', source: path.join(__dirname, 'data', 'metodosPago.json') },
+        { fileName: 'marcos.json', source: path.join(__dirname, 'data', 'marcos.json') },
     ];
 
     filesToCopy.forEach(({ fileName, source }) => {

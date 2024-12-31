@@ -26,6 +26,9 @@ function goTo(go) {
     else if(go == "cristales"){
         window.location.href = "vista/productos/cristales.html"
     }
+    else if(go == "marcos"){
+        window.location.href = "vista/productos/marcos.html"
+    }
 }
 
 function toggleCard(selectedCard) {

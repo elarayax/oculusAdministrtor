@@ -101,14 +101,50 @@
                 </table>
             </div>
         </div>
+
+        <!-- Métodos de pago -->
+        <div class="desplegable">
+            <h2 class="text-center">Métodos de Pago</h2>
+            <div class="contenido">
+                <p class="text-center">Agregra método de pago</p>
+                <table>
+                    <tr>
+                        <td class="text-center">
+                            <label for="nombreMetodo">Nombre del método de Pago</label>
+                            <input type="text" name="nombreMetodo" id="nombreMetodo">
+                        </td>
+                        <td class="text-center">
+                            <label for="comisionMetodo">Comisión del método de Pago</label>
+                            <input type="text" name="comisionMetodo" id="comisionMetodo">
+                        </td>
+                        <td>
+                            <button class="btn btn-primary" onclick="agregarMetodoPago()">Agregar Método de pago</button>
+                        </td>
+                    </tr>
+                </table>
+                <p class="text-center">Listado métodos de pago</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Comisión</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listadoMétodos"></tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <script src="http://localhost:3001/scripts/apis/unidadMedida.js"></script>
     <script src="http://localhost:3001/scripts/apis/iva.js"></script>
     <script src="http://localhost:3001/scripts/apis/monedas.js"></script>
+    <script src="http://localhost:3001/scripts/apis/metodosPago.js"></script>
     <script src="http://localhost:3001/vista/opciones/scripts/unidadMedida.js"></script>
     <script src="http://localhost:3001/vista/opciones/scripts/iva.js"></script>
     <script src="http://localhost:3001/vista/opciones/scripts/monedas.js"></script>
+    <script src="http://localhost:3001/vista/opciones/scripts/metodosPago.js"></script>
     <script>
         // JavaScript para la funcionalidad desplegable
         document.querySelectorAll('.desplegable h2').forEach(titulo => {
