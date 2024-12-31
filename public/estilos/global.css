@@ -256,3 +256,19 @@ textarea:focus {
     outline: none;                       /* Elimina el contorno predeterminado */
     box-shadow: 0 0 5px rgba(255, 183, 77, 0.5); /* Sombra similar a los inputs */
 }
+
+.lista-check{
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+}
+
+.promos-section{
+    display: flex;
+    align-items: flex-start;
+}
+
+h1, h2, h3, h4, p{
+    padding: 0;
+    margin: 0;
+}

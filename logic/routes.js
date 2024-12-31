@@ -41,12 +41,24 @@ function setupRoutes(server,baseDir) {
         res.sendFile(path.join(baseDir, 'public', 'vista', 'productos', 'cristales.html'));
     });
 
+    server.get('/vista/productos/marcos.html', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'productos', 'cristales.html'));
+    });
+
     server.get('/vista/cotizaciones/crear-cotizacion.html', (req, res) => {
         res.sendFile(path.join(baseDir, 'public', 'vista', 'cotizaciones', 'crear-cotizacion.html'));
     });
 
     server.get('/vista/cotizaciones/ver-cotizaciones.html', (req, res) => {
         res.sendFile(path.join(baseDir, 'public', 'vista', 'cotizaciones', 'ver-cotizaciones.html'));
+    });
+
+    server.get('/vista/promociones/convenios.html', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'promociones', 'convenios.html'));
+    });
+
+    server.get('/vista/promociones/descuentos.html', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'promociones', 'descuentos.html'));
     });
 
     server.get('/scripts/logic/index.js', (req, res) => {
@@ -89,6 +101,10 @@ function setupRoutes(server,baseDir) {
         res.sendFile(path.join(baseDir, 'public', 'scripts', 'apis', 'cristales.js'));
     });
 
+    server.get('/scripts/apis/marcos.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'scripts', 'apis', 'cristales.js'));
+    });
+
     server.get('/vista/opciones/scripts/datosEmpresa.js', (req, res) => {
         res.sendFile(path.join(baseDir, 'public', 'vista', 'opciones', 'scripts', 'datosEmpresa.js'));
     });
@@ -121,12 +137,28 @@ function setupRoutes(server,baseDir) {
         res.sendFile(path.join(baseDir, 'public', 'vista', 'productos', 'scripts', 'verProductos.js'));
     });
 
+    server.get('/vista/productos/scripts/cristales.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'productos', 'scripts', 'cristales.js'));
+    });
+
+    server.get('/vista/productos/scripts/marcos.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'productos', 'scripts', 'marcos.js'));
+    });
+
     server.get('/vista/cotizaciones/scripts/crearCotizacion.js', (req, res) => {
         res.sendFile(path.join(baseDir, 'public', 'vista', 'cotizaciones', 'scripts', 'crearCotizacion.js'));
     });
 
     server.get('/vista/cotizaciones/scripts/verCotizaciones.js', (req, res) => {
         res.sendFile(path.join(baseDir, 'public', 'vista', 'cotizaciones', 'scripts', 'verCotizaciones.js'));
+    });
+
+    server.get('/vista/promociones/scripts/convenios.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'promociones', 'scripts', 'convenios.js'));
+    });
+
+    server.get('/vista/promociones/scripts/descuentos.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'promociones', 'scripts', 'descuentos.js'));
     });
 
     server.get('/estilos/global.css', (req, res) => {
