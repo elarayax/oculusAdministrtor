@@ -14,14 +14,64 @@
     <div class="row">
         <a href="http://localhost:3001/" class="back-link">Volver</a>
     </div>
+    <table>
+        <tr>
+            <td>
+                Nombre del convenio
+            </td>
+            <td>
+                <input type="text" id="nombreConvenio" placeholder="Nombre del convenio">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Activo
+            </td>
+            <td>
+                <input type="checkbox" id="activoConvenio" onclick="textoConvenio()">
+                <label for="activoConvenio" id="cambiarTexto">No</label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Descuento en %
+            </td>
+            <td>
+                <input type="text" id="descuentoConvenio" placeholder="Descuento">
+            </td>
+        </tr>
+    </table>
     <div class="promos-section">
-        <div id="cristales" class="lista-check">
+        <div class="lista-check">
+            <h2 class="sd-8 text-center">Cristales</h2>
+            <div id="cristales"></div>
         </div>
-        <div id="variantesCristales" class="lista-check">
+        <div class="lista-check">
+            <h2 class="sd-8 text-center">Variantes de Cristales</h2>
+            <id id="variantesCristales"></id>
         </div>
-        <div id="cilindrosVariantes" class="lista-check"></div>
+        <div class="lista-check">
+            <h2 class="sd-8 text-center">Cilindros</h2>
+            <div id="cilindrosVariantes"></div>
+        </div>
+        <div class="lista-check">
+            <h2 class="sd-8 text-center">Esferas</h2>
+            <div id="esferasCilindros"></div>
+        </div>
     </div>
+    <div class="promos-section">
+        <div class="lista-check">
+            <h2 class="sd-8 text-center">Marca</h2>
+            <div id="marca"></div>
+        </div>
+        <div class="lista-check">
+            <h2 class="sd-8 text-center">Modelo</h2>
+            <div id="modelo"></div>
+        </div>
+    </div>
+    <button class="btn btn-primary text-center" onclick="agregarConvenio()">Agregar Convenio</button>
 </body>
 <script src="http://localhost:3001/scripts/apis/cristales.js"></script>
+<script src="http://localhost:3001/scripts/apis/marcos.js"></script>
 <script src="http://localhost:3001/vista/promociones/scripts/convenios.js"></script>
 </html>
