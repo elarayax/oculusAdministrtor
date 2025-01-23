@@ -125,7 +125,7 @@
     <div class="row">
         <a href="http://localhost:3001/" class="back-link">Volver</a>
     </div>
-    <form id="crearCotizacion">
+    <form id="crearCotizacion" onsubmit="return false;">
         <div id="origin" class="step actual-step">
             <div class="step-content">
                 <div id="userSelected" class="sd-12 center-div non-display">
@@ -165,7 +165,7 @@
                     <button class="btn btn-secondary" onclick="goToStep('chooseTypeProduct')">Agregar Producto</button>
                 </div>
                 <div>
-                    <button class="btn btn-outline">Continuar con la compra</button>
+                    <button class="btn btn-outline" onclick="startPayment()">Continuar con la compra</button>
                 </div>
             </div>
             <div class="step-selector">
@@ -496,6 +496,74 @@
                 <p class="text-center">Agregar Cristales al marco</p>
             </div>
         </div>
+        <div id="addMarcoL" class="step">
+            <div class="step-content">
+                <h2 class="text-center sd-12">Agregar Marco al lente</h2>
+                <div class="organizar-botones sd-20">
+                    <div class="center-div">
+                        <h2 class="text-center sd-12">Seleccionar Marca del Marco</h2>
+                        <select name="marco" id="selectMarcoL">
+                            <option value="-1">Seleccione una marca</option>
+                        </select>
+                    </div>
+                    <div class="center-div">
+                        <h2 class="text-center sd-12">Seleccionar Modelo</h2>
+                        <select name="modelo" id="selectModeloL">
+                            <option value="-1">Seleccione un modelo</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="organizar-botones">
+                    <button class="btn btn-danger" onclick="goToStep('origin')">Cancelar</button>
+                    <button class="btn btn-secondary" onclick="bridgeCristal()">Volver</button>
+                    <button class="btn btn-primary sd-12" onclick="createLente()">Crear Lente</button>
+                </div>
+            </div>
+            <div class="step-selector">
+                <p class="text-center">Agregar Marco al lente</p>
+            </div>
+        </div>
+        <div id="metodosPago" class="step">
+            <div class="step-content">
+                <h2 class="text-center sd-12">Métodos de pago</h2>
+                <table id="tablaMetodosPago">
+                    <tr>
+                        <td>
+                            <b>Total Actual</b>
+                        </td>
+                        <td id="totalVenta"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Método de pago</b>
+                        </td>
+                        <td>
+                            <select name="metodoPago" id="selectMetodoPago"></select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Abonos</b></td>
+                        <td id="totalAbonos">0.00</td>
+                    </tr>
+                    <tr>
+                        <td><b>Pendiente</b></td>
+                        <td id="pendienteVenta"></td>
+                    </tr>
+                </table>
+                <div class="organizar-botones sd-12">
+                    <button class="btn btn-secondary" id="btnCambiarPrecio">Cambiar Precio</button>
+                    <button class="btn btn-secondary" id="btnAbonarVenta">Registrar Abono</button>
+                </div>
+
+                <div class="organizar-botones">
+                    <button class="btn btn-secondary" onclick="goToStep('origin')">Volver</button>
+                    <button class="btn btn-primary sd-12" onclick="casiListo()">Siguiente</button>
+                </div>
+            </div>
+            <div class="step-selector">
+                <p class="text-center">Métodos de pago</p>
+            </div>
+        </div>        
         <div id="step6" class="step">
             <div class="step-content">
                 <h2 class="text-center sd-12">Resumen de la cotización</h2>
@@ -519,6 +587,7 @@
 <script src="http://localhost:3001/scripts/apis/clientes.js"></script>
 <script src="http://localhost:3001/scripts/apis/empresa.js"></script>
 <script src="http://localhost:3001/scripts/apis/cotizaciones.js"></script>
+<script src="http://localhost:3001/scripts/apis/metodosPago.js"></script>
 <script src="http://localhost:3001/scripts/apis/Cristales.js"></script>
 <script src="http://localhost:3001/scripts/apis/marcos.js"></script>
 <script src="http://localhost:3001/scripts/apis/logo.js"></script>
@@ -528,4 +597,6 @@
 <script src="http://localhost:3001/vista/ventas/scripts/user-logic.js" defer></script>
 <script src="http://localhost:3001/vista/ventas/scripts/products-logic.js" defer></script>
 <script src="http://localhost:3001/vista/ventas/scripts/complete-glasses.js" defer></script>
+<script src="http://localhost:3001/vista/ventas/scripts/payment.js" defer></script>
+<script src="http://localhost:3001/vista/ventas/scripts/final.js" defer></script>
 </html>

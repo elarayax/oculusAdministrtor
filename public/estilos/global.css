@@ -73,6 +73,10 @@ td p {
     color: #333;
 }
 
+tr td {
+    max-width: 40vw;
+}
+
 td.ajustar-tabla {
     width: 50%;
     text-align: center;

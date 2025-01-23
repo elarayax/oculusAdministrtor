@@ -150,6 +150,122 @@ function checkGlass(){
     }
 }
 
-function addMarcoL(){
-    
+function bridgeCristal(){
+    event.preventDefault();
+    document.getElementById("addLente").classList.add("actual-step");
+    document.getElementById("addMarcoL").classList.remove("actual-step");
+}
+
+/** logica de los marcos */
+
+async function cargarMarcosL(){
+    try {
+        const todo = await obtenerMarcasYModelos(); // Función para obtener clientes de tu API
+        marcas = todo.marcas; 
+        modelos = todo.modelos;
+        selectMarcosL(marcas);
+    } catch (error) {
+        alert("Error al cargar marcos");
+    }
+}
+
+function selectMarcosL(marcos) {
+    const select = document.getElementById("selectMarcoL");
+    select.innerHTML = "";
+    const optionFirst = document.createElement("option");
+    optionFirst.value = "-1";
+    optionFirst.text = "Seleccione un marco";
+    select.appendChild(optionFirst);
+
+    marcos.forEach(marco => {
+        const option = document.createElement("option");
+        option.value = marco.id;
+        option.text = marco.nombre;
+        select.appendChild(option);
+    });
+
+    select.addEventListener("change", (e) => {
+        if(e.target.value != -1){
+            const marcaId = e.target.value; // Obtén el ID de la marca seleccionada
+            actualizarModelosL(marcaId); // Actualiza el segundo select
+        }
+    });
+}
+
+function actualizarModelosL(marcaId){
+    const selectModelos = document.getElementById("selectModeloL");
+    selectModelos.innerHTML = "";
+    modelos.forEach(modelo => {
+        if(modelo.idMarca == marcaId){
+            const option = document.createElement("option");
+            option.value = modelo.id;
+            option.text = modelo.nombre;
+            selectModelos.appendChild(option);
+        }
+    });
+}
+
+/** logica de crear el lente completo */
+
+function createLente(){
+    event.preventDefault();
+
+    const select = document.getElementById("selectMarcoL");
+    const selectModelo = document.getElementById("selectModeloL");
+    const marcaId = select.value;
+    const modeloId = selectModelo.value;
+    if(marcaId != -1 && modeloId != -1){
+        const marca = marcas.find(marca => marca.id == marcaId);
+        const modelo = modelos.find(modelo => modelo.id == modeloId);
+
+        let marco = {
+            nombre: `${marca.nombre} ${modelo.nombre}`,
+            precio: modelo.precioLista,
+            cantidad: 1,
+            marca: marca,
+            modelo: modelo,
+            tipo: "marco"
+        };
+
+        const seleccionado = document.querySelector('input[name="seleccionarCristal"]:checked');
+
+        const idCristal = seleccionado.value;
+        const filaCristal = document.getElementById(idCristal);
+        const nombreCristal = filaCristal.children[0].textContent || "Cristal";
+        const precio = filaCristal.children[1].textContent || "0";
+
+        let cristales = {
+            nombre: `${nombreCristal} OD(${lenteGlobal.esferaOD} , ${lenteGlobal.cilindroOD}) OI (${lenteGlobal.esferaOI} , ${lenteGlobal.cilindroOI})`,
+            precio: precio,
+            cantidad: 1,
+            tipo: "cristales",
+            cristales: lenteGlobal,
+        }
+
+        let producto = {
+            nombre: `Cristales : ${cristales.nombre}, Marca Lente: ${marca.nombre}, Modelo Lente: ${modelo.nombre}`,
+            precio: parseInt(precio) + parseInt(modelo.precioLista),
+            cantidad: 1,
+            tipo: "lente",
+            cristales: cristales,
+            marco: marco,
+        }
+
+        venta.productos.push(producto);
+        
+        marcas = [];
+        modelos = [];
+
+        lenteGlobal = {};
+
+        cristales = [];
+
+        cleanCristalL();
+
+        alert("Lente agregado satisfactoriamente");
+
+        goToStep("origin");
+    }else{
+        alert("Seleccione una marca y un modelo");
+    }
 }

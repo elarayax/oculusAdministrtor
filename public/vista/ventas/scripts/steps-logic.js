@@ -48,5 +48,11 @@ function goToStep(id){
 
     if(id == "addMarcoL"){
         document.getElementById(id).classList.add("actual-step");
+        cargarMarcosL();
+    }
+
+    if(id == "metodosPago"){
+        document.getElementById(id).classList.add("actual-step");
+        getMetodosPago();
     }
 }
