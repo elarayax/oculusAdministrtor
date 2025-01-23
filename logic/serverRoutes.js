@@ -11,6 +11,8 @@ const contizacionesRoutes = require('./apis/cotizacionesRoutes');
 const cristalesRoutes = require('./apis/cristalesRoutes');
 const metodosPagoRoutes = require('./apis/metodosPagoRoutes');
 const marcosRoutes = require('./apis/marcosRoutes');
+const conveniosRoutes = require('./apis/conveniosRoutes');
+const whastsappMessagesRoutes = require('./apis/whatsappMessagesRoutes');
 
 function setupAppRoutes(server, baseDir, userDataPath, actualizarClientesWebSocket) {
     setupRoutes(server, baseDir);
@@ -25,6 +27,8 @@ function setupAppRoutes(server, baseDir, userDataPath, actualizarClientesWebSock
     cristalesRoutes(server, userDataPath, actualizarClientesWebSocket);
     metodosPagoRoutes(server, userDataPath, actualizarClientesWebSocket);
     marcosRoutes(server, userDataPath, actualizarClientesWebSocket);
+    conveniosRoutes(server, userDataPath, actualizarClientesWebSocket);
+    whastsappMessagesRoutes(server);
 }
 
 module.exports = setupAppRoutes;

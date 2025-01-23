@@ -65,6 +65,10 @@ function setupRoutes(server,baseDir) {
         res.sendFile(path.join(baseDir, 'public', 'scripts', 'logic', 'index.js'));
     });
 
+    server.get('/scripts/logic/html2canvas.min.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'scripts', 'logic', 'html2canvas.min.js'));
+    });
+
     server.get('/scripts/apis/empresa.js', (req, res) => {
         res.sendFile(path.join(baseDir, 'public', 'scripts', 'apis', 'empresa.js'));
     });
@@ -102,7 +106,15 @@ function setupRoutes(server,baseDir) {
     });
 
     server.get('/scripts/apis/marcos.js', (req, res) => {
-        res.sendFile(path.join(baseDir, 'public', 'scripts', 'apis', 'cristales.js'));
+        res.sendFile(path.join(baseDir, 'public', 'scripts', 'apis', 'marcos.js'));
+    });
+
+    server.get('/scripts/apis/convenios.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'scripts', 'apis', 'convenios.js'));
+    });
+
+    server.get('/scripts/apis/whatsappMessages.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'scripts', 'apis', 'whatsappMessages.js'));
     });
 
     server.get('/vista/opciones/scripts/datosEmpresa.js', (req, res) => {
@@ -119,6 +131,10 @@ function setupRoutes(server,baseDir) {
 
     server.get('/vista/opciones/scripts/monedas.js', (req, res) => {
         res.sendFile(path.join(baseDir, 'public', 'vista', 'opciones', 'scripts', 'monedas.js'));
+    });
+
+    server.get('/vista/opciones/scripts/whatsappMessages.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'opciones', 'scripts', 'whatsappMessages.js'));
     });
 
     server.get('/vista/clientes/scripts/agregarCliente.js', (req, res) => {
@@ -157,8 +173,12 @@ function setupRoutes(server,baseDir) {
         res.sendFile(path.join(baseDir, 'public', 'vista', 'promociones', 'scripts', 'convenios.js'));
     });
 
+    server.get('/vista/promociones/scripts/listarConvenios.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'promociones', 'scripts', 'convenios.js'));
+    });
+
     server.get('/vista/promociones/scripts/descuentos.js', (req, res) => {
-        res.sendFile(path.join(baseDir, 'public', 'vista', 'promociones', 'scripts', 'descuentos.js'));
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'promociones', 'scripts', 'listarConvenios.js'));
     });
 
     server.get('/estilos/global.css', (req, res) => {

@@ -1,5 +1,4 @@
-[
-    {
+{
         "nombre": "",
         "rut": "",
         "direccion": "",
@@ -7,5 +6,4 @@
         "correo": "",
         "colorTabla": "#FF7F50",
         "colorLetras":  "#FFFFFF"
-    }
-]
+}

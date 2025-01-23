@@ -1,11 +1,14 @@
 let cristales;
 let marcos;
+let convenios;
 
 async function cargarTodo(){
     cristales = await obtenerCristales();
     llenarDivCristales(cristales);
     marcos = await obtenerMarcasYModelos();
     llenarDivMarcos(marcos);
+    convenios = await obtenerConvenios();
+    llenarDivConvenios(convenios);
 }
 
 function llenarDivCristales(cristales) {
@@ -304,119 +307,11 @@ function textoConvenio(){
     }
 }
 
-/*function agregarConvenio(){
-    let convenio = {}
-
-    const nombreConvenio = document.getElementById("nombreConvenio");
-    if(nombreConvenio.value.length == 0|| nombreConvenio.value.trim() == 0){
-        alert("Ingrese el nombre del convenio");
-        return;
-    }else{
-        convenio.nombre = nombreConvenio.value;
-    }
-
-    const convenioActivo = document.getElementById("activoConvenio");
-    convenio.activo = convenioActivo.checked;
-
-    const descuentoConvenio = document.getElementById("descuentoConvenio");
-    if(descuentoConvenio.value.length == 0|| descuentoConvenio.value.trim() == 0 || isNaN(parseFloat(descuentoConvenio.value))){
-        alert("Ingrese el descuento del convenio");
-        return;
-    }else{
-        convenio.descuento = parseFloat(descuentoConvenio.value);
-    }
-
-    let cristales = [];
-    const cristalesConvenio = document.querySelectorAll("#cristales input[type='checkbox']");
-    cristalesConvenio.forEach((cristal) => {
-        if (cristal.checked) {
-            const label = document.querySelector(`label[for="${cristal.id}"]`);
-            let cris = {
-                id: cristal.id,
-                nombre: label.textContent,
-                variantes: []
-            }
-            cristales.push(cris);
-        }
-    });
-
-    convenio.cristales = cristales;
-
-    if(cristales.length > 0){
-        const varianteCristalConvenio = document.querySelectorAll("#variantesCristales input[type='checkbox']");
-        let banderita = 0;
-        varianteCristalConvenio.forEach((variante) => {
-            if (variante.checked) {
-                let idVariante = variante.id.split("-")[1];
-                let idCristal = variante.id.split("-")[0];
-                const label = document.querySelector(`label[for="${variante.id}"]`);
-                let cris = cristales.find(c => c.id == idCristal);
-                banderita += 1;
-                if(cris){
-                    cris.variantes.push({
-                        id: idVariante,
-                        nombre: label.textContent,
-                        cilindros: []
-                    });
-                }
-            }
-        });
-        if(banderita > 0){
-            const cilindrosConvenio = document.querySelectorAll("#cilindrosVariantes input[type='checkbox']");
-        }
-    }
-
-    let lentes = [];
-
-    const divMarcas = document.querySelectorAll("#marca input[type='checkbox']");
-
-    divMarcas.forEach(marca => {
-        const label = document.querySelector(`label[for="${marca.id}"]`);
-        const newId = marca.id.replace("check", "");
-        if (marca.checked) {
-            const marcass = {
-                marca: label.textContent,
-                id: newId,
-                modelos: []
-            }
-            lentes.push(marcass);
-        }
-    });
-
-    if (lentes.length > 0){
-        const divModelos = document.querySelectorAll(`#modelo input[type='checkbox']`);
-        divModelos.forEach(modelo => {
-            const label = document.querySelector(`label[for="${modelo.id}"]`);
-            const newId = modelo.id.replace("check-", "");
-            const parts = newId.split("-");
-            const idMarca = parts[0];
-            const idModelo = parts[1];
-            const modeloValue = label.textContent;
-
-            const marca = lentes.find(m => m.id === idMarca);
-            if (marca && modelo.checked) {
-                // Agregar el modelo a la marca correspondiente
-                marca.modelos.push({
-                    idModel: idModelo,
-                    modelo: modeloValue
-                });
-            }
-        });
-    }
-    convenio.lentes = lentes;
-    if(lentes.length == 0){
-        convenio.general = true;
-    }else{
-        convenio.general = false;
-    }
-    console.log("convenio: ", convenio);
-}*/
-
-function agregarConvenio() {
+async function addConvenio() {
     let convenio = {};
 
     // Validar y asignar nombre del convenio
-    const nombreConvenio = document.getElementById("nombreConvenio").value.trim();
+    const nombreConvenio = document.getElementById("nombreConvenio")?.value.trim();
     if (!nombreConvenio) {
         alert("Ingrese el nombre del convenio");
         return;
@@ -424,10 +319,10 @@ function agregarConvenio() {
     convenio.nombre = nombreConvenio;
 
     // Asignar estado activo
-    convenio.activo = document.getElementById("activoConvenio").checked;
+    convenio.activo = document.getElementById("activoConvenio")?.checked || false;
 
     // Validar y asignar descuento
-    const descuentoConvenio = document.getElementById("descuentoConvenio").value.trim();
+    const descuentoConvenio = document.getElementById("descuentoConvenio")?.value.trim();
     const descuento = parseFloat(descuentoConvenio);
     if (!descuentoConvenio || isNaN(descuento)) {
         alert("Ingrese un descuento válido para el convenio");
@@ -435,50 +330,62 @@ function agregarConvenio() {
     }
     convenio.descuento = descuento;
 
-    // Helper para procesar checkboxes
+    // Helper para procesar checkboxes de forma segura
     const obtenerSeleccionados = (selector, extraPropsCallback) => {
-        return Array.from(document.querySelectorAll(selector))
+        const checkboxes = document.querySelectorAll(selector);
+        if (!checkboxes.length) return []; // No checkboxes disponibles
+
+        return Array.from(checkboxes)
             .filter(checkbox => checkbox.checked)
             .map(checkbox => {
                 const label = document.querySelector(`label[for="${checkbox.id}"]`);
-                return {
+                const baseData = {
                     id: checkbox.id,
-                    nombre: label.textContent,
-                    ...(extraPropsCallback ? extraPropsCallback(checkbox) : {})
+                    nombre: label ? label.textContent.trim() : "Sin nombre",
                 };
+                return extraPropsCallback ? { ...baseData, ...extraPropsCallback(checkbox) } : baseData;
             });
     };
 
-    // Procesar cristales y variantes
-    convenio.cristales = obtenerSeleccionados("#cristales input[type='checkbox']");
-    convenio.cristales.forEach(cristal => {
-        cristal.variantes = obtenerSeleccionados(
+    // Procesar cristales (solo si existen)
+    convenio.cristales = obtenerSeleccionados("#cristales input[type='checkbox']", cristal => ({
+        variantes: obtenerSeleccionados(
             `#variantesCristales input[type='checkbox'][id^="${cristal.id}-"]`,
             variante => ({
                 cilindros: obtenerSeleccionados(
                     `#cilindrosVariantes input[type='checkbox'][id^="${variante.id}-"]`,
-                    esferas => ({
+                    cilindro => ({
                         esferas: obtenerSeleccionados(
-                            `#esferasCilindros input[type='checkbox'][id^="${esferas.id}-"]`,
-                        )
+                            `#esferasCilindros input[type='checkbox'][id^="${cilindro.id}-"]`
+                        ),
                     })
-                )
+                ),
             })
-        );
-    });
+        ),
+    }));
 
-    // Procesar lentes
+    // Procesar lentes (solo si existen)
     convenio.lentes = obtenerSeleccionados("#marca input[type='checkbox']", marca => ({
         modelos: obtenerSeleccionados(
             `#modelo input[type='checkbox'][id^="${marca.id.replace("check", "")}-"]`
-        )
+        ),
     }));
 
     // Establecer flag general
-    convenio.general = convenio.lentes.length === 0;
+    convenio.general = convenio.lentes.length === 0 && convenio.cristales.length === 0;
 
-    // Salida del convenio
-    console.log("Convenio:", convenio);
+    // Intentar guardar el convenio
+    try {
+        await agregarConvenio(convenio); // Llama a tu función de backend
+        alert("Convenio agregado correctamente");
+        cargarTodo();
+    } catch (error) {
+        console.error("Error al agregar convenio:", error);
+        alert("No se pudo agregar convenio");
+    }
+
+    // Mostrar resultado final
+    console.log("Convenio generado:", convenio);
 }
 
 

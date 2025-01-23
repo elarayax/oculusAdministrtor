@@ -292,3 +292,78 @@ textarea:focus {
 .sd-12{
     margin-bottom: 12px;
 }
+
+.sd-16{
+    margin-bottom: 16px;
+}
+
+.sd-20{
+    margin-bottom: 20px;
+}
+
+.su-4{
+    margin-top: 4px;
+}
+
+.su-8{
+    margin-top: 8px;
+}
+
+.su-12{
+    margin-top: 12px;
+}
+
+.su-16{
+    margin-top: 16px;
+}
+
+.su-20{
+    margin-top: 20px;
+}
+
+.organizar-botones{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.big-btn{
+    width: 200px;
+    height: 80px;
+    background-color: #0F2233;
+    color: #fff;
+    transition: all 0.3s ease-in-out;
+}
+
+.big-btn:hover {
+    background-color: #0F2233;
+    color: #DEA558;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.organizardor-datos{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-around;
+}
+
+.organizardor-datos-tabla{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.center-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.non-display{
+    display: none;
+}

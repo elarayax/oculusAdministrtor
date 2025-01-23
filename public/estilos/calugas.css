@@ -1,0 +1,40 @@
+.caluga-product-div{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.caluga-product{
+    width: 180px;
+    height: 150px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    cursor: pointer;
+}
+
+.caluga-product:hover{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    color: orange;
+}
+
+.caluga-product i {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.caluga-product p {
+    font-size: 18px;
+}
+
+.caluga-product p:hover {
+    color: orange;
+    text-decoration: underline;
+}

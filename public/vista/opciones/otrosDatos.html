@@ -32,7 +32,7 @@
         <div class="row"></div>
 
         <!-- Unidades de medida -->
-        <div class="desplegable">
+        <div class="desplegable sd-16">
             <h2 class="text-center">Unidades de medida</h2>
             <div class="contenido">
                 <p class="text-center">Agregar Unidad de Medida</p>
@@ -66,7 +66,7 @@
         </div>
 
         <!-- IVA -->
-        <div class="desplegable">
+        <div class="desplegable sd-16">
             <h2 class="text-center">IVA</h2>
             <div class="contenido">
                 <table>
@@ -86,7 +86,7 @@
         </div>
 
         <!-- Moneda -->
-        <div class="desplegable">
+        <div class="desplegable sd-16">
             <h2 class="text-center">Moneda</h2>
             <div class="contenido">
                 <table>
@@ -103,7 +103,7 @@
         </div>
 
         <!-- Métodos de pago -->
-        <div class="desplegable">
+        <div class="desplegable sd-16">
             <h2 class="text-center">Métodos de Pago</h2>
             <div class="contenido">
                 <p class="text-center">Agregra método de pago</p>
@@ -135,16 +135,26 @@
                 </table>
             </div>
         </div>
+
+        <!-- Whatsapp -->
+        <div class="desplegable sd-16">
+            <h2 class="text-center">Whatsapp</h2>
+            <div class="contenido">
+                <div id="whatsapp"></div>
+            </div>
+        </div>
     </div>
 
     <script src="http://localhost:3001/scripts/apis/unidadMedida.js"></script>
     <script src="http://localhost:3001/scripts/apis/iva.js"></script>
     <script src="http://localhost:3001/scripts/apis/monedas.js"></script>
     <script src="http://localhost:3001/scripts/apis/metodosPago.js"></script>
+    <script src="http://localhost:3001/scripts/apis/whatsappMessages.js"></script>
     <script src="http://localhost:3001/vista/opciones/scripts/unidadMedida.js"></script>
     <script src="http://localhost:3001/vista/opciones/scripts/iva.js"></script>
     <script src="http://localhost:3001/vista/opciones/scripts/monedas.js"></script>
     <script src="http://localhost:3001/vista/opciones/scripts/metodosPago.js"></script>
+    <script src="http://localhost:3001/vista/opciones/scripts/whatsappMessages.js"></script>
     <script>
         // JavaScript para la funcionalidad desplegable
         document.querySelectorAll('.desplegable h2').forEach(titulo => {

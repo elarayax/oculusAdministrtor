@@ -20,6 +20,9 @@ function goTo(go) {
     else if(go == "crearCotizacion"){
         window.location.href = "vista/cotizaciones/crear-cotizacion.html"
     }
+    else if(go == "crearVenta"){
+        window.location.href = "vista/ventas/crear-venta.html"
+    }
     else if(go == "verCotizaciones"){
         window.location.href = "vista/cotizaciones/ver-cotizaciones.html"
     }

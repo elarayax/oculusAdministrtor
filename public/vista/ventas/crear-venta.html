@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taxatio - Generar Venta</title>
+    <link rel="stylesheet" href="http://localhost:3001/estilos/global.css">
+    <link rel="stylesheet" href="http://localhost:3001/estilos/botones.css">
+    <link rel="stylesheet" href="http://localhost:3001/estilos/calugas.css">
+    <link href="http://localhost:3001/estilos/fontawesome/css/fontawesome.css" rel="stylesheet" />
+    <link href="http://localhost:3001/estilos/fontawesome/css/brands.css" rel="stylesheet" />
+    <link href="http://localhost:3001/estilos/fontawesome/css/solid.css" rel="stylesheet" />
+    <link href="http://localhost:3001/estilos/fontawesome/css/sharp-thin.css" rel="stylesheet" />
+    <link href="http://localhost:3001/estilos/fontawesome/css/duotone-thin.css" rel="stylesheet" />
+    <link href="http://localhost:3001/estilos/fontawesome/css/sharp-duotone-thin.css" rel="stylesheet" />
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>-->
+    <style>
+        .sugerencias {
+            position: absolute;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            width: 40%;
+            max-height: 150px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .sugerencia {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .sugerencia:hover {
+            background-color: #f0f0f0;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            border-radius: 8px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .step{
+            display: none;
+            width: 100%;
+            align-items: center;
+        }
+
+        .step.actual-step{
+            display: flex;
+            flex-direction: column;
+        }   
+        .step-content{
+            width: clamp(34.375rem, 0.893rem + 89.286vw, 81.25rem);
+            min-height: 70vh;
+            margin: 0 auto;
+            padding: 20px;
+            box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto;
+        }
+
+        .step-selector {
+            width: max-content;
+            text-align: center;
+        }
+
+        .step-selector p {
+            margin-top: -12px;
+            background-color: #fff;
+            padding: 4px 12px;
+            border-radius: 4px;
+        }
+
+        .step-choose{
+            display: flex;
+            gap: 20px;
+        }
+
+        .step-choose p{
+            cursor: pointer;
+        }
+
+        .step-choose p:hover{
+            color: orange;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="text-center">Crear Venta</h1>
+    <div class="row">
+        <a href="http://localhost:3001/" class="back-link">Volver</a>
+    </div>
+    <form id="crearCotizacion">
+        <div id="origin" class="step actual-step">
+            <div class="step-content">
+                <div id="userSelected" class="sd-12 center-div non-display">
+                    <h2 class="text-center">Cliente seleccionado</h2>
+                    <table id="tablaClienteResumen"></table>
+                    <button class="btn btn-danger" onclick="quitarCliente()">Quitar Cliente</button>
+                </div>
+                <div id="selectUser" class="sd-12 center-div">
+                    <p class="text-center sd-12">No se a seleccionado cliente</p>
+                    <button onclick="goToStep('addClient')" class="btn btn-success">Seleccionar Cliente</button>
+                </div>
+                <div class="center-div sd-12">
+                    <h2>Resumen de la venta</h2>
+                    <div id="datosVenta" class="non-display">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Total</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resumenVenta1">
+                            </tbody>
+                        </table>
+                        <table>
+                            <tr>
+                                <td class="text-right">Total</td>
+                                <td id="totalVentaResumen"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="alertaVenta" class="sd-12">
+                        <p class="text-center">No hay productos agregados a la venta</p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="goToStep('chooseTypeProduct')">Agregar Producto</button>
+                </div>
+                <div>
+                    <button class="btn btn-outline">Continuar con la compra</button>
+                </div>
+            </div>
+            <div class="step-selector">
+                <p class="text-center">Venta</p>
+            </div>
+        </div>
+        <div id="addClient" class="step">
+            <div class="step-content">
+                <h2 class="text-center sd-12">Seleccionar Cliente</h2>
+                <table>
+                    <tr>
+                        <td>
+                            Buscar Cliente por Nombre
+                        </td>
+                        <td>
+                            <input type="text" name="nombreCliente" id="nombreCliente" placeholder="Nombre">
+                            <div id="sugerenciasCliente" class="sugerencias"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Rut Cliente
+                        </td>
+                        <td>
+                            <input type="text" name="rutCliente" id="rutCliente" disabled>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Teléfono Cliente
+                        </td>
+                        <td>
+                            <input type="text" name="telefonoCliente" id="telefonoCliente" disabled>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Correo Cliente
+                        </td>
+                        <td>
+                            <input type="email" name="correoCliente" id="correoCliente" disabled>
+                        </td>
+                    </tr>
+                </table>
+                <button class="btn btn-primary" onclick="thisClient()">Seleccionar Cliente</button>
+            </div>
+            <div class="step-selector">
+                <p class="text-center">Agregar Cliente</p>
+            </div>
+        </div>
+        <div id="chooseTypeProduct" class="step">
+            <div class="step-content">
+                <h2 class="text-center sd-20">
+                    Seleccionar tipo de producto
+                </h2>
+                <div class="caluga-product-div sd-20">
+                    <div class="caluga-product" onclick="goToStep('addLente')">
+                        <i class="fa-solid fa-eye"></i>
+                        <p>Lente Completo</p>
+                    </div>
+                    <div class="caluga-product" onclick="goToStep('addMarco')">
+                        <i class="fa-solid fa-glasses"></i>
+                        <p>Marco</p>
+                    </div>
+                    <div class="caluga-product" onclick="goToStep('addCristal')">
+                        <i class="fa-solid fa-hurricane"></i>
+                        <p>Cristales</p>
+                    </div>
+                    <!--<div class="caluga-product">
+                        <i class="fa-brands fa-product-hunt"></i>
+                        <p>Producto</p>
+                    </div>
+                    <div class="caluga-product">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                        <p>Servicio</p>
+                    </div>-->
+                    <div class="caluga-product" onclick="goToStep('productRandom')">
+                        <i class="fa-solid fa-unlock"></i>
+                        <p>Otros</p>
+                    </div>
+                </div>
+                <button class="btn btn-danger" onclick="goToStep('origin')">Cancelar</button>
+            </div>
+            <div class="step-selector">
+                <p class="text-center">Seleccionar tipo de producto</p>
+            </div>
+        </div>
+        <div id="productRandom" class="step">
+            <div class="step-content">
+                <h2 class="text-center sd-12">Producto Aleatorio</h2>
+                <table>
+                    <tr>
+                        <td>
+                            Nombre del producto/servicio
+                        </td>
+                        <td>
+                            <input type="text" name="nameRandomProduct" id="nameRandomProduct" placeholder="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Precio
+                        </td>
+                        <td>
+                            <input type="number" name="priceRandomProduct" id="priceRandomProduct">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Cantidad
+                        </td>
+                        <td>
+                            <input type="number" name="quantityRandomProduct" id="quantityRandomProduct" value="1">
+                        </td>
+                    </tr>
+                </table>
+                <div class="organizar-botones">
+                    <button class="btn btn-danger" onclick="goToStep('origin')">Cancelar</button>
+                    <button class="btn btn-primary sd-12" onclick="addRandomProduct()">Agregar Producto / Servicio</button>
+                </div>
+                
+                
+            </div>
+            <div class="step-selector">
+                <p class="text-center">Agregar Producto Aleatorio</p>
+            </div>
+        </div>
+        <div id="addCristal" class="step">
+            <div class="step-content">
+                <h2 class="text-center">
+                    Seleccionar Cristal
+                </h2>
+                <table>
+                    <tr>
+                        <td></td>
+                        <td>
+                            Esfera
+                        </td>
+                        <td>
+                            Cilindro
+                        </td>
+                        <td>
+                            Eje
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            OD
+                        </td>
+                        <td>
+                            <input type="number" name="esferaOD" id="esferaOD">
+                        </td>
+                        <td>
+                            <input type="number" name="cilindroOD" id="cilindroOD">
+                        </td>
+                        <td>
+                            <input type="number" name="ejeOD" id="ejeOD">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            OI
+                        </td>
+                        <td>
+                            <input type="number" name="esferaOI" id="esferaOI">
+                        </td>
+                        <td>
+                            <input type="number" name="cilindroOI" id="cilindroOI">
+                        </td>
+                        <td>
+                            <input type="number" name="ejeOI" id="ejeOI">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            DP
+                        </td>
+                        <td>
+                            <input type="number" name="DP" id="DP">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            ADD
+                        </td>
+                        <td>
+                            <input type="number" name="ADD" id="ADD">
+                        </td>
+                    </tr>       
+                </table>
+                <h2 class="text-center sd-12">Seleccionar tipo de cristal</h2>
+                <div id="cristalesBotones" class="organizar-botones sd-12"></div>
+                <table id="tablaVariantesCristales" style="display: none;">
+                    <thead>
+                        <tr>
+                            <th>
+                                Cristal + Variante
+                            </th>
+                            <th>
+                                Precio
+                            </th>
+                            <th>
+                                Seleccionar
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="cristalesVariantes"></tbody>
+                </table>
+                <div class="organizar-botones">
+                    <button class="btn btn-danger" onclick="goToStep('origin')">Cancelar</button>
+                    <button class="btn btn-primary sd-12" onclick="addCristal()">Agregar Cristales</button>
+                </div>
+            </div>
+            <div class="step-selector">
+                <p class="text-center">Agregar Cristales</p>
+            </div>
+        </div>
+        <div id="addMarco" class="step">
+            <div class="step-content">
+                <div class="organizar-botones sd-20">
+                    <div class="center-div">
+                        <h2 class="text-center sd-12">Seleccionar Marca del Marco</h2>
+                        <select name="marco" id="selectMarco">
+                            <option value="-1">Seleccione una marca</option>
+                        </select>
+                    </div>
+                    <div class="center-div">
+                        <h2 class="text-center sd-12">Seleccionar Modelo</h2>
+                        <select name="modelo" id="selectModelo">
+                            <option value="-1">Seleccione un modelo</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="organizar-botones">
+                    <button class="btn btn-danger" onclick="goToStep('origin')">Cancelar</button>
+                    <button class="btn btn-primary sd-12" onclick="addMarco()">Agregar Marco</button>
+                </div>
+            </div>
+            <div class="step-selector">
+                <p class="text-center">Seleccionar Marco</p>
+            </div>
+        </div>
+        <div id="addLente" class="step">
+            <div class="step-content">
+                <h2 class="text-center sd-12">Agregar Cristales al lente</h2>
+                <table>
+                    <tr>
+                        <td></td>
+                        <td>
+                            Esfera
+                        </td>
+                        <td>
+                            Cilindro
+                        </td>
+                        <td>
+                            Eje
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            OD
+                        </td>
+                        <td>
+                            <input type="number" name="esferaODL" id="esferaODL">
+                        </td>
+                        <td>
+                            <input type="number" name="cilindroODL" id="cilindroODL">
+                        </td>
+                        <td>
+                            <input type="number" name="ejeODL" id="ejeODL">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            OI
+                        </td>
+                        <td>
+                            <input type="number" name="esferaOIL" id="esferaOIL">
+                        </td>
+                        <td>
+                            <input type="number" name="cilindroOIL" id="cilindroOIL">
+                        </td>
+                        <td>
+                            <input type="number" name="ejeOIL" id="ejeOIL">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            DP
+                        </td>
+                        <td>
+                            <input type="number" name="DPL" id="DPL">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            ADD
+                        </td>
+                        <td>
+                            <input type="number" name="ADDL" id="ADDL">
+                        </td>
+                    </tr>       
+                </table>
+                <h2 class="text-center sd-12">Seleccionar tipo de cristal</h2>
+                <div id="cristalesBotonesL" class="organizar-botones sd-12"></div>
+                <table id="tablaVariantesCristalesL" style="display: none;">
+                    <thead>
+                        <tr>
+                            <th>
+                                Cristal + Variante
+                            </th>
+                            <th>
+                                Precio
+                            </th>
+                            <th>
+                                Seleccionar
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="cristalesVariantesL"></tbody>
+                </table>
+                <div class="organizar-botones">
+                    <button class="btn btn-danger" onclick="goToStep('origin')">Cancelar</button>
+                    <button class="btn btn-secondary sd-12" onclick="checkGlass()">Agregar Marco</button>
+                </div>
+            </div>
+            <div class="step-selector">
+                <p class="text-center">Agregar Cristales al marco</p>
+            </div>
+        </div>
+        <div id="step6" class="step">
+            <div class="step-content">
+                <h2 class="text-center sd-12">Resumen de la cotización</h2>
+                <div id="contenidoResumen"></div>
+                <div class="acciones" id="accionesStep6">
+                    <button onclick="generarImagenCotizacion()" class="btn green-button">Guardar Como Imagen</button>
+                    <button id="btnGuardarCotizacion" onclick="guardarCotización()" class="btn blue-button">Guardar Cotización</button>
+                </div>
+                <div class="step-choose">
+                    <div id="multipleSteps2"></div>
+                </div>
+            </div>
+            <div class="step-selector">
+                <p class="text-center">Paso 6 de 6</p>
+            </div>
+        </div>
+    </form>
+</body>
+<script src="http://localhost:3001/scripts/logic/html2canvas.min.js"></script>
+<script src="http://localhost:3001/scripts/apis/productos.js"></script>
+<script src="http://localhost:3001/scripts/apis/clientes.js"></script>
+<script src="http://localhost:3001/scripts/apis/empresa.js"></script>
+<script src="http://localhost:3001/scripts/apis/cotizaciones.js"></script>
+<script src="http://localhost:3001/scripts/apis/Cristales.js"></script>
+<script src="http://localhost:3001/scripts/apis/marcos.js"></script>
+<script src="http://localhost:3001/scripts/apis/logo.js"></script>
+<script src="http://localhost:3001/scripts/apis/unidadMedida.js"></script>
+<script src="http://localhost:3001/vista/ventas/scripts/main-ventas.js" defer></script>
+<script src="http://localhost:3001/vista/ventas/scripts/steps-logic.js" defer></script>
+<script src="http://localhost:3001/vista/ventas/scripts/user-logic.js" defer></script>
+<script src="http://localhost:3001/vista/ventas/scripts/products-logic.js" defer></script>
+<script src="http://localhost:3001/vista/ventas/scripts/complete-glasses.js" defer></script>
+</html>

@@ -386,14 +386,14 @@ module.exports = function (server, userDataPath, actualizarCristalesWebSocket) {
     
             // Crear cilindros con esferas y precios asociados
             const cilindros = [];
-            for (let i = 2; i <= 20; i++) {
+            for (let i = 2; i <= 20; i += 2) {
                 const cilindro = {
                     cilindro: i,
                     esferas: []
                 };
     
                 // Crear esferas para cada cilindro, con precios por variante
-                for (let j = 2; j <= 20; j++) {
+                for (let j = 2; j <= 20; j += 2) {
                     const esfera = {
                         esfera: j,
                         precios: nuevoCristal.variantes.map((variante) => ({
