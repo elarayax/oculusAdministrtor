@@ -55,4 +55,9 @@ function goToStep(id){
         document.getElementById(id).classList.add("actual-step");
         getMetodosPago();
     }
+
+    if(id == "final"){
+        document.getElementById(id).classList.add("actual-step");
+        final();
+    }
 }

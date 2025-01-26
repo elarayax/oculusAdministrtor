@@ -22,6 +22,8 @@ function goTo(go) {
     }
     else if(go == "crearVenta"){
         window.location.href = "vista/ventas/crear-venta.html"
+    }else if(go == "verVentas"){
+        window.location.href = "vista/ventas/ver-ventas.html"
     }
     else if(go == "verCotizaciones"){
         window.location.href = "vista/cotizaciones/ver-cotizaciones.html"

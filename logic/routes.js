@@ -61,6 +61,14 @@ function setupRoutes(server,baseDir) {
         res.sendFile(path.join(baseDir, 'public', 'vista', 'promociones', 'descuentos.html'));
     });
 
+    server.get('/vista/ventas/crear-venta.html', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'ventas', 'crear-venta.html'));
+    });
+
+    server.get('/vista/ventas/ver-ventas.html', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'ventas', 'ver-ventas.html'));
+    });
+
     server.get('/scripts/logic/index.js', (req, res) => {
         res.sendFile(path.join(baseDir, 'public', 'scripts', 'logic', 'index.js'));
     });
@@ -95,6 +103,10 @@ function setupRoutes(server,baseDir) {
 
     server.get('/scripts/apis/cotizaciones.js', (req, res) => {
         res.sendFile(path.join(baseDir, 'public', 'scripts', 'apis', 'cotizaciones.js'));
+    });
+
+    server.get('/scripts/apis/ventas.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'scripts', 'apis', 'ventas.js'));
     });
 
     server.get('/scripts/apis/logo.js', (req, res) => {
@@ -181,6 +193,38 @@ function setupRoutes(server,baseDir) {
         res.sendFile(path.join(baseDir, 'public', 'vista', 'promociones', 'scripts', 'listarConvenios.js'));
     });
 
+    server.get('/vista/ventas/scripts/final.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'ventas', 'scripts', 'final.js'));
+    });
+
+    server.get('/vista/ventas/scripts/complete-glasses.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'ventas', 'scripts', 'complete-glasses.js'));
+    });
+
+    server.get('/vista/ventas/scripts/main-ventas.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'ventas', 'scripts', 'main-ventas.js'));
+    });
+
+    server.get('/vista/ventas/scripts/payment.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'ventas', 'scripts', 'payment.js'));
+    });
+
+    server.get('/vista/ventas/scripts/products-logic.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'ventas', 'scripts', 'products-logic.js'));
+    });
+
+    server.get('/vista/ventas/scripts/steps-logic.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'ventas', 'scripts', 'steps-logic.js'));
+    });
+
+    server.get('/vista/ventas/scripts/user-logic.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'ventas', 'scripts', 'user-logic.js'));
+    });
+
+    server.get('/vista/ventas/scripts/ver-ventas.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'ventas', 'scripts', 'ver-ventas.js'));
+    });
+
     server.get('/estilos/global.css', (req, res) => {
         res.sendFile(path.join(baseDir, 'public', 'estilos', 'global.css'));
     });
@@ -203,6 +247,126 @@ function setupRoutes(server,baseDir) {
 
     server.get('/estilos/pop-up.css', (req, res) => {
         res.sendFile(path.join(baseDir, 'public', 'estilos', 'pop-up.css'));
+    });
+
+    server.get('/estilos/calugas.css', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'calugas.css'));
+    });
+
+    server.get('/estilos/calugas.css', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'calugas.css'));
+    });
+
+    server.get('/estilos/fontawesome/css/all.css', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'fontawesome', 'css', 'all.css'));
+    });
+
+    server.get('/estilos/fontawesome/css/all.min.css', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'fontawesome', 'css', 'all.min.css'));
+    });
+
+    server.get('/estilos/fontawesome/css/brands.css', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'fontawesome', 'css', 'brands.css'));
+    });
+
+    server.get('/estilos/fontawesome/css/brands.min.css', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'fontawesome', 'css', 'brands.min.css'));
+    });
+
+    server.get('/estilos/fontawesome/css/fontawesome.css', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'fontawesome', 'css', 'fontawesome.css'));
+    });
+
+    server.get('/estilos/fontawesome/css/fontawesome.min.css', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'fontawesome', 'css', 'fontawesome.min.css'));
+    });
+
+    server.get('/estilos/fontawesome/css/regular.css', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'fontawesome', 'css', 'regular.css'));
+    });
+
+    server.get('/estilos/fontawesome/css/regular.min.css', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'fontawesome', 'css', 'regular.min.css'));
+    });
+
+    server.get('/estilos/fontawesome/css/solid.css', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'fontawesome', 'css', 'solid.css'));
+    });
+
+    server.get('/estilos/fontawesome/css/solid.min.css', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'fontawesome', 'css', 'solid.min.css'));
+    });
+
+    server.get('/estilos/fontawesome/css/svg-with-js.css', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'fontawesome', 'css', 'svg-with-js.css'));
+    });
+
+    server.get('/estilos/fontawesome/css/svg-with-js.min.css', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'fontawesome', 'css', 'svg-with-js.min.css'));
+    });
+
+    server.get('/estilos/fontawesome/css/v4-font-face.css', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'fontawesome', 'css', 'v4-font-face.css'));
+    });
+
+    server.get('/estilos/fontawesome/css/v4-font-face.min.css', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'fontawesome', 'css', 'v4-font-face.min.css'));
+    });
+
+    server.get('/estilos/fontawesome/css/v4-shims.css', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'fontawesome', 'css', 'v4-shims.css'));
+    });
+
+    server.get('/estilos/fontawesome/css/v4-shims.min.css', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'fontawesome', 'css', 'v4-shims.min.css'));
+    });
+
+    server.get('/estilos/fontawesome/css/v5-font-face.css', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'fontawesome', 'css', 'v5-font-face.css'));
+    });
+
+    server.get('/estilos/fontawesome/css/v5-font-face.min.css', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'fontawesome', 'css', 'v5-font-face.min.css'));
+    });
+
+    server.get('/estilos/fontawesome/webfonts/fa-brands-400.ttf', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'fontawesome', 'webfonts', 'fa-brands-400.ttf'));
+    });
+
+    server.get('/estilos/fontawesome/webfonts/fa-regular-400.ttf', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'fontawesome', 'webfonts', 'fa-regular-400.ttf'));
+    });
+
+    server.get('/estilos/fontawesome/webfonts/fa-solid-400.ttf', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'fontawesome', 'webfonts', 'fa-solid-400.ttf'));
+    });
+
+    server.get('/estilos/fontawesome/webfonts/fa-solid-900.ttf', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'fontawesome', 'webfonts', 'fa-solid-900.ttf'));
+    });
+
+    server.get('/estilos/fontawesome/webfonts/fa-v4compatibility.ttf', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'fontawesome', 'webfonts', 'fa-v4compatibility.ttf'));
+    });
+
+    server.get('/estilos/fontawesome/webfonts/fa-brands-400.woff2', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'fontawesome', 'webfonts', 'fa-brands-400.woff2'));
+    });
+
+    server.get('/estilos/fontawesome/webfonts/fa-regular-400.woff2', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'fontawesome', 'webfonts', 'fa-regular-400.woff2'));
+    });
+
+    server.get('/estilos/fontawesome/webfonts/fa-solid-400.woff2', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'fontawesome', 'webfonts', 'fa-solid-400.woff2'));
+    });
+
+    server.get('/estilos/fontawesome/webfonts/fa-solid-900.woff2', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'fontawesome', 'webfonts', 'fa-solid-900.woff2'));
+    });
+
+    server.get('/estilos/fontawesome/webfonts/fa-v4compatibility.woff2', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'fontawesome', 'webfonts', 'fa-v4compatibility.ttf'));
     });
 }
 

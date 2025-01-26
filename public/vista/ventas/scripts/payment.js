@@ -126,7 +126,7 @@ document.getElementById("btnAbonarVenta").addEventListener("click", (event) => {
     btnGuardar.addEventListener("click", () => {
         const montoAbono = parseFloat(inputAbono.value);
 
-        if (!isNaN(montoAbono) && montoAbono > 0) {
+        if (!isNaN(montoAbono)) {
             // Verificar que el abono no exceda el monto pendiente
             const pendiente = venta.total - venta.abonos;
             if (montoAbono > pendiente) {

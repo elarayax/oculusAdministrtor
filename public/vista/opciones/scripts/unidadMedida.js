@@ -104,4 +104,4 @@ async function eliminarUnidadMedida(nombre, id) {
 }
 
 
-listarUnidadesMedida();
+//listarUnidadesMedida();

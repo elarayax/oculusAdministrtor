@@ -13,6 +13,7 @@ const metodosPagoRoutes = require('./apis/metodosPagoRoutes');
 const marcosRoutes = require('./apis/marcosRoutes');
 const conveniosRoutes = require('./apis/conveniosRoutes');
 const whastsappMessagesRoutes = require('./apis/whatsappMessagesRoutes');
+const ventasRoutes = require('./apis/ventasRoutes');
 
 function setupAppRoutes(server, baseDir, userDataPath, actualizarClientesWebSocket) {
     setupRoutes(server, baseDir);
@@ -29,6 +30,7 @@ function setupAppRoutes(server, baseDir, userDataPath, actualizarClientesWebSock
     marcosRoutes(server, userDataPath, actualizarClientesWebSocket);
     conveniosRoutes(server, userDataPath, actualizarClientesWebSocket);
     whastsappMessagesRoutes(server);
+    ventasRoutes(server, userDataPath, actualizarClientesWebSocket);
 }
 
 module.exports = setupAppRoutes;

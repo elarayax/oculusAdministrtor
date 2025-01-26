@@ -1,4 +1,4 @@
-cargarMonedas();
+//cargarMonedas();
 
 async function cargarMonedas(){
     const monedas = await obtenerMonedas();

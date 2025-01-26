@@ -8,11 +8,11 @@
     <link rel="stylesheet" href="http://localhost:3001/estilos/botones.css">
     <link rel="stylesheet" href="http://localhost:3001/estilos/calugas.css">
     <link href="http://localhost:3001/estilos/fontawesome/css/fontawesome.css" rel="stylesheet" />
-    <link href="http://localhost:3001/estilos/fontawesome/css/brands.css" rel="stylesheet" />
+   <!--<link href="http://localhost:3001/estilos/fontawesome/css/brands.css" rel="stylesheet" />-->
     <link href="http://localhost:3001/estilos/fontawesome/css/solid.css" rel="stylesheet" />
-    <link href="http://localhost:3001/estilos/fontawesome/css/sharp-thin.css" rel="stylesheet" />
+    <!--<link href="http://localhost:3001/estilos/fontawesome/css/sharp-thin.css" rel="stylesheet" />
     <link href="http://localhost:3001/estilos/fontawesome/css/duotone-thin.css" rel="stylesheet" />
-    <link href="http://localhost:3001/estilos/fontawesome/css/sharp-duotone-thin.css" rel="stylesheet" />
+    <link href="http://localhost:3001/estilos/fontawesome/css/sharp-duotone-thin.css" rel="stylesheet" />-->
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>-->
     <style>
         .sugerencias {
@@ -563,7 +563,47 @@
             <div class="step-selector">
                 <p class="text-center">Métodos de pago</p>
             </div>
-        </div>        
+        </div>    
+        <div id="final" class="step">
+            <div class="step-content">
+                <h2 class="text-center sd-12">Finalizar venta</h2>
+                <div id="ventaTotal">
+                    <h3 class="text-left sd-12">Datos del cliente</h3>
+                    <table id="tablaDatosUsuarioFinal" class="sd-12"></table>
+                    <h3 class="text-left sd-12">Detalle de la venta</h3>
+                    <table class="sd-12">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                            </tr>
+                        </thead>
+                        <tbody id="detalleVentaFinal"></tbody>
+                    </table>
+                    <table id="tablaDatosPago"></table>
+                    <table>
+                        <tr>
+                            <td><b>Estado de la venta</b></td>
+                            <td>
+                                <select name="estadoVenta" id="selectEstadoVenta">
+                                    <option value="Generada">Generada</option>
+                                    <option value="Fabricando">Fabricando</option>
+                                    <option value="Finalizada">Finalizada</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="organizar-botones">
+                    <button class="btn btn-secondary" onclick="goToStep('origin')">Volver</button>
+                    <button class="btn btn-primary sd-12" onclick="guardarVenta()">Generar Venta</button>
+                </div>
+            </div>
+            <div class="step-selector">
+                <p class="text-center">Finalizar venta</p>
+            </div>
+        </div>    
         <div id="step6" class="step">
             <div class="step-content">
                 <h2 class="text-center sd-12">Resumen de la cotización</h2>
@@ -592,6 +632,8 @@
 <script src="http://localhost:3001/scripts/apis/marcos.js"></script>
 <script src="http://localhost:3001/scripts/apis/logo.js"></script>
 <script src="http://localhost:3001/scripts/apis/unidadMedida.js"></script>
+<script src="http://localhost:3001/scripts/apis/ventas.js"></script>
+<script src="http://localhost:3001/scripts/apis/whatsappMessages.js"></script>
 <script src="http://localhost:3001/vista/ventas/scripts/main-ventas.js" defer></script>
 <script src="http://localhost:3001/vista/ventas/scripts/steps-logic.js" defer></script>
 <script src="http://localhost:3001/vista/ventas/scripts/user-logic.js" defer></script>

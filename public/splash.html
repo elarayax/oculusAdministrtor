@@ -54,6 +54,14 @@
         <p>
             Un Software desarrollado por Flamen
         </p>
+        <h1 id="status">Comprobando actualizaciones...</h1>
     </div>
+    <script>
+        const { ipcRenderer } = require('electron');
+
+        ipcRenderer.on('update-status', (event, status) => {
+            document.getElementById('status').innerText = status;
+        });
+    </script>
 </body>
 </html>

@@ -5,10 +5,8 @@ const path = require('path');
 const os = require('os');
 const WebSocket = require('ws');
 const cors = require('cors');
-const { autoUpdater } = require('electron-updater');
 const setupAppRoutes = require('./logic/serverRoutes'); 
-const { jsPDF } = require('jspdf');
-const PDFDocument = require('pdfkit');
+const { autoUpdater } = require('electron-updater');
 
 const server = express();
 const PORT = 3001;
@@ -36,6 +34,7 @@ function initializeUserData() {
         { fileName: 'metodosPago.json', source: path.join(__dirname, 'data', 'metodosPago.json') },
         { fileName: 'marcos.json', source: path.join(__dirname, 'data', 'marcos.json') },
         { fileName: 'convenios.json', source: path.join(__dirname, 'data', 'convenios.json') },
+        { fileName: 'ventas.json', source: path.join(__dirname, 'data', 'ventas.json') },
     ];
 
     filesToCopy.forEach(({ fileName, source }) => {
@@ -123,6 +122,8 @@ function createSplashScreen() {
 
     splash.loadURL(`http://localhost:3001/splash.html`);
 
+    checkForUpdates();
+
     return splash;
 }
 
@@ -171,4 +172,43 @@ wss.on('connection', (ws, request) => {
     ws.on('close', () => {
         console.log('Cliente desconectado');
     });
+});
+
+autoUpdater.setFeedURL({
+    provider: 'github',
+    repo: 'nombre_del_repo',
+    owner: 'nombre_del_usuario',
+});
+
+function checkForUpdates() {
+    // Inicia la búsqueda de actualizaciones
+    autoUpdater.checkForUpdatesAndNotify();
+}
+
+// Evento de notificación de actualización disponible
+autoUpdater.on('update-available', (info) => {
+    console.log('Actualización disponible:', info);
+    splash.webContents.send('update-status', 'Actualización disponible');
+});
+
+// Evento de notificación de actualización descargada
+autoUpdater.on('update-downloaded', (info) => {
+    console.log('Actualización descargada:', info);
+    splash.webContents.send('update-status', 'Actualización descargada. Reinicie para aplicar.');
+    setTimeout(() => {
+        splash.close(); // Cierra el splash después de unos segundos
+        const mainWindow = createWindow(); // Abre la ventana principal
+    }, 5000); // Espera 5 segundos antes de cerrar el splash
+});
+
+// Evento cuando no hay actualizaciones disponibles
+autoUpdater.on('update-not-available', () => {
+    console.log('No hay actualizaciones disponibles');
+    splash.webContents.send('update-status', 'No hay actualizaciones disponibles');
+});
+
+// Manejo de errores
+autoUpdater.on('error', (err) => {
+    console.error('Error en la actualización:', err);
+    splash.webContents.send('update-status', 'Error al comprobar actualizaciones');
 });

@@ -624,6 +624,7 @@ async function guardarCotización(){
         cliente: clienteGlobal,
         cristales: lenteGlobal.cristales,
         marco: marcoGlobal,
+        fecha: new Date().toLocaleDateString()
     }
 
     try{

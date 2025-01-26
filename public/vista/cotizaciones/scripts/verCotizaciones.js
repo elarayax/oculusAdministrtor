@@ -127,7 +127,6 @@ function crearBoton(texto, pagina) {
 
 function cambiarPagina(nuevaPagina) {
     paginaActual = nuevaPagina;
-
     // Aplica el filtro actual para actualizar la tabla
     aplicarFiltros();
 }

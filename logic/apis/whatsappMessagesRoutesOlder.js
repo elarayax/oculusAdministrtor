@@ -42,8 +42,21 @@ client.on('qr', (qr) => {
         }
         qrCodeData = url.split(',')[1]; // Base64 del QR
 
-        // Solo se registra el QR
-        console.log('QR generado: ', qrCodeData);
+        // Verifica si el WebSocket server está listo para emitir
+        if (server && server.clients) {
+            server.clients.forEach((wsClient) => {
+                if (wsClient.readyState === WebSocket.OPEN) {
+                    wsClient.send(
+                        JSON.stringify({
+                            type: 'qr',
+                            data: qrCodeData,
+                        })
+                    );
+                }
+            });
+        }
+
+        console.log('QR emitido por WebSocket');
     });
 });
 
