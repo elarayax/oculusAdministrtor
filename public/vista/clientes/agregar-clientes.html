@@ -6,6 +6,7 @@
     <title>Oculus Administrator - Agregar Cliente</title>
     <link rel="stylesheet" href="http://localhost:3001/estilos/global.css">
     <link rel="stylesheet" href="http://localhost:3001/estilos/botones.css">
+    <link rel="stylesheet" href="http://localhost:3001/estilos/mensajes.css">
     <style>
         .hidden {
             display: none;
@@ -36,19 +37,29 @@
                 <td><input type="text" id="rutPersona" required></td>
             </tr>
             <tr>
-                <td><label for="correoPersona">Correo:</label></td>
-                <td><input type="email" id="correoPersona" required></td>
+                <td><label for="correoPersona">Correo: (opcional)</label></td>
+                <td><input type="email" id="correoPersona"></td>
             </tr>
             <tr>
                 <td><label for="telefonoPersona">Teléfono:</label></td>
-                <td>56<input type="tel" id="telefonoPersona" required></td>
+                <td style="
+                display: flex;
+                align-items: center;
+                gap: 20px;
+            ">56<input type="tel" id="telefonoPersona" required></td>
+            </tr>
+            <tr>
+                <td><label for="direccionPersona">Dirección: (opcional)</label></td>
+                <td><input type="text" id="direccionPersona"></td>
             </tr>
             <tr>
                 <td colspan="2" class="text-center"><button type="submit" class="btn btn-primary">Agregar Cliente</button></td>
             </tr>
         </table>
     </form>
+    <div id="mensaje-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
 </body>
 <script src="http://localhost:3001/scripts/apis/clientes.js"></script>
+<script src="http://localhost:3001/scripts/logic/mensajes.js"></script>
 <script src="http://localhost:3001/vista/clientes/scripts/agregarCliente.js"></script>
 </html>

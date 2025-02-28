@@ -14,6 +14,7 @@ function loadCristals(cristales){
     const btnCristales = document.createElement("button");
     btnCristales.innerHTML = "Administrar cristales";
     btnCristales.classList.add("btn", "btn-primary");
+    btnCristales.onclick = function(){abrirModalCristales()}
     divCristales.appendChild(btnCristales);
     
     cristales.forEach(cristal => {
@@ -45,6 +46,7 @@ function loadCristals(cristales){
         btnAgregarVariante.addEventListener("click", () => {
             // Muestra el popup de agregar variante
             document.getElementById("popupAgregarVariante").style.display = "flex";
+            document.getElementById("nombreVariante").focus();
             // Guardamos el id del cristal al que se le quiere agregar la variante
             selectedCristalId = cristal.idCristal;
         });
@@ -86,7 +88,7 @@ function loadCristals(cristales){
                         // Guardar los cambios de edición
                         const nuevoNombre = inputNombreVariante.value.trim();
                         if (nuevoNombre === "") {
-                            alert("El nombre de la variante no puede estar vacío.");
+                            generarMensaje("red", "El nombre de la variante no puede estar vacío");
                             inputNombreVariante.focus();
                             return;
                         }
@@ -101,11 +103,11 @@ function loadCristals(cristales){
                             btnEditarVariante.innerText = "Editar";
                             btnEditarVariante.classList.remove("btn-primary");
                             btnEditarVariante.classList.add("btn-secondary");
-                            alert("Variante actualizada con éxito.");
+                            generarMensaje("green", "Variante actualizada con éxito");
                             cargarCristales();
 
                         } catch (error) {
-                            alert("Error al actualizar la variante: " + error.message);
+                            generarMensaje("red", `Error al actualizar la variante: ${error.message}`);
                         }
                     }
                 });
@@ -114,7 +116,13 @@ function loadCristals(cristales){
                 const btnEliminarVariante = document.createElement("button");
                 btnEliminarVariante.innerHTML = "Eliminar";
                 btnEliminarVariante.classList.add("btn", "btn-danger");
-                btnEliminarVariante.onclick = () => eliminandoVariante(cristal.idCristal, variante.idVariante, variante.nombreVariante);
+                btnEliminarVariante.onclick = () => {
+                    // Eliminar la variante del array antes de llamar a la función
+                    cristal.variantes = cristal.variantes.filter(v => v.idVariante !== variante.idVariante);
+                
+                    // Llamar a la función pasando el objeto ya modificado
+                    eliminandoVariante(cristal.idCristal, variante.idVariante, variante.nombreVariante, cristal);
+                };
                 nombreListaVariantes.appendChild(inputNombreVariante);
                 editarVariante.appendChild(btnEditarVariante);
                 eliminarVariante.appendChild(btnEliminarVariante);
@@ -237,7 +245,7 @@ function loadCristals(cristales){
                 let idTabla = `${cristal.idCristal}-${cilindros.cilindro}`;
                 const esferasActualizadas = obtenerDatosEsferas(idTabla); // Función que recoge los datos actualizados de las esferas
                 await guardarCilindro(cristal.idCristal, cilindros.cilindro, esferasActualizadas);
-                alert("Datos guardados con exito")
+                generarMensaje("green", `Datos guardados con exito`);
                 cargarCristales(); // Recargar la vista después de guardar
             });
 
@@ -293,28 +301,110 @@ function loadCristals(cristales){
         try{
             agregarCilindroBack(mineral);
         }catch(error){
-            alert("no se pudo agregar cilindro");
+            generarMensaje("red", "no se pudo agregar cilindro");
         }
     }
 
-    async function eliminandoVariante(idCristal, idVariante, nombreVariante) {
-        const confirmacion = confirm(`¿Estás seguro de que deseas eliminar la variante "${nombreVariante}"?`);
-        if (confirmacion) {
-            try {
-                const resultado = await eliminarVariante(idCristal, idVariante);
-                if (resultado) {
-                    console.log(`La variante "${nombreVariante}" fue eliminada exitosamente.`);
-                    // Aquí puedes agregar lógica adicional, como actualizar la interfaz de usuario
-                    cargarCristales();
+    async function eliminandoVariante(idCristal, idVariante, nombreVariante, cristalFull) {
+        abrirModalEliminar(
+            nombreVariante,
+            "variante de cristal",
+            eliminarVariante,
+            () => {
+                cargarCristales(); // Recarga los cristales
+                cargarListadoVariantes(cristalFull); // Refresca el listado del popup
+            },
+            idCristal,
+            idVariante
+        );
+    }
+    
+
+    function cargarListadoVariantes(cristalFull){
+        const divVariantes = document.getElementById("variantesCristales");
+        divVariantes.innerHTML = "";
+        divVariantes.style.display = "flex";
+        const divVariantesPrimero = document.createElement("div");
+        divVariantesPrimero.classList.add("popup-content");
+
+        const listaVariantes = document.createElement("table");
+        cristalFull.variantes.forEach(variante => {
+            const liListaVariantes = document.createElement("tr");
+            const nombreListaVariantes = document.createElement("td");
+            const inputNombreVariante = document.createElement("input");
+            inputNombreVariante.type = "text";
+            inputNombreVariante.value = variante.nombreVariante;
+            inputNombreVariante.disabled = true;
+            const editarVariante = document.createElement("td");
+            const btnEditarVariante = document.createElement("button");
+            btnEditarVariante.innerHTML = "Editar";
+            btnEditarVariante.classList.add("btn", "btn-secondary");
+            btnEditarVariante.addEventListener("click", async () => {
+                if (inputNombreVariante.disabled) {
+                    // Habilitar el campo de texto para edición
+                    inputNombreVariante.disabled = false;
+                    inputNombreVariante.focus();
+                    btnEditarVariante.innerText = "Actualizar";
+                    btnEditarVariante.classList.remove("btn-secondary");
+                    btnEditarVariante.classList.add("btn-primary");
                 } else {
-                    console.error('No se pudo eliminar la variante.');
+                    // Guardar los cambios de edición
+                    const nuevoNombre = inputNombreVariante.value.trim();
+                    if (nuevoNombre === "") {
+                        generarMensaje("red", "El nombre de la variante no puede estar vacío");
+                        inputNombreVariante.focus();
+                        return;
+                    }
+            
+                    try {
+                        // Llamada al backend para actualizar el nombre de la variante
+                        await actualizarVariante(cristal.idCristal, variante.idVariante, nuevoNombre);
+            
+                        // Actualizar la interfaz
+                        variante.nombreVariante = nuevoNombre;
+                        inputNombreVariante.disabled = true;
+                        btnEditarVariante.innerText = "Editar";
+                        btnEditarVariante.classList.remove("btn-primary");
+                        btnEditarVariante.classList.add("btn-secondary");
+                        generarMensaje("green", "Variante actualizada con éxito");
+                        cargarCristales();
+
+                    } catch (error) {
+                        generarMensaje("red", `Error al actualizar la variante: ${error.message}`);
+                    }
                 }
-            } catch (error) {
-                console.error('Ocurrió un error al intentar eliminar la variante:', error);
-            }
-        } else {
-            console.log('Eliminación cancelada por el usuario.');
-        }
+            });
+
+            const eliminarVariante = document.createElement("td");
+            const btnEliminarVariante = document.createElement("button");
+            btnEliminarVariante.innerHTML = "Eliminar";
+            btnEliminarVariante.classList.add("btn", "btn-danger");
+            btnEliminarVariante.onclick = () => eliminandoVariante(cristal.idCristal, variante.idVariante, variante.nombreVariante);
+            nombreListaVariantes.appendChild(inputNombreVariante);
+            editarVariante.appendChild(btnEditarVariante);
+            eliminarVariante.appendChild(btnEliminarVariante);
+            liListaVariantes.appendChild(nombreListaVariantes);
+            liListaVariantes.appendChild(editarVariante);
+            liListaVariantes.appendChild(eliminarVariante);
+            listaVariantes.appendChild(liListaVariantes);
+            
+        });
+
+        divVariantesPrimero.appendChild(listaVariantes);
+        const buttonCerrar =  document.createElement("button");
+        buttonCerrar.innerHTML = "Cerrar";
+        buttonCerrar.classList.add("btn", "btn-secondary");
+        buttonCerrar.id = "cerrarPopupVariantes";
+        buttonCerrar.addEventListener("click", () => {
+            document.getElementById("variantesCristales").style.display = "none";
+        });
+        divVariantesPrimero.appendChild(buttonCerrar);
+        divVariantes.appendChild(divVariantesPrimero);
+        // Muestra el popup de agregar variante
+        document.getElementById("variantesCristales").style.display = "flex";
+
+        // Guardamos el id del cristal al que se le quiere agregar la variante
+        selectedCristalId = cristalFull.idCristal;
     }
     
 }
@@ -339,14 +429,14 @@ document.getElementById("guardarVarianteBtn").addEventListener("click", async ()
         });
 
         if (response.ok) {
-            alert('Variante agregada con éxito');
+            generarMensaje("green", "Variante agregada con éxito");
             cargarCristales(); // Recargar los cristales después de agregar la variante
             document.getElementById("popupAgregarVariante").style.display = "none"; // Cerrar el popup
         } else {
-            alert('Error al agregar la variante');
+            generarMensaje("red", "Error al agregar la variante");
         }
     } else {
-        alert('Por favor, ingresa un nombre para la variante');
+        generarMensaje("red", "Por favor, ingresa un nombre para la variante");
     }
 });
 
@@ -358,6 +448,7 @@ document.getElementById("cerrarPopup").addEventListener("click", () => {
 // Función para mostrar el formulario de agregar cristal
 document.getElementById("btnAgregarCristal").addEventListener("click", () => {
     document.getElementById("popupAgregarCristal").style.display = "flex";
+    document.getElementById("nombreCristal").focus();
 });
 
 // Función para cerrar el formulario sin guardar
@@ -369,7 +460,7 @@ document.getElementById("guardarCristalBtn").addEventListener("click", async () 
     const nombreCristal = document.getElementById("nombreCristal").value;
 
     if (nombreCristal.trim() === "") {
-        alert("El nombre del cristal no puede estar vacío.");
+        generarMensaje("red", "El nombre del cristal no puede estar vacío.");
         return;
     }
 
@@ -378,36 +469,45 @@ document.getElementById("guardarCristalBtn").addEventListener("click", async () 
         const resultado = await agregarCristal({ nombreCristal });
 
         if (resultado) {
-            alert("Cristal agregado exitosamente.");
+            generarMensaje("green", "Cristal agregado exitosamente.");
             // Cerrar el popup
             document.getElementById("popupAgregarCristal").style.display = "none";
             // Recargar la lista de cristales
             cargarCristales();
         } else {
-            alert("Hubo un error al agregar el cristal.");
+            generarMensaje("red", "Hubo un error al agregar el cristal.");
         }
     } catch (error) {
-        alert("Error al agregar el cristal: " + error.message);
+        generarMensaje("red", "Error al agregar el cristal: " + error.message);
     }
 });
 
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("DOM cargado");
     const toggles = document.querySelectorAll(".toggle-cristal");
 
     toggles.forEach(toggle => {
-        console.log("Se encontró un toggle");
         toggle.addEventListener("click", () => {
-            console.log("Toggle clickeado");
             const contenido = toggle.nextElementSibling;
             if (contenido) {
                 contenido.classList.toggle("active");
-                console.log("Clase activa alternada");
-            } else {
-                console.log("No se encontró el siguiente hermano");
             }
         });
     });
 });
+
+function abrirModalCristales(){
+    let textoTitulo = "Administrar Cristales";
+
+    let arrayObjetos = [];
+
+    cristalesTotales.forEach(cristal => {
+        let objeto = {
+            id: cristal.idCristal,
+            nombreCristal: cristal.nombreCristal
+        }
+        arrayObjetos.push(objeto);
+    });
+    modalStandarLista(textoTitulo, arrayObjetos,eliminarCristal, editarCristal,cargarCristales);
+}

@@ -6,6 +6,8 @@
     <title>Taxatio - Configuración general</title>
     <link rel="stylesheet" href="http://localhost:3001/estilos/global.css">
     <link rel="stylesheet" href="http://localhost:3001/estilos/botones.css">
+    <link rel="stylesheet" href="http://localhost:3001/estilos/mensajes.css">
+    <link rel="stylesheet" href="http://localhost:3001/estilos/modal-eliminar.css">
     <style>
         /* CSS adicional para los desplegables */
         .desplegable .contenido {
@@ -14,12 +16,20 @@
         }
         .desplegable.abierto .contenido {
             display: block; /* Mostrar cuando esté abierto */
+            width: 80%;
         }
         .desplegable h2 {
             cursor: pointer; /* Mostrar que es interactivo */
             background-color: #f0f0f0;
             padding: 10px;
             border-radius: 5px;
+            width: 100%;
+        }
+
+        .desplegable.abierto {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
     </style>
 </head>
@@ -136,14 +146,128 @@
             </div>
         </div>
 
-        <!-- Whatsapp -->
         <div class="desplegable sd-16">
+            <h2 class="text-center">Vendedores</h2>
+            <div class="contenido">
+                <p class="text-center">Agregrar nuevo vendedor</p>
+                <table>
+                    <tr>
+                        <td class="text-center">
+                            <label for="nombreVendedor">Nombre del vendedor</label>
+                            <input type="text" name="nombreVendedor" id="nombreVendedor">
+                        </td>
+                        <td>
+                            <button class="btn btn-primary" onclick="agregarVendedorFront()">Agregar Vendedor</button>
+                        </td>
+                    </tr>
+                </table>
+                <p class="text-center">Listado de vendedores</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listadoVendedores"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="desplegable sd-16">
+            <h2 class="text-center">Boleta</h2>
+            <div class="contenido">
+                <p class="text-center"></p>
+                <table>
+                    <tr>
+                        <td colspan="2" class="text-center">
+                            <b>Texto personalizado que va al final</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Titulo</b></td>
+                        <td>
+                            <input type="text" name="tituloBoleta" id="tituloBoleta">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Texto</b></td>
+                        <td>
+                            <textarea name="textoBoleta" id="textoBoleta"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="text-center">
+                            <p>Datos del QR</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Titulo</b></td>
+                        <td>
+                            <input type="text" name="tituloQR" id="tituloQR">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Enlace QR</b></td>
+                        <td>
+                            <input type="text" name="enlaceQR" id="enlaceQR">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="ajustar-tabla">
+                            <button class="btn btn-primary" onclick="actualizarTextoBoleta()">Agregar / Actualizar texto</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="desplegable sd-16">
+            <h2 class="text-center">Lentes</h2>
+            <div class="contenido">
+                <p class="text-center">Tipo de Lentes</p>
+                <table>
+                    <tr>
+                        <td class="text-center">
+                            <label for="nombreTipoLente">Nombre del Tipo de lente</label>
+                            <input type="text" name="nombreTipoLente" id="nombreTipoLente">
+                        </td>
+                        <td>
+                            <button class="btn btn-primary" onclick="agregarTipoLenteFront()">Agregar Tipo de Lente</button>
+                        </td>
+                    </tr>
+                </table>
+                <p class="text-center">Listado de Tipos de Lente</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listadoTipoLentes"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Whatsapp -->
+        <!--<div class="desplegable sd-16">
             <h2 class="text-center">Whatsapp</h2>
             <div class="contenido">
                 <div class="center-div">
                     <div id="whatsapp"></div>
                 </div>
             </div>
+        </div>-->
+    </div>
+
+    <div id="mensaje-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
+
+    <div id="modalEliminar" class="modal-eliminar">
+        <div class="modal-contenido-eliminar">
+            <p id="mensajeEliminar" class="sd-16"></p>
+            <button class="btn btn-secondary" onclick="cerrarModalEliminar()">Cancelar</button>
+            <button class="btn btn-danger" id="btnEliminar">Eliminar</button>
         </div>
     </div>
 
@@ -152,11 +276,19 @@
     <script src="http://localhost:3001/scripts/apis/monedas.js"></script>
     <script src="http://localhost:3001/scripts/apis/metodosPago.js"></script>
     <script src="http://localhost:3001/scripts/apis/whatsappMessages.js"></script>
+    <script src="http://localhost:3001/scripts/apis/vendedores.js"></script>
+    <script src="http://localhost:3001/scripts/apis/boletas.js"></script>
+    <script src="http://localhost:3001/scripts/apis/tipoLente.js"></script>
+    <script src="http://localhost:3001/scripts/logic/mensajes.js"></script>
+    <script src="http://localhost:3001/scripts/logic/modal-eliminar.js"></script>
     <script src="http://localhost:3001/vista/opciones/scripts/unidadMedida.js"></script>
     <script src="http://localhost:3001/vista/opciones/scripts/iva.js"></script>
     <script src="http://localhost:3001/vista/opciones/scripts/monedas.js"></script>
     <script src="http://localhost:3001/vista/opciones/scripts/metodosPago.js"></script>
-    <script src="http://localhost:3001/vista/opciones/scripts/whatsappMessages.js"></script>
+    <script src="http://localhost:3001/vista/opciones/scripts/vendedores.js"></script>
+    <script src="http://localhost:3001/vista/opciones/scripts/boleta.js"></script>
+    <script src="http://localhost:3001/vista/opciones/scripts/tipoLente.js"></script>
+    <!--<script src="http://localhost:3001/vista/opciones/scripts/whatsappMessages.js"></script>-->
     <script>
         // JavaScript para la funcionalidad desplegable
         document.querySelectorAll('.desplegable h2').forEach(titulo => {

@@ -1,25 +1,23 @@
-const API_BASE_URL_METODOS = 'http://localhost:3001/api/metodo-pago';
-
 // Función para agregar un nuevo método de pago
 async function agregarMetodoPago() {
     const nombre = document.getElementById('nombreMetodo').value.trim();
     const comision = parseFloat(document.getElementById('comisionMetodo').value.trim());
 
     if (!nombre || isNaN(comision)) {
-        alert('Por favor, completa todos los campos correctamente.');
+        generarMensaje("red",'Por favor, completa todos los campos correctamente.');
         return;
     }
 
     try {
         const nuevoMetodo = await agregarMetodoPagoBackend(nombre, comision);
         if (nuevoMetodo) {
-            alert('Método de pago agregado correctamente.');
+            generarMensaje("green",'Método de pago agregado correctamente.');
             document.getElementById('nombreMetodo').value = "";
             document.getElementById('comisionMetodo').value = "";
             listarMetodosPago(); // Actualiza el listado de métodos de pago
         }
     } catch (error) {
-        alert('No fue posible agregar el método de pago.');
+        generarMensaje("red",'No fue posible agregar el método de pago.');
     }
 }
 
@@ -73,32 +71,17 @@ async function actualizarMetodoPago(id) {
     try {
         const resultado = await actualizarMetodoPagoEnBackend(id, metodoActualizado);
         if (resultado) {
-            alert('Método de pago actualizado correctamente.');
+            generarMensaje("green",'Método de pago actualizado correctamente.');
             listarMetodosPago(); // Refrescar el listado
         }
     } catch (error) {
         console.error('Error al actualizar el método de pago:', error);
-        alert('Error al actualizar el método de pago.');
+        generarMensaje("red",'Error al actualizar el método de pago.');
     }
 }
 
-// Función para eliminar un método de pago
-async function eliminarMetodoPago(nombre, id) {
-    if (!confirm(`¿Estás seguro de que deseas eliminar el método de pago "${nombre}"?`)) {
-        return;
-    }
-
-    try {
-        const resultado = await eliminarMetodoPagoBackend(id);
-        if (resultado) {
-            alert('Método de pago eliminado correctamente.');
-            listarMetodosPago(); // Refresca el listado de métodos
-        } else {
-            alert('No se pudo eliminar el método de pago.');
-        }
-    } catch (error) {
-        alert('Error al eliminar el método de pago:', error);
-    }
+function eliminarMetodoPago(nombre,id){
+    abrirModalEliminar(nombre, "método de pago", eliminarMetodoPagoBackend, listarMetodosPago, id);
 }
 
 // Ejecutar al cargar la página para listar los métodos

@@ -8,11 +8,12 @@ getMetodosPago();
 
 // Función para obtener los métodos de pago
 async function getMetodosPago() {
+    document.getElementById("filtrarCliente").focus();
     try {
         const metodosPagos = await obtenerMetodosPago(); // Llamada a tu API
         metodosPago = metodosPagos; 
     } catch (error) {
-        alert("Error al cargar métodos de pago");
+        generarMensaje("red","Error al cargar métodos de pago");
     }
 }
 
@@ -60,13 +61,22 @@ function cargarTabla(ventas, pagina) {
         tdEstado.textContent = venta.estado; // Asumiendo que cada cotización tiene un clienteNombre
         tr.appendChild(tdEstado);
 
+        
+        const tdVendedor = document.createElement("td");
+        if(venta.vendedor != null){
+            tdVendedor.textContent = venta.vendedor.nombre; // Asumiendo que cada cotización tiene un clienteNombre
+        }else{
+            tdVendedor.textContent = "Sin vendedor";
+        }
+        tr.appendChild(tdVendedor);
+
         // Crear y agregar el td monto
         const tdMonto = document.createElement("td");
-        tdMonto.textContent = `$${venta.total}`; // Monto de la cotización
+        tdMonto.textContent = `$${venta.total.toLocaleString("es-CL")}`; // Monto de la cotización
         tr.appendChild(tdMonto);
 
         const tdPendiente = document.createElement("td");
-        tdPendiente.textContent = `$${venta.pendiente}`; // Monto de la cotización
+        tdPendiente.textContent = `$${venta.pendiente.toLocaleString("es-CL")}`; // Monto de la cotización
         tr.appendChild(tdPendiente);
 
         // Crear y agregar el td acciones
@@ -158,7 +168,8 @@ function aplicarFiltros() {
 
     if (clienteFiltro) {
         ventasFiltradas = ventasFiltradas.filter(venta =>
-            venta.cliente.nombre.toLowerCase().includes(clienteFiltro)
+            venta.cliente.nombre.toLowerCase().includes(clienteFiltro) ||
+            venta.cliente.rut.toLowerCase().includes(clienteFiltro)
         );
     }
 
@@ -205,6 +216,7 @@ function cerrarModal(event){
     event?.preventDefault();
     modalVenta.style.display = "none";
     ventaActualId = null;
+    document.getElementById("filtrarCliente").focus();
 }
 
 const inputAbono = document.getElementById("inputAbono");
@@ -219,7 +231,6 @@ function abrirModalVenta(id) {
     modalVenta.style.display = "flex";
     ventaActualId = id;
 
-    console.log(ventaSeleccionada);
     const datosClienteModal = document.getElementById("datosClienteModal");
     let tablaCliente = `
         <tr>
@@ -254,25 +265,236 @@ function abrirModalVenta(id) {
     datosClienteModal.innerHTML = "";
     datosClienteModal.innerHTML = tablaCliente;
 
+    document.getElementById("vendedorVenta").innerText = ventaSeleccionada[0].vendedor.nombre;
+
+    let detalleLentesModal = document.getElementById("detalleLentesModal");
+    let tablasCristalesFinal = "";
+    ventaSeleccionada[0].productos.forEach(producto => {
+        if(producto.tipo == "cristales"){
+            let variantecristal = "";
+
+            if(producto.cristales.variante != "blanco"){
+                variantecristal = ` <span>- ${producto.variante}</span>`;
+            }
+            
+            tablasCristalesFinal += `
+                <div>
+                    <p class="sd-12"><b>Tipo de lente:</b> <span>${producto.cristales.tipoLente}</span></p>
+                    <p class="sd-12"><b>Cristal: </b> <span>${producto.cristalBase}</span> ${variantecristal}</p>
+                    <table>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <b>Esfera</b>
+                            </td>
+                            <td>
+                                <b>Cilindro</b>
+                            </td>
+                            <td>
+                                <b>Eje</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>OD</b>
+                            </td>
+                            <td>
+                                ${producto.cristales.esferaOD}
+                            </td>
+                            <td>
+                                ${producto.cristales.cilindroOD}
+                            </td>
+                            <td>
+                                ${producto.cristales.ejeOD}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>OI</b>
+                            </td>
+                            <td>
+                                ${producto.cristales.esferaOI}
+                            </td>
+                            <td>
+                                ${producto.cristales.cilindroOI}
+                            </td>
+                            <td>
+                                ${producto.cristales.ejeOI}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>DP</b>
+                            </td>
+                            <td>
+                                ${producto.cristales.DP}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>ADD</b>
+                            <td>
+                                ${producto.cristales.ADD}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>ALT</b>
+                            <td>
+                                ${producto.cristales.ALT}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            `
+        }
+        if(producto.tipo == "lente"){
+            let variantecristal = "";
+
+            if(producto.cristales.variante != "blanco"){
+                variantecristal = ` <span>- ${producto.cristales.variante}</span>`;
+            }
+            tablasCristalesFinal += `
+                <div>
+                    <p class="sd-12"><b>Tipo de lente:</b> <span>${producto.cristales.cristales.tipoLente}</span></p>
+                    <p class="sd-12"><b>Cristal: </b> <span>${producto.cristales.cristalBase}</span> ${variantecristal}</p>
+                    <table>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <b>Esfera</b>
+                            </td>
+                            <td>
+                                <b>Cilindro</b>
+                            </td>
+                            <td>
+                                <b>Eje</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>OD</b>
+                            </td>
+                            <td>
+                                ${producto.cristales.cristales.esferaOD}
+                            </td>
+                            <td>
+                                ${producto.cristales.cristales.cilindroOD}
+                            </td>
+                            <td>
+                                ${producto.cristales.cristales.ejeOD}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>OI</b>
+                            </td>
+                            <td>
+                                ${producto.cristales.cristales.esferaOI}
+                            </td>
+                            <td>
+                                ${producto.cristales.cristales.cilindroOI}
+                            </td>
+                            <td>
+                                ${producto.cristales.cristales.ejeOI}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>DP</b>
+                            </td>
+                            <td>
+                                ${producto.cristales.cristales.DP}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>ADD</b>
+                            <td>
+                                ${producto.cristales.cristales.ADD}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>ALT</b>
+                            <td>
+                                ${producto.cristales.cristales.ALT}
+                            </td>
+                        </tr>
+                    </table>
+                </div>`
+        }
+    });
+
+    detalleLentesModal.innerHTML = tablasCristalesFinal;
+
+    let observacionesPago = document.getElementById("observacionesPago");
+    if(ventaSeleccionada[0].observaciones != undefined && ventaSeleccionada[0].observaciones != ""){
+        const observacionesPagoContenido = `
+            <tr>
+                <td>
+                    <b>Observaciones</b>
+                </td>
+                <td>
+                    ${ventaSeleccionada[0].observaciones}
+                </td>
+            </tr>
+        `;
+        observacionesPago.innerHTML = "";
+        observacionesPago.innerHTML = observacionesPagoContenido;
+    }else{
+        observacionesPago.innerHTML = "";
+    }
+
     let detalleVentaFinal = document.getElementById("detalleVentaModal");
 
-    detalleVentaFinal.innerHTML = "";
+    detalleVentaFinal.innerHTML = `
+        <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+
+    let contador = 0;
 
     ventaSeleccionada[0].productos.forEach(producto => {
-        let datosDetalleVenta = `
-        <tr>
-            <td>
-                ${producto.nombre}
-            </td>
-            <td>
-                ${producto.cantidad}
-            </td>
-            <td>
-                $${producto.precio}
-            </td>
-        </tr>`;
-        detalleVentaFinal.innerHTML += datosDetalleVenta;
+        if(producto.tipo != 'lente' && producto.tipo != 'cristales'){
+            let datosDetalleVenta = `
+            <tr>
+                <td>
+                    ${producto.nombre}
+                </td>
+                <td>
+                    ${producto.cantidad}
+                </td>
+            </tr>`;
+            detalleVentaFinal.innerHTML += datosDetalleVenta;
+            contador++;
+        }
+        if(producto.tipo == 'lente'){
+            let datosDetalleVenta = `
+            <tr>
+                <td>
+                    Marco ${producto.marco.nombre}
+                </td>
+                <td>
+                    ${producto.marco.cantidad}
+                </td>
+            </tr>`;
+            detalleVentaFinal.innerHTML += datosDetalleVenta;
+            contador++;
+        }
     });
+
+    detalleVentaFinal.innerHTML += `</tbody>`;
+    if(contador == 0){
+        document.getElementById("detalleVentaModal").style.display = "none";
+    }else{
+        document.getElementById("detalleVentaModal").style.display = "table";
+    }
 
     let tablaDatosPago = document.getElementById("tablaDatosPago");
     tablaDatosPago.innerHTML = "";
@@ -285,15 +507,15 @@ function abrirModalVenta(id) {
                 <b>Total</b>
             </td>
             <td>
-                $${ventaSeleccionada[0].total}
+                $${ventaSeleccionada[0].total.toLocaleString("es-CL")}
             </td>
         </tr>
         <tr>
             <td>
-                <b>Abono</b>
+                <b>Cancelado</b>
             </td>
             <td id="abonoActual">
-                $${ventaSeleccionada[0].abonos}
+                $${ventaSeleccionada[0].abonos.toLocaleString("es-CL")}
             </td>
         <tr>
         <tr>
@@ -301,7 +523,7 @@ function abrirModalVenta(id) {
                 <b>Pendiente</b>
             </td>
             <td id="pendienteActual">
-                $${ventaSeleccionada[0].pendiente}
+                $${ventaSeleccionada[0].pendiente.toLocaleString("es-CL")}
             </td>
         <tr>
         <tr>
@@ -319,6 +541,13 @@ function abrirModalVenta(id) {
     //document.getElementById("selectEstadoVenta").value = ventaSeleccionada[0].estado;
 
     selectEstadoVenta.value = ventaSeleccionada[0].estado;
+
+    if(ventaSeleccionada[0].pendiente == 0){
+        document.getElementById("inputAbono").disabled = true;
+    }else{
+        document.getElementById("inputAbono").disabled = false;
+        document.getElementById("inputAbono").focus();
+    }
 
     // Inicialmente deshabilitar el botón Guardar
     guardarEstadoVentaBtn.disabled = true;
@@ -344,7 +573,7 @@ async function guardarEstadoVenta() {
     const venta = ventasTotales.find(venta => venta.id == ventaActualId);
     if (venta) {
         venta.estado = selectEstadoVenta.value; // Actualizar el estado
-        alert(`Estado de la venta actualizado a "${venta.estado}"`);
+        generarMensaje("green", `Estado de la venta actualizado a "${venta.estado}"`);
         
         // Puedes recargar la tabla o actualizar directamente
         //cargarTabla(ventasTotales, paginaActual);
@@ -360,6 +589,10 @@ async function guardarEstadoVenta() {
         }else{
             if(venta.estado == "Finalizada"){
                 mensajeWhatsapp = `Hola ${venta.cliente.nombre}, tu compra a sido finalizada! esperamos que quedes muy satisfecho con esta, esperamos verte pronto`;
+            }else{
+                if(venta.estado == "Retiro"){
+                    mensajeWhatsapp = `Hola ${venta.cliente.nombre}, tu compra está lista para ser retirada!, te estaremos esperando en nuestra sucursal`;
+                }
             }
         }
     }
@@ -369,17 +602,17 @@ async function guardarEstadoVenta() {
         if (resultado) {
             try {
                 await enviarMensajeWhatsapp(`56${venta.cliente.telefono}`, mensajeWhatsapp);
-                alert("Mensaje enviado por WhatsApp satisfactoriamente");
+                generarMensaje("green","Mensaje enviado por WhatsApp satisfactoriamente");
             } catch (error) {
                 console.error("Error al enviar mensaje por WhatsApp:", error);
-                alert("Error al enviar mensaje por WhatsApp");
+                generarMensaje("red", "Error al enviar mensaje por WhatsApp");
             }
         } else {
-            alert("Error al actualizar la venta");
+            generarMensaje("green", "Error al actualizar la venta");
         }
     } catch (error) {
         console.error("Error al actualizar venta:", error);
-        alert("Error al actualizar venta");
+        generarMensaje("green", "Error al actualizar venta");
     }
     
     // Deshabilitar el botón después de guardar
@@ -388,15 +621,16 @@ async function guardarEstadoVenta() {
     // Opcional: cerrar el modal
     cerrarModal();
     cargarVentas();
+    document.getElementById("filtrarCliente").focus();
 
 }
 
 async function guardarAbono() {
     if (!ventaActualId) return;
 
-    const abonoIngresado = parseFloat(inputAbono.value);
+    const abonoIngresado = parseInt(inputAbono.value);
     if (abonoIngresado <= 0) {
-        alert("Por favor, ingresa un valor válido para el abono.");
+        generarMensaje("green", "Por favor, ingresa un valor válido para el abono.");
         return;
     }
 
@@ -406,7 +640,7 @@ async function guardarAbono() {
         const pendienteActual = venta.total - venta.abonos;
 
         if (abonoIngresado > pendienteActual) {
-            alert(`El abono ingresado ($${abonoIngresado}) no puede ser mayor al saldo pendiente ($${pendienteActual}).`);
+            generarMensaje("yellow", `El abono ingresado ($${abonoIngresado}) no puede ser mayor al saldo pendiente ($${pendienteActual}).`);
             return;
         }
 
@@ -417,7 +651,7 @@ async function guardarAbono() {
         document.getElementById("abonoActual").innerText = `$${venta.abonos}`;
         document.getElementById("pendienteActual").innerText = `$${venta.pendiente}`;
 
-        alert(`Se añadió un abono de $${abonoIngresado}.`);
+        generarMensaje("green", `Se añadió un abono de $${abonoIngresado}.`);
 
         let mensajeWhatsapp = `Hola ${venta.cliente.nombre}, registramos tu abono de ${abonoIngresado} al saldo de tu venta!`;
 
@@ -426,17 +660,17 @@ async function guardarAbono() {
             if (resultado) {
                 try {
                     await enviarMensajeWhatsapp(`56${venta.cliente.telefono}`, mensajeWhatsapp);
-                    alert("Mensaje enviado por WhatsApp satisfactoriamente");
+                    generarMensaje("green", "Mensaje enviado por WhatsApp satisfactoriamente");
                 } catch (error) {
                     console.error("Error al enviar mensaje por WhatsApp:", error);
-                    alert("Error al enviar mensaje por WhatsApp");
+                    generarMensaje("red", "Error al enviar mensaje por WhatsApp");
                 }
             } else {
-                alert("Error al actualizar la venta");
+                generarMensaje("red", "Error al actualizar la venta");
             }
         } catch (error) {
             console.error("Error al actualizar venta:", error);
-            alert("Error al actualizar venta");
+            generarMensaje("red", "Error al actualizar venta");
         }
     }
 

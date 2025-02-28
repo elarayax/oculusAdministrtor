@@ -21,15 +21,11 @@
                 <input type="text" id="buscarCotizacion" placeholder="Buscar Cotización" style="display: none;">
             </td>
             <td class="ajustar-tabla">
-                <p>Filtrar por fecha de inicio</p>
+                <p>Filtrar por fecha</p>
                 <input type="date" name="fechaInicio" id="fechaInicio">
             </td>
             <td class="ajustar-tabla">
-                <p>Filtrar por fecha de término</p>
-                <input type="date" name="fechaTermino" id="fechaTermino">
-            </td>
-            <td class="ajustar-tabla">
-                <p>Filtrar entre fechas</p>
+                <p>Filtrar por fechas</p>
                 <button id="filtrarFechas" class="btn btn-primary">Aplicar Filtros</button>
             </td>
         </tr>
@@ -39,9 +35,8 @@
             <tr>
                 <th>ID</th>
                 <th>Cliente</th>
-                <th>Fecha Inicio</th>
-                <th>Fecha Término</th>
-                <th>Total General</th>
+                <th>Fecha</th>
+                <th>Total</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -59,32 +54,74 @@
                 <label for="clienteNombre">Cliente:</label>
                 <input type="text" id="clienteNombre" name="nombre" readonly>
 
-                <label for="fechaInicioModal">Fecha Inicio:</label>
+                <label for="fechaInicioModal">Fecha:</label>
                 <input type="date" id="fechaInicioModal" name="fechaInicio" readonly>
 
-                <label for="fechaTerminoModal">Fecha Término:</label>
-                <input type="date" id="fechaTerminoModal" name="fechaTermino" readonly>
-
-                <label for="productosList">Productos:</label>
                 <table>
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Cantidad</th>
-                            <th>Precio Unitario</th>
-                            <th>Precio Total</th>
-                        </tr>
-                    </thead>
-                    <tbody id="productosList"></tbody>
+                    <tr>
+                        <td></td>
+                        <td>
+                            Esfera
+                        </td>
+                        <td>
+                            Cilindro
+                        </td>
+                        <td>
+                            Eje
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            OD
+                        </td>
+                        <td>
+                            <input type="number" name="esferaOD" id="esferaOD">
+                        </td>
+                        <td>
+                            <input type="number" name="cilindroOD" id="cilindroOD">
+                        </td>
+                        <td>
+                            <input type="number" name="ejeOD" id="ejeOD">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            OI
+                        </td>
+                        <td>
+                            <input type="number" name="esferaOI" id="esferaOI">
+                        </td>
+                        <td>
+                            <input type="number" name="cilindroOI" id="cilindroOI">
+                        </td>
+                        <td>
+                            <input type="number" name="ejeOI" id="ejeOI">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            DP
+                        </td>
+                        <td>
+                            <input type="number" name="DP" id="DP">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            ADD
+                        </td>
+                        <td>
+                            <input type="number" name="ADD" id="ADD">
+                        </td>
+                    </tr>       
                 </table>
-
                 <label for="totalSinIva">Total sin iva:</label>
                 <input type="text" id="totalSinIva" name="totalSinIva" readonly>
 
                 <label for="totalGeneral">Total General:</label>
                 <input type="text" id="totalGeneral" name="totalGeneral" readonly>
 
-                <button type="button" id="imprimirCotizacion" class="btn btn-primary">Imprimir Cotizacion</button>
+                <!--<button type="button" id="imprimirCotizacion" class="btn btn-primary">Imprimir Cotizacion</button>-->
                 <button type="button" id="cerrarModalCotizacion" onclick="cerrarModal()" class="btn btn-secondary">Cerrar</button>
             </form>
         </div>

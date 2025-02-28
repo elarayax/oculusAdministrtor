@@ -1,0 +1,10 @@
+[
+    {
+        "id" : 1,
+        "tipo": "cerca"
+    },
+    {
+        "id" : 2,
+        "tipo": "lejos"
+    }
+]

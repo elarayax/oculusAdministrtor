@@ -8,8 +8,10 @@
     <link rel="stylesheet" href="http://localhost:3001/estilos/botones.css">
     <link rel="stylesheet" href="http://localhost:3001/estilos/calugas.css">
     <link href="http://localhost:3001/estilos/fontawesome/css/fontawesome.css" rel="stylesheet" />
+    <link rel="stylesheet" href="http://localhost:3001/estilos/mensajes.css">
    <!--<link href="http://localhost:3001/estilos/fontawesome/css/brands.css" rel="stylesheet" />-->
     <link href="http://localhost:3001/estilos/fontawesome/css/solid.css" rel="stylesheet" />
+    <link rel="stylesheet" href="http://localhost:3001/estilos/modal-eliminar.css">
     <!--<link href="http://localhost:3001/estilos/fontawesome/css/sharp-thin.css" rel="stylesheet" />
     <link href="http://localhost:3001/estilos/fontawesome/css/duotone-thin.css" rel="stylesheet" />
     <link href="http://localhost:3001/estilos/fontawesome/css/sharp-duotone-thin.css" rel="stylesheet" />-->
@@ -118,6 +120,39 @@
             color: orange;
             text-decoration: underline;
         }
+
+        .order-datos {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        div#modalPrinter .modal-contenido {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        tbody#tablePrinters .selected{
+            background-color: orange;
+            color: #fff;
+        }
+
+        tbody#tablePrinters td:hover {
+            cursor: pointer;
+        }
+        .two-sections{
+            display: flex;
+        }
+
+        .two-sections div:first-child{
+            border-right: 0.5px solid ;
+            padding-right: 20px;
+        }
+
+        .two-sections div:last-child{
+            padding-left: 20px;
+        }
     </style>
 </head>
 <body>
@@ -128,14 +163,35 @@
     <form id="crearCotizacion" onsubmit="return false;">
         <div id="origin" class="step actual-step">
             <div class="step-content">
+                <div class="two-sections sd-16">
+                    <!--<div class="center-div">
+                        <h2 class="sd-16">Venta o Cotización</h2>
+                        <select name="tipoVenta" id="tipoVenta">
+                            <option value="venta">Venta</option>
+                            <option value="cotizacion">Cotización</option>
+                        </select>
+                    </div>-->
+                    <div class="center-div">
+                        <h2 class="sd-12">Vendedor de esta venta</h2>
+                        <select name="vendedoresList" id="vendedoresList"></select>
+                    </div>
+                </div>
                 <div id="userSelected" class="sd-12 center-div non-display">
                     <h2 class="text-center">Cliente seleccionado</h2>
                     <table id="tablaClienteResumen"></table>
                     <button class="btn btn-danger" onclick="quitarCliente()">Quitar Cliente</button>
                 </div>
                 <div id="selectUser" class="sd-12 center-div">
+                    <h2 class="text-center sd-8">Seleccione un cliente</h2>
                     <p class="text-center sd-12">No se a seleccionado cliente</p>
-                    <button onclick="goToStep('addClient')" class="btn btn-success">Seleccionar Cliente</button>
+                    <div class="center">
+                        <button onclick="goToStep('createClient')" class="btn btn-warning">Crear Cliente</button>
+                        <button onclick="goToStep('addClient')" class="btn btn-success">Seleccionar Cliente</button>
+                    </div>
+                </div>
+                <div class="center-div sd-12">
+                    <h3 class="sd-12">Fecha de la venta</h3>
+                    <input type="date" id="fechaVenta">
                 </div>
                 <div class="center-div sd-12">
                     <h2>Resumen de la venta</h2>
@@ -163,6 +219,10 @@
                         <p class="text-center">No hay productos agregados a la venta</p>
                     </div>
                     <button class="btn btn-secondary" onclick="goToStep('chooseTypeProduct')">Agregar Producto</button>
+                    <div>
+                        <p><b>Observaciones</b></p>
+                        <textarea id="observaciones" rows="4" cols="50"></textarea>
+                    </div>
                 </div>
                 <div>
                     <button class="btn btn-outline" onclick="startPayment()">Continuar con la compra</button>
@@ -181,7 +241,7 @@
                             Buscar Cliente por Nombre
                         </td>
                         <td>
-                            <input type="text" name="nombreCliente" id="nombreCliente" placeholder="Nombre">
+                            <input type="text" name="nombreCliente" id="nombreCliente" placeholder="Nombre" autofocus>
                             <div id="sugerenciasCliente" class="sugerencias"></div>
                         </td>
                     </tr>
@@ -209,8 +269,75 @@
                             <input type="email" name="correoCliente" id="correoCliente" disabled>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            Direccion Cliente
+                        </td>
+                        <td>
+                            <input type="text" name="direccionCliente" id="direccionCliente" disabled>
+                        </td>
+                    </tr>
                 </table>
-                <button class="btn btn-primary" onclick="thisClient()">Seleccionar Cliente</button>
+                <div class="organizar-botones">
+                    <button class="btn btn-danger" onclick="goToStep('origin')">Cancelar</button>
+                    <button class="btn btn-primary" onclick="thisClient()">Seleccionar Cliente</button>
+                </div>
+                
+            </div>
+            <div class="step-selector">
+                <p class="text-center">Agregar Cliente</p>
+            </div>
+        </div>
+        <div id="createClient" class="step">
+            <div class="step-content">
+                <h2 class="text-center sd-12">Ingrese Datos del Cliente</h2>
+                <table>
+                    <tr>
+                        <td>
+                            Nombre del Cliente
+                        </td>
+                        <td>
+                            <input type="text" name="nombreClienteNew" id="nombreClienteNew" placeholder="Nombre" autofocus>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Rut Cliente
+                        </td>
+                        <td>
+                            <input type="text" name="rutClienteNew" id="rutClienteNew">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Teléfono Cliente
+                        </td>
+                        <td>
+                            <input type="text" name="telefonoClienteNew" id="telefonoClienteNew">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Correo Cliente
+                        </td>
+                        <td>
+                            <input type="email" name="correoClienteNew" id="correoClienteNew">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Direccion Cliente
+                        </td>
+                        <td>
+                            <input type="text" name="direccionClienteNew" id="direccionClienteNew">
+                        </td>
+                    </tr>
+                </table>
+                <div class="organizar-botones">
+                    <button class="btn btn-danger" onclick="goToStep('origin')">Cancelar</button>
+                    <button class="btn btn-primary" onclick="createClient()">Crear Cliente</button>
+                </div>
+                
             </div>
             <div class="step-selector">
                 <p class="text-center">Agregar Cliente</p>
@@ -262,7 +389,7 @@
                             Nombre del producto/servicio
                         </td>
                         <td>
-                            <input type="text" name="nameRandomProduct" id="nameRandomProduct" placeholder="">
+                            <input type="text" name="nameRandomProduct" id="nameRandomProduct" placeholder="" autofocus>
                         </td>
                     </tr>
                     <tr>
@@ -270,7 +397,7 @@
                             Precio
                         </td>
                         <td>
-                            <input type="number" name="priceRandomProduct" id="priceRandomProduct">
+                            <input type="text" oninput="formatearNumero(this)" name="priceRandomProduct" id="priceRandomProduct">
                         </td>
                     </tr>
                     <tr>
@@ -295,6 +422,12 @@
         </div>
         <div id="addCristal" class="step">
             <div class="step-content">
+                <div class="form-group">
+                    <label for="tipoLente">Tipo de Lente:</label>
+                    <select id="tipoLente" class="form-control">
+                        <option value="-1" disabled selected>Seleccione una opción</option>
+                    </select>
+                </div>
                 <h2 class="text-center">
                     Seleccionar Cristal
                 </h2>
@@ -316,13 +449,13 @@
                             OD
                         </td>
                         <td>
-                            <input type="number" name="esferaOD" id="esferaOD">
+                            <input class="validarInput" type="text" name="esferaOD" id="esferaOD" autofocus>
                         </td>
                         <td>
-                            <input type="number" name="cilindroOD" id="cilindroOD">
+                            <input class="validarInput" type="text" name="cilindroOD" id="cilindroOD">
                         </td>
                         <td>
-                            <input type="number" name="ejeOD" id="ejeOD">
+                            <input class="validarInput" type="text" name="ejeOD" id="ejeOD">
                         </td>
                     </tr>
                     <tr>
@@ -330,13 +463,13 @@
                             OI
                         </td>
                         <td>
-                            <input type="number" name="esferaOI" id="esferaOI">
+                            <input class="validarInput" type="text" name="esferaOI" id="esferaOI">
                         </td>
                         <td>
-                            <input type="number" name="cilindroOI" id="cilindroOI">
+                            <input class="validarInput" class="validarInput" type="text" name="cilindroOI" id="cilindroOI">
                         </td>
                         <td>
-                            <input type="number" name="ejeOI" id="ejeOI">
+                            <input class="validarInput" type="text" name="ejeOI" id="ejeOI">
                         </td>
                     </tr>
                     <tr>
@@ -344,7 +477,7 @@
                             DP
                         </td>
                         <td>
-                            <input type="number" name="DP" id="DP">
+                            <input class="validarInput" type="text" name="DP" id="DP">
                         </td>
                     </tr>
                     <tr>
@@ -352,7 +485,15 @@
                             ADD
                         </td>
                         <td>
-                            <input type="number" name="ADD" id="ADD">
+                            <input class="validarInput" type="text" name="ADD" id="ADD">
+                        </td>
+                    </tr> 
+                    <tr>
+                        <td>
+                            ALT
+                        </td>
+                        <td>
+                            <input class="validarInput" type="text" name="ALT" id="ALT">
                         </td>
                     </tr>       
                 </table>
@@ -394,9 +535,11 @@
                     </div>
                     <div class="center-div">
                         <h2 class="text-center sd-12">Seleccionar Modelo</h2>
-                        <select name="modelo" id="selectModelo">
-                            <option value="-1">Seleccione un modelo</option>
+                        <select class="sd-12" name="modelo" id="selectModelo" onchange="toggleModeloInputSolo()">
+                            <option value="-1" disabled selected>Seleccione un modelo</option>
                         </select>
+                        <!-- Input oculto por defecto -->
+                        <input type="text" id="inputModeloSolo" class="non-display" placeholder="Ingrese el modelo">
                     </div>
                 </div>
                 <div class="organizar-botones">
@@ -410,6 +553,12 @@
         </div>
         <div id="addLente" class="step">
             <div class="step-content">
+                <div class="form-group">
+                    <label for="tipoLenteL">Tipo de Lente:</label>
+                    <select id="tipoLenteL" class="form-control">
+                        <option value="-1" disabled selected>Seleccione una opción</option>
+                    </select>
+                </div>
                 <h2 class="text-center sd-12">Agregar Cristales al lente</h2>
                 <table>
                     <tr>
@@ -429,13 +578,13 @@
                             OD
                         </td>
                         <td>
-                            <input type="number" name="esferaODL" id="esferaODL">
+                            <input class="validarInput" type="text" name="esferaODL" id="esferaODL" autofocus>
                         </td>
                         <td>
-                            <input type="number" name="cilindroODL" id="cilindroODL">
+                            <input class="validarInput" type="text" name="cilindroODL" id="cilindroODL">
                         </td>
                         <td>
-                            <input type="number" name="ejeODL" id="ejeODL">
+                            <input class="validarInput" type="text" name="ejeODL" id="ejeODL">
                         </td>
                     </tr>
                     <tr>
@@ -443,13 +592,13 @@
                             OI
                         </td>
                         <td>
-                            <input type="number" name="esferaOIL" id="esferaOIL">
+                            <input class="validarInput" type="text" name="esferaOIL" id="esferaOIL">
                         </td>
                         <td>
-                            <input type="number" name="cilindroOIL" id="cilindroOIL">
+                            <input class="validarInput" type="text" name="cilindroOIL" id="cilindroOIL">
                         </td>
                         <td>
-                            <input type="number" name="ejeOIL" id="ejeOIL">
+                            <input class="validarInput" type="text" name="ejeOIL" id="ejeOIL">
                         </td>
                     </tr>
                     <tr>
@@ -457,7 +606,7 @@
                             DP
                         </td>
                         <td>
-                            <input type="number" name="DPL" id="DPL">
+                            <input class="validarInput" type="text" name="DPL" id="DPL">
                         </td>
                     </tr>
                     <tr>
@@ -465,7 +614,15 @@
                             ADD
                         </td>
                         <td>
-                            <input type="number" name="ADDL" id="ADDL">
+                            <input class="validarInput" type="text" name="ADDL" id="ADDL">
+                        </td>
+                    </tr>   
+                    <tr>
+                        <td>
+                            ALT
+                        </td>
+                        <td>
+                            <input class="validarInput" type="text" name="ALTL" id="ALTL">
                         </td>
                     </tr>       
                 </table>
@@ -508,9 +665,11 @@
                     </div>
                     <div class="center-div">
                         <h2 class="text-center sd-12">Seleccionar Modelo</h2>
-                        <select name="modelo" id="selectModeloL">
-                            <option value="-1">Seleccione un modelo</option>
+                        <select class="sd-12" name="modelo" id="selectModeloL" onchange="toggleModeloInput()">
+                            <option value="-1" disabled selected>Seleccione un modelo</option>
                         </select>
+                        <!-- Input oculto por defecto -->
+                        <input type="text" id="inputModeloL" class="non-display" placeholder="Ingrese el modelo">
                     </div>
                 </div>
                 <div class="organizar-botones">
@@ -523,6 +682,7 @@
                 <p class="text-center">Agregar Marco al lente</p>
             </div>
         </div>
+        
         <div id="metodosPago" class="step">
             <div class="step-content">
                 <h2 class="text-center sd-12">Métodos de pago</h2>
@@ -542,8 +702,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><b>Abonos</b></td>
-                        <td id="totalAbonos">0.00</td>
+                        <td><b>Cancelado</b></td>
+                        <td id="totalAbonos">$0</td>
                     </tr>
                     <tr>
                         <td><b>Pendiente</b></td>
@@ -567,21 +727,41 @@
         <div id="final" class="step">
             <div class="step-content">
                 <h2 class="text-center sd-12">Finalizar venta</h2>
-                <div id="ventaTotal">
+                <div id="ventaTotal" style="padding: 40px;">
+                    <div class="order-datos">
+                        <div>
+                            <img src="" id="logoOptica" alt="">
+                        </div>
+                        <div>
+                            <h2 id="nombreOptica"></h2>
+                            <p id="rutOptica"></p>
+                            <p id="telefonoOptica"></p>
+                            <p id="correoOptica"></p>
+                            <p id="direccionOptica"></p>
+                        </div>
+                        <div id="datosExtra">
+                        </div>
+                    </div>
+                    <p class="sd-8"><b>Atendido por:</b> <span id="vendedorNombre"></span></p>
+                    <p class="sd-16"><b>Fecha:</b> <span id="fechaFinal"></span></p>
                     <h3 class="text-left sd-12">Datos del cliente</h3>
                     <table id="tablaDatosUsuarioFinal" class="sd-12"></table>
                     <h3 class="text-left sd-12">Detalle de la venta</h3>
-                    <table class="sd-12">
+                    <div id="detalleCristalesFinal"></div>
+                    <table class="sd-12" id="detalleVentaFinalShow">
                         <thead>
                             <tr>
                                 <th>Producto</th>
                                 <th>Cantidad</th>
-                                <th>Precio</th>
                             </tr>
                         </thead>
                         <tbody id="detalleVentaFinal"></tbody>
                     </table>
                     <table id="tablaDatosPago"></table>
+                    <div class="sd-12" id="divObservaciones">
+                        <p><b>Observaciones</b></p>
+                        <p id="observacionesFinal"></p>
+                    </div>
                     <table>
                         <tr>
                             <td><b>Estado de la venta</b></td>
@@ -594,9 +774,15 @@
                             </td>
                         </tr>
                     </table>
+                    <div>
+                        <h3 class="sd-12" id="tituloTextoBoleta"></h3>
+                        <p class="sd-12" id="textoTextoBoleta"></p>
+                    </div>
                 </div>
                 <div class="organizar-botones">
                     <button class="btn btn-secondary" onclick="goToStep('origin')">Volver</button>
+                    <button class="btn btn-warning" onclick="generarImagenCotizacion()">Guardar como imagen</button>
+                    <button class="btn btn-warning" onclick="newPrint()">Imprimir</button>
                     <button class="btn btn-primary sd-12" onclick="guardarVenta()">Generar Venta</button>
                 </div>
             </div>
@@ -604,24 +790,27 @@
                 <p class="text-center">Finalizar venta</p>
             </div>
         </div>    
-        <div id="step6" class="step">
-            <div class="step-content">
-                <h2 class="text-center sd-12">Resumen de la cotización</h2>
-                <div id="contenidoResumen"></div>
-                <div class="acciones" id="accionesStep6">
-                    <button onclick="generarImagenCotizacion()" class="btn green-button">Guardar Como Imagen</button>
-                    <button id="btnGuardarCotizacion" onclick="guardarCotización()" class="btn blue-button">Guardar Cotización</button>
-                </div>
-                <div class="step-choose">
-                    <div id="multipleSteps2"></div>
-                </div>
-            </div>
-            <div class="step-selector">
-                <p class="text-center">Paso 6 de 6</p>
-            </div>
-        </div>
     </form>
+    <div id="mensaje-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
+    <div id="modalPrinter" class="modal">
+        <div class="modal-contenido">
+            <table>
+                <thead></thead>
+                <tbody id="tablePrinters"></tbody>
+            </table>
+            <div id="modalFooter"></div>
+            <button class="btn btn-secondary" onclick="closePrintModal()">Cancelar</button>
+        </div>
+    </div>
 </body>
+<script>
+    function validarInputNumerico(input) {
+            input.addEventListener("input", function () {
+                this.value = this.value.replace(/[^0-9+\-.,]/g, '');
+            });
+        }
+    document.querySelectorAll(".validarInput").forEach(validarInputNumerico);
+</script>
 <script src="http://localhost:3001/scripts/logic/html2canvas.min.js"></script>
 <script src="http://localhost:3001/scripts/apis/productos.js"></script>
 <script src="http://localhost:3001/scripts/apis/clientes.js"></script>
@@ -634,6 +823,12 @@
 <script src="http://localhost:3001/scripts/apis/unidadMedida.js"></script>
 <script src="http://localhost:3001/scripts/apis/ventas.js"></script>
 <script src="http://localhost:3001/scripts/apis/whatsappMessages.js"></script>
+<script src="http://localhost:3001/scripts/apis/vendedores.js"></script>
+<script src="http://localhost:3001/scripts/apis/boletas.js"></script>
+<script src="http://localhost:3001/scripts/apis/imprimir.js"></script>
+<script src="http://localhost:3001/scripts/apis/tipoLente.js"></script>
+<script src="http://localhost:3001/scripts/logic/mensajes.js"></script>
+<script src="http://localhost:3001/scripts/logic/modales.js"></script>
 <script src="http://localhost:3001/vista/ventas/scripts/main-ventas.js" defer></script>
 <script src="http://localhost:3001/vista/ventas/scripts/steps-logic.js" defer></script>
 <script src="http://localhost:3001/vista/ventas/scripts/user-logic.js" defer></script>

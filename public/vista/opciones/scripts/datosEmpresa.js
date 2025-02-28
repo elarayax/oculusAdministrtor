@@ -93,7 +93,7 @@ async function guardarDatos() {
 
     // Verificar que todos los campos de la empresa estén completos
     if (!nombreEmpresa || !rutEmpresa || !direccionEmpresa || !telefonoEmpresa || !correoEmpresa) {
-        alert("Por favor complete todos los campos de la empresa.");
+        generarMensaje("red","Por favor complete todos los campos de la empresa.");
         return;
     }
 
@@ -130,10 +130,11 @@ async function guardarDatos() {
     const empresa = await actualizarEmpresa(empresaActualizada);
 
     if (empresa) {
-        alert("Datos de la empresa actualizados correctamente");
+        generarMensaje("green","Datos de la empresa actualizados correctamente");
         console.log("Empresa actualizada:", empresa);
+        document.getElementById("nombreEmpresa").focus();
     } else {
-        alert("Hubo un error al actualizar los datos de la empresa.");
+        generarMensaje("red","Hubo un error al actualizar los datos de la empresa.");
     }
 }
 
@@ -158,19 +159,19 @@ function cargarLogo() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('Logo cargado correctamente');
+                generarMensaje("green",'Logo cargado correctamente');
                 // Aquí podrías actualizar la interfaz para mostrar el logo
                 mostrarLogo(data.logoPath);
             } else {
-                alert('Error al cargar el logo');
+                generarMensaje("red",'Error al cargar el logo');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Hubo un problema al cargar el logo');
+            generarMensaje("red",'Hubo un problema al cargar el logo');
         });
     } else {
-        alert('Por favor, selecciona un logo.');
+        generarMensaje("red",'Por favor, selecciona un logo.');
     }
 }
 

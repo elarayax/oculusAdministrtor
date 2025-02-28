@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="http://localhost:3001/estilos/botones.css">
     <link rel="stylesheet" href="http://localhost:3001/estilos/paginacion.css">
     <link rel="stylesheet" href="http://localhost:3001/estilos/pop-up.css">
+    <link rel="stylesheet" href="http://localhost:3001/estilos/mensajes.css">
+    <link rel="stylesheet" href="http://localhost:3001/estilos/modal-eliminar.css">
 </head>
 <body>
     <h1 class="text-center">Administrar Marcos</h1>
@@ -133,7 +135,17 @@
         <div class="popup-content" id="contentEditarMarco">    
         </div>
     </div>
+    <div id="mensaje-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
+    <div id="modalEliminar" class="modal-eliminar">
+        <div class="modal-contenido-eliminar">
+            <p id="mensajeEliminar" class="sd-16"></p>
+            <button class="btn btn-secondary" onclick="cerrarModalEliminar()">Cancelar</button>
+            <button class="btn btn-danger" id="btnEliminar">Eliminar</button>
+        </div>
+    </div>
 </body>
 <script src="http://localhost:3001/scripts/apis/marcos.js"></script>
+<script src="http://localhost:3001/scripts/logic/mensajes.js"></script>
+<script src="http://localhost:3001/scripts/logic/modal-eliminar.js"></script>
 <script src="http://localhost:3001/vista/productos/scripts/marcos.js"></script>
 </html>

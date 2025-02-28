@@ -35,6 +35,9 @@ function initializeUserData() {
         { fileName: 'marcos.json', source: path.join(__dirname, 'data', 'marcos.json') },
         { fileName: 'convenios.json', source: path.join(__dirname, 'data', 'convenios.json') },
         { fileName: 'ventas.json', source: path.join(__dirname, 'data', 'ventas.json') },
+        { fileName: 'vendedores.json', source: path.join(__dirname, 'data', 'vendedores.json') },
+        { fileName: 'imprimir.txt', source: path.join(__dirname, 'data', 'imprimir.txt') },
+        { fileName: 'tipoLentes.json', source: path.join(__dirname, 'data', 'tipoLentes.json') },
     ];
 
     filesToCopy.forEach(({ fileName, source }) => {
@@ -52,7 +55,7 @@ server.use(express.static('public'));
 server.use(express.json());
 server.use('/logos', express.static(path.join(userDataPath, 'logos')));
 
-setupAppRoutes(server, baseDir, userDataPath, actualizarClientesWebSocket);
+let mainWindow;
 
 // Configuración de WebSocket
 const serverHttp = require('http').createServer(server);
@@ -74,25 +77,31 @@ function actualizarClientesWebSocket(type, array) {
 
 // Crear ventana de la aplicación
 function createWindow() {
-    const win = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         width: 1050,
         height: 700,
         minWidth: 1050,
         minHeight: 700,
         webPreferences: {
-            nodeIntegration: false,
+            nodeIntegration: true,
             contextIsolation: true,
-            
         },
         autoHideMenuBar: true,
     });
 
     if (process.env.NODE_ENV === 'development') {
-        win.setMenu(null); // Elimina el menú en modo desarrollo
+        mainWindow.setMenu(null); // Elimina el menú en modo desarrollo
     }
-    
-    win.loadURL(`http://localhost:${PORT}/`); // Cargar la raíz
+
+    mainWindow.loadURL(`http://localhost:${PORT}/`); // Cargar la raíz
+
+    mainWindow.on('closed', () => {
+        mainWindow = null; // Limpiar referencia cuando la ventana se cierre
+    });
+
+    return mainWindow; // Retornar la ventana creada
 }
+
 
 function getLocalIP() {
     const interfaces = os.networkInterfaces();
@@ -140,9 +149,11 @@ app.whenReady().then(() => {
 
         // Crear la ventana principal después de un retraso o cuando el servidor esté listo
         setTimeout(() => {
-            const mainWindow = createWindow();
+            mainWindow = createWindow();
             splash.close(); // Cerrar el splash screen
-        }, 3000); // Tiempo de espera (3 segundos, ajustable)
+            setupAppRoutes(server, baseDir, userDataPath, actualizarClientesWebSocket, mainWindow);
+            checkForUpdates();
+        }, 5000); // Tiempo de espera (3 segundos, ajustable)
     });
 
     app.on('activate', () => {
@@ -174,10 +185,13 @@ wss.on('connection', (ws, request) => {
     });
 });
 
+autoUpdater.autoDownload = true;
+autoUpdater.autoInstallOnAppQuit = true;
+
 autoUpdater.setFeedURL({
     provider: 'github',
-    repo: 'nombre_del_repo',
-    owner: 'nombre_del_usuario',
+    repo: 'oculusAdministrtor',
+    owner: 'elarayax',
 });
 
 function checkForUpdates() {
@@ -195,6 +209,7 @@ autoUpdater.on('update-available', (info) => {
 autoUpdater.on('update-downloaded', (info) => {
     console.log('Actualización descargada:', info);
     splash.webContents.send('update-status', 'Actualización descargada. Reinicie para aplicar.');
+    autoUpdater.quitAndInstall();
     setTimeout(() => {
         splash.close(); // Cierra el splash después de unos segundos
         const mainWindow = createWindow(); // Abre la ventana principal

@@ -3,7 +3,7 @@ async function cargarClientes() {
         const clientes = await obtenerClientes(); // Función para obtener clientes de tu API
         usuariosGlobal = clientes; 
     } catch (error) {
-        alert("Error al cargar clientes");
+        generarMensaje("red", "Error al cargar clientes");
     }
 }
 
@@ -44,6 +44,11 @@ function seleccionarCliente(cliente) {
     document.getElementById('rutCliente').value = cliente.rut; // Rut del cliente
     document.getElementById("telefonoCliente").value = cliente.telefono;
     document.getElementById("correoCliente").value = cliente.correo;
+
+    if(cliente.direccion != null)
+        document.getElementById("direccionCliente").value = cliente.direccion;
+    else
+        document.getElementById("direccionCliente").value = "";
 }
 
 function thisClient(){
@@ -51,7 +56,7 @@ function thisClient(){
     const rut = document.getElementById('rutCliente').value;
 
     if(rut == ""){
-        alert("tiene que seleccionar un cliente");
+        generarMensaje("red","tiene que seleccionar un cliente");
         return;
     }
 
@@ -61,12 +66,13 @@ function thisClient(){
         nombre: cliente.nombre,
         rut: cliente.rut,
         telefono: cliente.telefono,
-        correo: cliente.correo
+        correo: cliente.correo,
+        direccion: cliente.direccion
     }
 
     usuariosGlobal = [];
 
-    alert("Cliente Seleccionado");
+    generarMensaje("green", "Cliente Seleccionado");
 
     goToStep("origin");
 }
@@ -107,7 +113,7 @@ function checkCliente(){
 function quitarCliente(){
     event.preventDefault();
     venta.cliente = null;
-    alert("Cliente quitado satisfactoriamente")
+    generarMensaje("green", "Cliente quitado satisfactoriamente")
     checkCliente();
 }
 
@@ -116,5 +122,35 @@ function clearInputCliente(){
     document.getElementById('rutCliente').value = ""; // Rut del cliente
     document.getElementById("telefonoCliente").value = "";
     document.getElementById("correoCliente").value = "";
+    document.getElementById("direccionCliente").value = "";
+}
+
+function clearInputClienteNuevo(){
+    document.getElementById('nombreClienteNew').value = "";
+    document.getElementById('rutClienteNew').value = ""; // Rut del cliente
+    document.getElementById("telefonoClienteNew").value = "";
+    document.getElementById("correoClienteNew").value = "";
+    document.getElementById("direccionClienteNew").value = "";
+}
+
+function createClient(){
+    event.preventDefault();
+    const nombre = document.getElementById('nombreClienteNew').value;
+    const rut = document.getElementById('rutClienteNew').value;
+    const telefono = document.getElementById("telefonoClienteNew").value;
+    const correo = document.getElementById("correoClienteNew").value;
+    const direccion = document.getElementById("direccionClienteNew").value;
+    venta.cliente = {
+        nombre: nombre,
+        rut: rut,
+        telefono: telefono,
+        correo: correo,
+        direccion: direccion
+    };
+    newClient = true;
+    clearInputClienteNuevo();
+    generarMensaje("green", "Cliente creado satisfactoriamente");
+    checkCliente();
+    goToStep("origin");
 }
 

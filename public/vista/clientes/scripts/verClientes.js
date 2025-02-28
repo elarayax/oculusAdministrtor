@@ -9,6 +9,7 @@ async function cargarClientes() {
     clientesTotales = clientes; // Guarda la lista total
     cargarTabla(clientes, paginaActual); // Carga la tabla con la primera página
     cargarControles(clientes.length);
+    document.getElementById("buscadorCliente").focus();
 }
 
 function cargarTabla(clientes, pagina) {
@@ -154,20 +155,20 @@ async function abrirModal(rut) {
     document.getElementById("clienteRut").value = cliente.rut;
     document.getElementById("clienteTelefono").value = cliente.telefono;
     document.getElementById("clienteCorreo").value = cliente.correo;
+    if(cliente.direccion == null){
+        document.getElementById("clienteDireccion").value = "";
+    }else{
+        document.getElementById("clienteDireccion").value = cliente.direccion;
+    }
     document.getElementById("eliminarCliente").onclick = () => borrarCliente(cliente.rut, cliente.nombre);
     modal.style.display = "flex";
+    document.getElementById("clienteNombre").focus();
 }
 
 
 async function borrarCliente(rut, nombre){
-    const confirmacion = window.confirm(`¿Estás seguro de que deseas eliminar el cliente ${nombre}?`);
-    
-    if (confirmacion) {
-        await eliminarCliente(rut);
-        cargarClientes();
-        cerrarModal();
-        alert("cliente borrado satisfactoriamente");
-    } 
+    abrirModalEliminar(nombre, "cliente", eliminarCliente, rut, cargarClientes);
+    cerrarModal();
 }
 
 // Guardar cambios del cliente
@@ -178,24 +179,30 @@ document.getElementById("guardarCliente").onclick = async (event) => {
         nombre: document.getElementById("clienteNombre").value,
         telefono: document.getElementById("clienteTelefono").value,
         correo: document.getElementById("clienteCorreo").value,
+        direccion: document.getElementById("clienteDireccion").value,
     };
 
     try {
         const resultado = await actualizarClientePorRut(rut, cliente);
         if (resultado) {
-            alert("Cliente actualizado exitosamente.");
+            generarMensaje("green","Cliente actualizado exitosamente");
+            document.getElementById("buscadorCliente").focus();
+            modal.style.display = "none";  // Cerrar el modal si todo fue correcto
         } else {
-            alert("No se pudo actualizar el cliente. Verifica los datos e intenta nuevamente.");
+            generarMensaje("red","No se pudo actualizar el cliente. Verifica los datos e intenta nuevamente");
+            document.getElementById("clienteNombre").focus();
         }
     } catch (error) {
-        alert(`Error al actualizar el cliente: ${error.message}`);
+        generarMensaje("red",`Error al actualizar el cliente: ${error.message}`);
+        document.getElementById("clienteNombre").focus();
     }
 
-    modal.style.display = "none";  // Cerrar el modal si todo fue correcto
+    
 };
 
 
 function cerrarModal(event){
     event?.preventDefault();  // Asegura que el evento no se propague
     modal.style.display = "none";  // Cerrar el modal
+    document.getElementById("buscadorCliente").focus();
 }

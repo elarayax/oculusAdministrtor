@@ -5,7 +5,7 @@ function goToStep(id){
     steps.forEach((el) => el.classList.remove("actual-step"));
 
     if(id == ""){
-        alert("Recargue el sitio, no se puso ningún paso a seguir");
+        generarMensaje("red", "Recargue el sitio, no se puso ningún paso a seguir");
         return;
     }
 
@@ -14,6 +14,13 @@ function goToStep(id){
         clearInputCliente();
         document.getElementById("addClient").classList.add("actual-step");
         document.getElementById("nombreCliente").focus();
+    }
+
+    if(id == "createClient"){
+        newClient = false;
+        clearInputClienteNuevo();
+        document.getElementById(id).classList.add("actual-step");
+        document.getElementById("nombreClienteNew").focus();
     }
 
     if(id == "origin"){
@@ -27,6 +34,7 @@ function goToStep(id){
 
     if(id == "productRandom"){
         document.getElementById(id).classList.add("actual-step");
+        document.getElementById("nameRandomProduct").focus();
     }
 
     if(id == "addMarco"){
@@ -38,12 +46,14 @@ function goToStep(id){
         document.getElementById(id).classList.add("actual-step");
         cleanCristal();
         cargarCristales();
+        cargarTiposDeLente();
     }
 
     if(id == "addLente"){
         document.getElementById(id).classList.add("actual-step");
         cleanCristalL();
         cargarCristalesL();
+        cargarTiposDeLenteL();
     }
 
     if(id == "addMarcoL"){

@@ -77,4 +77,66 @@ module.exports = function (server, userDataPath, actualizarClientesWebSocket) {
         });
     });
 
+    server.get('/api/ventas/hoy', (req, res) => {
+        fs.readFile(ventasFilePath, 'utf8', (err, data) => {
+            if (err) return res.status(500).send('Error al leer el archivo de ventas');
+    
+            try {
+                const ventas = JSON.parse(data);
+    
+                // Obtener la fecha actual en formato DD/MM/YYYY
+                const hoy = new Date();
+                const fechaActual = `${hoy.getDate()}/${hoy.getMonth() + 1}/${hoy.getFullYear()}`;
+    
+                // Filtrar las ventas cuya fecha coincida con la fecha actual
+                const ventasHoy = ventas.filter(venta => venta.fecha === fechaActual);
+    
+                res.json(ventasHoy);
+            } catch (error) {
+                res.status(500).send('Error al procesar los datos de ventas');
+            }
+        });
+    });
+
+    server.get('/api/ventas/semana', (req, res) => {
+        fs.readFile(ventasFilePath, 'utf8', (err, data) => {
+            if (err) return res.status(500).send('Error al leer el archivo de ventas');
+    
+            try {
+                const ventas = JSON.parse(data);
+    
+                // Obtener la fecha actual
+                const hoy = new Date();
+                const diaSemana = hoy.getDay(); // 0 = Domingo, 1 = Lunes, ..., 6 = Sábado
+    
+                // Calcular la fecha del lunes de la semana actual
+                const lunes = new Date(hoy);
+                if (diaSemana === 0) {
+                    // Si es domingo, restar 6 días para llegar al lunes anterior
+                    lunes.setDate(hoy.getDate() - 6);
+                } else {
+                    // Restar los días necesarios para llegar al lunes de la semana actual
+                    lunes.setDate(hoy.getDate() - (diaSemana - 1));
+                }
+    
+                // Formatear las fechas en DD/MM/YYYY
+                const formatoFecha = (fecha) => 
+                    `${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}`;
+    
+                const fechaLunes = formatoFecha(lunes);
+                const fechaHoy = formatoFecha(hoy);
+    
+                // Filtrar las ventas entre el lunes y hoy
+                const ventasSemana = ventas.filter(venta => {
+                    const fechaVenta = venta.fecha;
+                    return fechaVenta >= fechaLunes && fechaVenta <= fechaHoy;
+                });
+    
+                res.json(ventasSemana);
+            } catch (error) {
+                res.status(500).send('Error al procesar los datos de ventas');
+            }
+        });
+    });    
+    
 };

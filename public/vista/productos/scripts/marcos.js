@@ -51,6 +51,7 @@ document.getElementById("cerrarPopupMarcas").addEventListener("click", () => {
     document.getElementById("popupadministrarMarcas").style.display = "none";
     document.getElementById('nombreMarca').value = "";
     document.getElementById('descripcionMarca').value = "";
+    document.getElementById("filtroNombre").focus();
 });
 
 document.getElementById("btnAgregarMarco").addEventListener("click", () => {
@@ -64,6 +65,7 @@ document.getElementById("cerrarPopupMarcos").addEventListener("click", () => {
     document.getElementById('descripcionMarco').value = "";
     document.getElementById('stockMarco').value = "";
     document.getElementById('marcaMarco').value = 0;
+    document.getElementById("filtroNombre").focus();
 });
 
 
@@ -72,21 +74,21 @@ async function addMarca() {
     const descripcion = document.getElementById('descripcionMarca').value.trim();
 
     if (!nombre || !descripcion) {
-        alert('Por favor, completa todos los campos correctamente.');
+        generarMensaje("red",'Por favor, completa todos los campos correctamente.');
         return;
     }
 
     try {
         const nuevoMetodo = await agregarMarca(nombre, descripcion);
         if (nuevoMetodo) {
-            alert('Marca agregada correctamente.');
+            generarMensaje("green",'Marca agregada correctamente.');
             document.getElementById('nombreMarca').value = "";
             document.getElementById('nombreMarca').focus();
             document.getElementById('descripcionMarca').value = "";
             cargarTodo();
         }
     } catch (error) {
-        alert('No fue posible agregar la marca.');
+        generarMensaje("red",'No fue posible agregar la marca.');
     }
 }
 
@@ -100,14 +102,14 @@ async function addMarco() {
     const precioLista = parseInt(document.getElementById('precioListaMarco').value.trim());
 
     if (!nombre || !descripcion || isNaN(stock) || idMarca == 0 || !sku || isNaN(precioCosto) || isNaN(precioLista)) {
-        alert('Por favor, completa todos los campos correctamente.');
+        generarMensaje("red",'Por favor, completa todos los campos correctamente.');
         return;
     }
 
     try{
         const nuevoMetodo = await agregarModelo(nombre, descripcion, idMarca, stock, sku, precioCosto, precioLista);
         if(nuevoMetodo){
-            alert('Marco agregado correctamente.');
+            generarMensaje("green",'Marco agregado correctamente.');
             document.getElementById("nombreMarco").value = "";
             document.getElementById("descripcionMarco").value = "";
             document.getElementById("stockMarco").value = "";
@@ -119,11 +121,12 @@ async function addMarco() {
             cargarTodo();
         }
     }catch (error){
-        alert('No fue posible agregar el Marco');
+        generarMensaje("red",'No fue posible agregar el Marco');
     }
 }
 
 async function cargarTodo() {
+    document.getElementById("filtroNombre").focus();
     try {
         const todo = await obtenerMarcasYModelos();
         marcasGeneral = todo.marcas;
@@ -132,7 +135,7 @@ async function cargarTodo() {
             cargarSelectMarco(marcasGeneral);
             cargarFiltroMarca(marcasGeneral);
         } else {
-            alert('Hay que agregar al menos una marca.');
+            generarMensaje("red", 'Hay que agregar al menos una marca.');
         }
         marcosGeneral = todo.modelos;
         if (marcosGeneral && marcosGeneral.length > 0) {
@@ -143,7 +146,7 @@ async function cargarTodo() {
         }
     } catch (error) {
         console.error("Error al cargar las marcas:", error);
-        alert('No se pudo cargar la información de marcas.');
+        generarMensaje("red", "No se pudo cargar la información de marcas");
     }
 }
 
@@ -222,12 +225,12 @@ function editarMarca(id){
         actualizarMarcaOModelo('marcas', id, datosActualizados)
             .then(actualizado => {
                 if (actualizado) {
-                    alert('Marca actualizada exitosamente!');
+                    generarMensaje("green", 'Marca actualizada exitosamente!');
                     document.getElementById('nombreMarca').focus();
                     cargarTodo();
                 } else {
                     // Si hubo un error, mostrar un mensaje (opcional)
-                    alert('Error al actualizar la marca.');
+                    generarMensaje("red", 'Error al actualizar la marca');
                 }
             });
 
@@ -256,17 +259,8 @@ function filtrarTablaPorMarca(){
 }
 
 function eliminarMarca(id, nombre){
-    if (confirm(`¿Estás seguro de eliminar la marca "${nombre}"?`)) {
-        try{
-            let tipo = "marcas"
-            eliminarMarcaOModelo(tipo, id);
-            alert("Marca Eliminada exitosamente")
-            cargarTodo();
-            document.getElementById('nombreMarca').focus();
-        }catch(error){
-            console.error(error);
-        }
-    }
+    abrirModalEliminar(nombre, "marca", eliminarMarcaOModelo,cargarTodo,"marcas", id);
+    document.getElementById('nombreMarca').focus();
 }
 
 function filtroEscrito() {
@@ -416,12 +410,12 @@ function accionesMarco(id) {
         actualizarMarcaOModelo('modelo', id, datosActualizados)
             .then(actualizado => {
                 if (actualizado) {
-                    alert('Marco actualizado exitosamente!');
+                    generarMensaje("green",'Marco actualizado exitosamente!');
                     document.getElementById('nombreMarcoEditar').focus();
                     cargarTodo();
                 } else {
                     // Si hubo un error, mostrar un mensaje (opcional)
-                    alert('Error al actualizar el marco.');
+                    generarMensaje("red",'Error al actualizar el marco.');
                 }
             });
 
@@ -430,6 +424,7 @@ function accionesMarco(id) {
         
         // Cerrar el popup
         document.getElementById("popupEditarMarco").style.display = "none";
+        document.getElementById("filtroNombre").focus();
     };
     contenido.appendChild(buttonGuardar);
 
@@ -437,17 +432,8 @@ function accionesMarco(id) {
     btnEliminar.classList.add("btn", "btn-danger");
     btnEliminar.innerText = "Eliminar marco";
     btnEliminar.onclick = () => {
-        if (confirm(`¿Estás seguro de eliminar el marco "${marco.nombre}"?`)) {
-            try{
-                let tipo = "marco"
-                eliminarMarcaOModelo(tipo, id);
-                alert("Marco Eliminado exitosamente")
-                cargarTodo();
-                document.getElementById("popupEditarMarco").style.display = "none";
-            }catch(error){
-                console.error(error);
-            }
-        }
+        abrirModalEliminar(marco.nombre, "modelo", eliminarMarcaOModelo,cargarTodo,"marco", id);
+        document.getElementById("popupEditarMarco").style.display = "none";
     }
     contenido.appendChild(btnEliminar);
 
@@ -457,6 +443,7 @@ function accionesMarco(id) {
     buttonCerrar.innerText = "Cancelar";
     buttonCerrar.onclick = () => {
         document.getElementById("popupEditarMarco").style.display = "none";
+        document.getElementById("filtroNombre").focus();
     };
     contenido.appendChild(buttonCerrar);
     document.getElementById(`nombreMarcoEditar`).focus();

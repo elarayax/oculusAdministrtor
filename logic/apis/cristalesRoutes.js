@@ -435,5 +435,64 @@ module.exports = function (server, userDataPath, actualizarCristalesWebSocket) {
             });
         });
     }); 
+
+    server.delete('/api/cristales/:idCristal', (req, res) => {
+        const idCristal = parseInt(req.params.idCristal);
+    
+        fs.readFile(cristalesFilePath, 'utf8', (err, data) => {
+            if (err) {
+                return res.status(500).send('Error al leer el archivo de cristales');
+            }
+    
+            const cristales = JSON.parse(data);
+            const cristalIndex = cristales.findIndex((c) => c.idCristal === idCristal);
+    
+            if (cristalIndex === -1) {
+                return res.status(404).json({ message: 'Cristal no encontrado' });
+            }
+    
+            // Eliminar el cristal encontrado
+            cristales.splice(cristalIndex, 1);
+    
+            // Guardar los cambios en el archivo JSON
+            fs.writeFile(cristalesFilePath, JSON.stringify(cristales, null, 2), (err) => {
+                if (err) {
+                    return res.status(500).send('Error al guardar los cambios en el archivo de cristales');
+                }
+    
+                // Notificar al WebSocket si es necesario
+                if (actualizarCristalesWebSocket) {
+                    actualizarCristalesWebSocket();
+                }
+    
+                res.status(200).json({ message: 'Cristal eliminado exitosamente' });
+            });
+        });
+    });    
+
+    server.put('/api/cristales/:id', async (req, res) => {
+        const { id } = req.params; // ID del cristal a editar
+        const datosActualizados = req.body; // Datos nuevos que llegan del front-end
+    
+        try {
+            // Buscar el cristal por su ID
+            const cristal = await cristalesFilePath.findById(id); // Asegúrate de que "Cristal" es el modelo correcto
+    
+            if (!cristal) {
+                return res.status(404).json({ message: 'Cristal no encontrado' });
+            }
+    
+            // Actualizar los datos del cristal
+            Object.assign(cristal, datosActualizados);
+    
+            // Guardar los cambios en la base de datos
+            await cristal.save();
+    
+            return res.json(cristal); // Devolver los datos del cristal actualizado
+        } catch (error) {
+            console.error('Error al editar el cristal:', error);
+            return res.status(500).json({ message: 'Error al editar el cristal', error: error.message });
+        }
+    });
     
 };

@@ -127,4 +127,41 @@ module.exports = function(server, userDataPath, actualizarUnidadMedidaWebSocket)
             });
         });
     });
+
+    server.post('/api/modelos/actualizar-stock', (req, res) => {
+        const { modeloId, cantidadVendida } = req.body;
+
+        if (!modeloId || !cantidadVendida || cantidadVendida <= 0) {
+            return res.status(400).json({ error: 'El ID del modelo y la cantidad vendida son obligatorios y la cantidad debe ser mayor a 0.' });
+        }
+
+        fs.readFile(marcasFilePath, 'utf8', (err, data) => {
+            if (err) {
+                console.error("Error al leer el archivo de modelos:", err);
+                return res.status(500).json({ error: 'Error al leer el archivo de modelos' });
+            }
+
+            let marcasData = JSON.parse(data);
+            let modelo = marcasData.modelos.find(m => m.id === parseInt(modeloId));
+
+            if (!modelo) {
+                return res.status(404).json({ error: 'Modelo no encontrado.' });
+            }
+
+            if (modelo.stock < cantidadVendida) {
+                return res.status(400).json({ error: 'No hay suficiente stock para realizar la venta.' });
+            }
+
+            modelo.stock -= cantidadVendida;
+
+            fs.writeFile(marcasFilePath, JSON.stringify(marcasData, null, 2), (err) => {
+                if (err) {
+                    console.error("Error al guardar el archivo:", err);
+                    return res.status(500).json({ error: 'Error al guardar los datos.' });
+                }
+                actualizarUnidadMedidaWebSocket("modelos", marcasData);
+                res.status(200).json({ message: 'Venta realizada y stock actualizado correctamente.', modelo });
+            });
+        });
+    });
 };

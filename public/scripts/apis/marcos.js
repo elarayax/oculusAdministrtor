@@ -104,3 +104,27 @@ async function eliminarMarcaOModelo(tipo, id) {
         return null; // Retorna null en caso de error
     }
 }
+
+// Actualizar el stock de un modelo
+async function actualizarStockModelo(modeloId, cantidadVendida) {
+    try {
+        const response = await fetch('http://localhost:3001/api/modelos/actualizar-stock', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ modeloId, cantidadVendida }),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Error al actualizar el stock del modelo');
+        }
+
+        const resultado = await response.json();
+        return resultado; // Devuelve el resultado de la operación
+    } catch (error) {
+        console.error('Error al actualizar el stock del modelo:', error);
+        return null; // Retorna null en caso de error
+    }
+}

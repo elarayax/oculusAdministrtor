@@ -34,7 +34,7 @@ module.exports = function(server, userDataPath, actualizarUnidadMedidaWebSocket)
         
             // Validar duplicados
             const existeDuplicado = metodos.some(
-                (unidad) => unidad.nombre === nombre || unidad.comision === comision
+                (unidad) => unidad.nombre === nombre
             );
 
             if (existeDuplicado) {

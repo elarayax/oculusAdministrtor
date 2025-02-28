@@ -2,6 +2,8 @@ let empresa;
 let clienteGlobal = null;
 let marcoGlobal = null;
 let lenteGlobal = null;
+let totalGlobal = 0;
+let logo;
 
 cargarEmpresa();
 
@@ -44,6 +46,7 @@ function goToStep(step, aux) {
     if (step == "step3" && !aux) {
         
         document.getElementById(step).classList.add("actual-step");
+        document.getElementById("esferaOD").focus();
         if(!ensureBanderita("step1", "Atrás")){
             clienteGlobal = null;
         }
@@ -53,6 +56,7 @@ function goToStep(step, aux) {
     if (step == "step2" && aux) {
         document.getElementById(step).classList.add("actual-step");
         clearClient();
+        document.getElementById("nombreCliente").focus();
         return;
     }
 
@@ -66,9 +70,12 @@ function goToStep(step, aux) {
         if (clienteGlobal != null) {
             document.getElementById(step).classList.add("actual-step");
             ensureBanderita("step2", "Atrás");
+            document.getElementById("esferaOD").focus();
             return;
         } else {
-            alert("Debe seleccionar un cliente");
+            document.getElementById("step2").classList.add("actual-step");
+            generarMensaje("yellow","Debe seleccionar un cliente");
+            document.getElementById("nombreCliente").focus();
         }
     }
 
@@ -146,7 +153,7 @@ async function cargarClientes() {
         const clientes = await obtenerClientes(); // Función para obtener clientes de tu API
         clientesArray = clientes; 
     } catch (error) {
-        alert("Error al cargar clientes");
+        generarMensaje("red","Error al cargar clientes");
     }
 }
 
@@ -209,7 +216,7 @@ async function cargarCristales(){
         cristales = await obtenerCristales(); // Función para obtener clientes de tu API
         botonesCristales(cristales);
     } catch (error) {
-        alert("Error al cargar clientes");
+        generarMensaje("red","Error al cargar clientes");
     }
 }
 
@@ -239,7 +246,7 @@ function checkCristales(){
     let ejeOD = parseFloat(document.getElementById("ejeOD").value.trim());
 
     if(isNaN(cilndroOD) || isNaN(esferaOI) || isNaN(cilindroOI) || isNaN(esferaOD) || isNaN(DP) || isNaN(ADD) || isNaN(ejeOI) || isNaN(ejeOD)){
-        alert("Debes ingresar todos los valores de los cristales");
+        generarMensaje("red","Debes ingresar todos los valores de los cristales");
         return false;
     }else{
         lenteGlobal = {
@@ -261,7 +268,7 @@ function checkCristales(){
 function checkVariantes(){
     let variante = document.querySelector('input[name="seleccionarCristal"]:checked');
     if(variante === null){
-        alert("Debes seleccionar una variante");
+        generarMensaje("red","Debes seleccionar una variante");
         return false;
     }else{
         return true;
@@ -345,7 +352,7 @@ async function cargarMarcos(){
         console.log(marcas);
         selectMarcos(marcas);
     } catch (error) {
-        alert("Error al cargar marcos");
+        generarMensaje("red","Error al cargar marcos");
     }
 }
 
@@ -401,10 +408,21 @@ function cerrarModalPDF() {
     document.getElementById("modalPDF").style.display = "none";
 }
 
-function guardarCotizacion() {
+function guardarCotizacion(event) {
+    event.preventDefault(); // Prevenir el comportamiento por defecto del formulario
+    
     const cotizacion = obtenerDatosCotizacion(); // Implementa esta función según tu estructura
     guardarCotizacionEnBaseDeDatos(cotizacion); // Llama al backend o guarda localmente
-    alert("Cotización guardada con éxito");
+
+    // Mostrar el mensaje después de 2 segundos
+    setTimeout(() => {
+        generarMensaje("green", "Cotización guardada con éxito");
+        
+        // Recargar la página 2 segundos después de mostrar el mensaje
+        /*setTimeout(() => {
+            location.reload();
+        }, 2000);*/
+    }, 2000);
 }
 
 function generarHTMLCotizacion() {
@@ -428,6 +446,8 @@ function generarHTMLCotizacion() {
     }
 
     const total = parseInt(precio) + parseInt(precioMarco);
+
+    totalGlobal = parseInt(precio) + parseInt(precioMarco);
 
     let textoCLiente = "";
 
@@ -473,10 +493,26 @@ function generarHTMLCotizacion() {
 
     return `
         <h1>Cotización</h1>
+        <img src="http://localhost:3001/${logo}" class"sd-16" style="height:100px"id="logoOptica" alt="">
         <h2>Datos de la óptica</h2>
-        <div class="organizardor-datos-tabla">
-            <p><b>Nombre:</b> ${empresa.nombre}</p>
-        </div>
+        <table id="tablaDatosOptica">
+            <tr>
+                <td>Nombre</td>
+                <td id="nombreOptica">${empresa.nombre}</td>
+                <td>Rut</td>
+                <td>${empresa.rut}</td>
+            </tr>
+            <tr>
+                <td>Telefono</td>
+                <td>${empresa.telefono}</td>
+                <td>Correo</td>
+                <td id="correoOptica">${empresa.correo}</td>
+            </tr>
+            <tr>
+                <td colspan="1">Dirección</td>
+                <td colspan="3">${empresa.direccion}</td>
+            </tr>
+            </table>
         ${textoCLiente}
         <h2 class="text-center">Datos del lente</h2>
         <table>
@@ -535,7 +571,13 @@ function generarImagenCotizacion() {
         return;
     }
 
-    let nombre = clienteGlobal.nombre || 'anonimo';
+    let nombre
+
+    if(clienteGlobal != null){
+        nombre = clienteGlobal.nombre
+    }else{
+        nombre = "anónimo";
+    }
 
     html2canvas(contenido).then((canvas) => {
         const imagenURL = canvas.toDataURL("image/png");
@@ -547,13 +589,13 @@ function generarImagenCotizacion() {
         link.click();
     }).catch((error) => {
         console.error("Error al generar la imagen:", error);
-        alert("Hubo un problema al generar la imagen. Inténtalo de nuevo.");
+        generarMensaje("red","Hubo un problema al generar la imagen. Inténtalo de nuevo.");
     });
 }
 
 function enviarImagenGenerada() {
     if(clienteGlobal == null){
-        alert("no se puede enviar imagen, por que no hay un cliente registrado");
+        generarMensaje("red","no se puede enviar imagen, por que no hay un cliente registrado");
         return;
     }
 
@@ -585,20 +627,20 @@ function enviarImagenGenerada() {
             .then((response) => response.json())
             .then((data) => {
                 if (data.success) {
-                    alert('Imagen enviada exitosamente por WhatsApp.');
+                    generarMensaje("green", 'Imagen enviada exitosamente por WhatsApp.');
                 } else {
                     console.error('Error al enviar imagen:', data.error);
-                    alert('No se pudo enviar la imagen.');
+                     generarMensaje("red",'No se pudo enviar la imagen.');
                 }
             })
             .catch((error) => {
                 console.error('Error en la solicitud al backend:', error);
-                alert('Hubo un problema al enviar la imagen. Inténtalo de nuevo.');
+                 generarMensaje("red",'Hubo un problema al enviar la imagen. Inténtalo de nuevo.');
             });
         })
         .catch((error) => {
             console.error("Error al generar la imagen:", error);
-            alert("Hubo un problema al generar la imagen. Inténtalo de nuevo.");
+             generarMensaje("red","Hubo un problema al generar la imagen. Inténtalo de nuevo.");
         });
 }
 
@@ -624,15 +666,31 @@ async function guardarCotización(){
         cliente: clienteGlobal,
         cristales: lenteGlobal.cristales,
         marco: marcoGlobal,
+        total: totalGlobal,
         fecha: new Date().toLocaleDateString()
     }
 
     try{
         await agregarCotizacion(cotizacion);
-        alert("Cotización agregada exitosamente.");
-        location.reload();
+        setTimeout(() => {
+            generarMensaje("green", "Cotización guardada con éxito");
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
+        }, 1000);
 
     }catch(error){
-        alert("Fallo de conexión")
+        generarMensaje("red", "Fallo de conexión")
+    }
+}
+
+getLogo();
+
+async function getLogo(){
+    try{
+        const respuesta = await obtenerLogo();
+        logo = respuesta;
+    }catch(error){
+        generarMensaje("red", "no se pudo obtener el logo");
     }
 }

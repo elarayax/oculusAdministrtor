@@ -9,6 +9,53 @@
     <link rel="stylesheet" href="http://localhost:3001/estilos/paginacion.css">
     <link rel="stylesheet" href="http://localhost:3001/estilos/cristales.css">
     <link rel="stylesheet" href="http://localhost:3001/estilos/pop-up.css">
+    <link rel="stylesheet" href="http://localhost:3001/estilos/mensajes.css">
+    <link rel="stylesheet" href="http://localhost:3001/estilos/modal-eliminar.css">
+    <style>
+        h2.toggle-cristal {
+            padding: 12px 24px;
+            border: 0.5px solid black;
+            border-radius: 8px;
+            width: 80%;
+            margin-bottom: 16px;
+        }
+
+        div#cristales {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .listado-desplegable {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .tablas-cilindros {
+            width: 100%;
+        }
+
+        .listado-desplegable h2, .tablas-cilindros h3 {
+            border: 0.5px solid black;
+            margin: 8px 0;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+
+        .listado-desplegable-contenido.active {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            width: 80%;
+        
+        }
+    </style>
 </head>
 <body>
     <h1 class="text-center">Administrar Cristales</h1>
@@ -40,7 +87,26 @@
         </div>
     </div>
     <div id="variantesCristales" class="popup"></div>
+    <div id="mensaje-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
+    <div id="modalEliminar" class="modal-eliminar">
+        <div class="modal-contenido-eliminar">
+            <p id="mensajeEliminar" class="sd-16"></p>
+            <button class="btn btn-secondary" onclick="cerrarModalEliminar()">Cancelar</button>
+            <button class="btn btn-danger" id="btnEliminar">Eliminar</button>
+        </div>
+    </div>
+    <div id="modalStandarLista" class="popup">
+        <div class="modal-content">
+            <h3 id="tituloModalLista"></h3>
+            <div id="listaModalLista"></div>
+            <table id="tablaModalListaBody"></table>
+            <button id="cerrarModalStandarLista" onclick="cerrarModalStandarLista()" class="btn btn-secondary">Cerrar</button>
+        </div>
+    </div>
 </body>
 <script src="http://localhost:3001/scripts/apis/cristales.js"></script>
+<script src="http://localhost:3001/scripts/logic/mensajes.js"></script>
+<script src="http://localhost:3001/scripts/logic/modal-eliminar.js"></script>
+<script src="http://localhost:3001/scripts/logic/modales.js"></script>
 <script src="http://localhost:3001/vista/productos/scripts/cristales.js"></script>
 </html>

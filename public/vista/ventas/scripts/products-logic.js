@@ -1,3 +1,5 @@
+let marcoNuevoSolo = false;
+
 function checkProductos() {
     const datosVenta = document.getElementById("datosVenta");
     const alertaVenta = document.getElementById("alertaVenta");
@@ -29,7 +31,7 @@ function checkProductos() {
 
             // Precio
             const tdPrecio = document.createElement("td");
-            tdPrecio.textContent = `$ ${(producto.cantidad * producto.precio).toFixed(2)}`;
+            tdPrecio.textContent = `$ ${(producto.cantidad * producto.precio).toLocaleString("es-CL")}`;
             total += producto.cantidad * producto.precio;
             tr.appendChild(tdPrecio);
 
@@ -62,7 +64,7 @@ function checkProductos() {
                     // Actualizar tabla y totales
                     checkProductos();
                 } else {
-                    alert("La cantidad debe ser mayor a 0");
+                    generarMensaje("red", "La cantidad debe ser mayor a 0");
                     inputCantidad.value = producto.cantidad; // Restaurar valor previo
                 }
             });
@@ -94,23 +96,21 @@ function checkProductos() {
 
         venta.total = total;
 
-        document.getElementById("totalVentaResumen").innerText = `$ ${total.toFixed(2)}`;
+        document.getElementById("totalVentaResumen").innerText = `$ ${total.toLocaleString("es-CL")}`;
     } else {
         datosVenta.classList.add("non-display");
         alertaVenta.classList.remove("non-display");
     }
 }
 
-
-
 function addRandomProduct(){
     event.preventDefault();
     const nombre = document.getElementById("nameRandomProduct").value;
-    const precio = parseInt(document.getElementById("priceRandomProduct").value);
-    const cantidad = parseFloat(document.getElementById("quantityRandomProduct").value);
+    const precio = parseInt(document.getElementById("priceRandomProduct").value.replace(/\./g, ""), 10);
+    const cantidad = parseInt(document.getElementById("quantityRandomProduct").value);
 
     if(nombre == "" || precio <= 0 || cantidad <= 0){
-        alert("Ingrese los datos del producto");
+        generarMensaje("red", "Ingrese los datos del producto");
         return;
     }
 
@@ -123,7 +123,7 @@ function addRandomProduct(){
 
     venta.productos.push(producto);
 
-    alert("Producto agregado satisfactoriamente");
+    generarMensaje("green", "Producto agregado satisfactoriamente");
 
     clearRandom();
 
@@ -148,7 +148,7 @@ async function cargarMarcos(){
         modelos = todo.modelos;
         selectMarcos(marcas);
     } catch (error) {
-        alert("Error al cargar marcos");
+        generarMensaje("red", "Error al cargar marcos");
     }
 }
 
@@ -178,6 +178,18 @@ function selectMarcos(marcos) {
 function actualizarModelos(marcaId){
     const selectModelos = document.getElementById("selectModelo");
     selectModelos.innerHTML = "";
+
+    const optionFirst = document.createElement("option");
+    optionFirst.value = "-1";
+    optionFirst.text = "Seleccione un modelo";
+    optionFirst.disabled = true;
+    optionFirst.selected = true;
+    selectModelos.appendChild(optionFirst);
+
+    const optionSecond = document.createElement("option");
+    optionSecond.value = "otro";
+    optionSecond.text = "Otro (Escribir modelo)";
+    selectModelos.appendChild(optionSecond);
     modelos.forEach(modelo => {
         if(modelo.idMarca == marcaId){
             const option = document.createElement("option");
@@ -188,6 +200,20 @@ function actualizarModelos(marcaId){
     });
 }
 
+function toggleModeloInputSolo() {
+    let selectModelo = document.getElementById("selectModelo");
+    let inputModelo = document.getElementById("inputModeloSolo");
+
+    if (selectModelo.value === "otro") {
+        inputModelo.classList.remove("non-display");
+        inputModelo.focus(); // Colocar el cursor automáticamente
+        marcoNuevoSolo = true;
+    } else {
+        inputModelo.classList.add("non-display");
+        marcoNuevoSolo = false;
+    }
+}
+
 function addMarco(){
     event.preventDefault();
     const select = document.getElementById("selectMarco");
@@ -196,10 +222,31 @@ function addMarco(){
     const modeloId = selectModelo.value;
     if(marcaId != -1 && modeloId != -1){
         const marca = marcas.find(marca => marca.id == marcaId);
-        const modelo = modelos.find(modelo => modelo.id == modeloId);
+        let modelo;
 
-        console.log(marca);
-        console.log(modelo);
+        if(!marcoNuevoSolo){
+            modelo = modelos.find(modelo => modelo.id == modeloId);
+        }else{
+            let nombreModelo = document.getElementById("inputModeloSolo").value;
+
+            if(nombreModelo.trim() === ""){
+                generarMensaje("red","Debes ingresar el nombre del modelo");
+                return null;
+            }
+
+            modelo = {
+                nombre: nombreModelo,
+                descripcion: "modelo generado desde venta",
+                sku: generarSKU(marca.nombre, nombreModelo),
+                idMarca: marca.id,
+                stock: 100,
+                precioLista: 0,
+                precioVenta: 0,
+            };
+
+            agregandoModelo(modelo.nombre, modelo.descripcion, modelo.idMarca, modelo.stock, modelo.sku, modelo.precioCosto, modelo.precioLista);
+
+        }   
 
         let producto = {
             nombre: `${marca.nombre} ${modelo.nombre}`,
@@ -224,11 +271,11 @@ function addMarco(){
         marcas = [];
         modelos = [];
 
-        alert("Producto agregado satisfactoriamente");
+        generarMensaje("green", "Producto agregado satisfactoriamente");
 
         goToStep("origin");
     }else{
-        alert("Seleccione una marca y un modelo");
+        generarMensaje("red", "Seleccione una marca y un modelo");
     }
 }
 
@@ -241,7 +288,7 @@ async function cargarCristales(){
         cristales = await obtenerCristales(); // Función para obtener clientes de tu API
         botonesCristales(cristales);
     } catch (error) {
-        alert("Error al cargar cristales");
+        generarMensaje("red", "Error al cargar cristales");
     }
 }
 
@@ -272,43 +319,56 @@ function cleanCristal(){
     document.getElementById("ADD").value = "";
     document.getElementById("ejeOI").value = "";
     document.getElementById("ejeOD").value = "";
+    document.getElementById("ALT").value = "";
+    document.getElementById("tipoLente").value = -1;
     document.getElementById("tablaVariantesCristales").style.display = "none";
     document.getElementById("cristalesVariantes").innerHTML = "";
     document.getElementById("esferaOD").focus();
 }
 
 function checkCristales(){
-    let cilndroOD = parseFloat(document.getElementById("cilindroOD").value.trim());
-    let esferaOD = parseFloat(document.getElementById("esferaOD").value.trim());
-    let cilindroOI = parseFloat(document.getElementById("cilindroOI").value.trim());
-    let DP = parseFloat(document.getElementById("DP").value.trim());
-    let esferaOI = parseFloat(document.getElementById("esferaOI").value.trim());
-    let ADD = parseFloat(document.getElementById("ADD").value.trim());
-    let ejeOI = parseFloat(document.getElementById("ejeOI").value.trim());
-    let ejeOD = parseFloat(document.getElementById("ejeOD").value.trim());
+    let cilndroOD = document.getElementById("cilindroOD").value.trim();
+    let esferaOD = document.getElementById("esferaOD").value.trim();
+    let cilindroOI = document.getElementById("cilindroOI").value.trim();
+    let DP = document.getElementById("DP").value.trim();
+    let esferaOI = document.getElementById("esferaOI").value.trim();
+    let ADD = document.getElementById("ADD").value.trim();
+    let ALT = document.getElementById("ALT").value.trim();
+    let ejeOI = document.getElementById("ejeOI").value.trim();
+    let ejeOD = document.getElementById("ejeOD").value.trim();
+    let tipoLente = document.getElementById("tipoLente").value;
 
-    if(isNaN(cilndroOD) || isNaN(esferaOI) || isNaN(cilindroOI) || isNaN(esferaOD) || isNaN(DP) || isNaN(ADD) || isNaN(ejeOI) || isNaN(ejeOD)){
-        alert("Debes ingresar todos los valores de los cristales");
+    if ((cilndroOD === "" && esferaOD === "") && (cilindroOI === "" && esferaOI === "")) {
+        generarMensaje("red", "Debes ingresar al menos un valor en cilindro y/o esfera.");
         return false;
-    }else{
-        lenteGlobal = {
-                cilindroOD: cilndroOD,
-                esferaOD: esferaOD,
-                cilindroOI: cilindroOI,
-                DP: DP,
-                esferaOI: esferaOI,
-                ADD: ADD,
-                ejeOI: ejeOI,
-                ejeOD: ejeOD
-        }
-        return true;
     }
+
+    // Validar que tipo de lente sea diferente de -1
+    if (tipoLente == '-1') {
+        generarMensaje("red", "Debes seleccionar un tipo de lente válido.");
+        return false;
+    }
+
+    lenteGlobal = {
+        cilindroOD: cilndroOD || "-",
+        esferaOD: esferaOD || '-',
+        cilindroOI: cilindroOI || '-',
+        DP: DP || '-',
+        esferaOI: esferaOI || '-',
+        ADD: ADD || '-',
+        ejeOI: ejeOI || '-',
+        ejeOD: ejeOD || '-',
+        ALT: ALT || '-',
+        tipoLente: tipoLente
+    };
+
+    return true;
 }
 
 function checkVariantes(){
     let variante = document.querySelector('input[name="seleccionarCristal"]:checked');
     if(variante === null){
-        alert("Debes seleccionar una variante");
+        generarMensaje("red", "Debes seleccionar una variante");
         return false;
     }else{
         return true;
@@ -388,9 +448,13 @@ function addCristal(){
         const nombreCristal = filaCristal.children[0].textContent || "Cristal";
         const precio = filaCristal.children[1].textContent || "0";
 
+        const [nombreCristalF, nombreVariante] = nombreCristal.split(" + ");
+
         let product = {
             nombre: nombreCristal,
             precio: precio,
+            cristalBase: nombreCristalF,
+            variante: nombreVariante,
             cantidad: 1,
             tipo: "cristales",
             cristales: lenteGlobal,
@@ -398,12 +462,34 @@ function addCristal(){
 
         venta.productos.push(product);
 
-        alert("Cristales agregados satisfactoriamente");
+        generarMensaje("green", "Cristales agregados satisfactoriamente");
 
         lenteGlobal = {};
 
         cristales = [];
         
         goToStep("origin");
+    }
+}
+
+async function cargarTiposDeLente(){
+    try{
+        let tipos = await obtenerTiposLente();
+        let select = document.getElementById("tipoLente");
+        select.innerHTML = "";
+        let opcion = document.createElement("option");
+        opcion.value = "-1";
+        opcion.text = "Seleccione un tipo de lente";
+        opcion.disabled = true;
+        opcion.selected = true;
+        select.appendChild(opcion);
+        tipos.forEach(tipo => {
+            let option = document.createElement("option");
+            option.value = tipo.tipo;
+            option.text = "Cristal " + tipo.tipo;
+            select.appendChild(option);
+        });    
+    }catch(error){
+        generarMensaje("red", "error al cargar los tipos de lente")
     }
 }

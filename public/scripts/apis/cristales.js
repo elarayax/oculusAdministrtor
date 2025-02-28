@@ -137,3 +137,46 @@ async function agregarCristal(nuevoCristal) {
         return null;
     }
 }
+
+async function eliminarCristal(idCristal) {
+    try {
+        const response = await fetch(`http://localhost:3001/api/cristales/${idCristal}`, {
+            method: 'DELETE',
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Error al eliminar el cristal');
+        }
+
+        const data = await response.json();
+        console.log('Cristal eliminado exitosamente:', data);
+        return data;
+    } catch (error) {
+        console.error('Error al eliminar el cristal:', error);
+        return null;
+    }
+}
+
+async function editarCristal(idCristal, datosActualizados) {
+    try {
+        const response = await fetch(`http://localhost:3001/api/cristales/${idCristal}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(datosActualizados), // Los datos actualizados del cristal
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al editar el cristal');
+        }
+
+        const data = await response.json();
+        console.log('Cristal editado exitosamente:', data);
+        return data; // Devuelves los datos actualizados del cristal
+    } catch (error) {
+        console.error('Error al editar el cristal:', error);
+        return null;
+    }
+}

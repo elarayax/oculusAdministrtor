@@ -37,6 +37,12 @@ function goTo(go) {
     else if(go == "convenios"){
         window.location.href = "vista/promociones/convenios.html"
     }
+    else if(go == "ventaHoy"){
+        window.location.href = "vista/informes/ventas.html"
+    }
+    else if(go == "ventaSemana"){
+        window.location.href = "vista/informes/ventasSemana.html"
+    }
 }
 
 function toggleCard(selectedCard) {

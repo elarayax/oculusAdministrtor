@@ -21,6 +21,7 @@ async function inicioWhatsapp() {
     const btnLimpiarSesion = document.createElement("button");
     btnLimpiarSesion.textContent = "Limpiar Sesión";
     btnLimpiarSesion.onclick = limpiarSesion;
+    btnLimpiarSesion.classList.add("btn", "btn-primary");
     divWhatsapp.appendChild(btnLimpiarSesion);
 
     if (estadoWhatsapp && estadoWhatsapp.connected) {
@@ -29,6 +30,7 @@ async function inicioWhatsapp() {
         const btnMensaje = document.createElement("button");
         btnMensaje.textContent = "Enviar mensaje";
         btnMensaje.onclick = enviarMensaje;
+        btnMensaje.classList.add("btn", "btn-primary");
         divWhatsapp.appendChild(btnMensaje);
     } else {
         texto.textContent = `Whatsapp no configurado`;
@@ -70,6 +72,7 @@ function iniciarVerificacionQR() {
                 divWhatsapp.appendChild(texto);
                 const btnMensaje = document.createElement("button");
                 btnMensaje.textContent = "Enviar mensaje";
+                btnMensaje.classList.add("btn", "btn-primary");
                 btnMensaje.onclick = enviarMensaje;
         divWhatsapp.appendChild(btnMensaje);
             } else {

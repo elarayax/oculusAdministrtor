@@ -42,7 +42,7 @@ function setupRoutes(server,baseDir) {
     });
 
     server.get('/vista/productos/marcos.html', (req, res) => {
-        res.sendFile(path.join(baseDir, 'public', 'vista', 'productos', 'cristales.html'));
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'productos', 'marcos.html'));
     });
 
     server.get('/vista/cotizaciones/crear-cotizacion.html', (req, res) => {
@@ -69,12 +69,44 @@ function setupRoutes(server,baseDir) {
         res.sendFile(path.join(baseDir, 'public', 'vista', 'ventas', 'ver-ventas.html'));
     });
 
+    server.get('/vista/informes/ventas.html', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'informes', 'ventas.html'));
+    });
+
+    server.get('/vista/informes/ventasSemana.html', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'informes', 'ventasSemana.html'));
+    });
+
     server.get('/scripts/logic/index.js', (req, res) => {
         res.sendFile(path.join(baseDir, 'public', 'scripts', 'logic', 'index.js'));
     });
 
     server.get('/scripts/logic/html2canvas.min.js', (req, res) => {
         res.sendFile(path.join(baseDir, 'public', 'scripts', 'logic', 'html2canvas.min.js'));
+    });
+
+    server.get('/scripts/logic/mensajes.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'scripts', 'logic', 'mensajes.js'));
+    });
+
+    server.get('/scripts/logic/modal-eliminar.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'scripts', 'logic', 'modal-eliminar.js'));
+    });
+
+    server.get('/scripts/logic/modales.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'scripts', 'logic', 'modales.js'));
+    });
+
+    server.get('/scripts/logic/chart.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'scripts', 'logic', 'chart.js'));
+    });
+    
+    server.get('/scripts/logic/graficos.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'scripts', 'logic', 'graficos.js'));
+    });
+
+    server.get('/scripts/logic/xlsx.full.min.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'scripts', 'logic', 'xlsx.full.min.js'));
     });
 
     server.get('/scripts/apis/empresa.js', (req, res) => {
@@ -129,6 +161,26 @@ function setupRoutes(server,baseDir) {
         res.sendFile(path.join(baseDir, 'public', 'scripts', 'apis', 'whatsappMessages.js'));
     });
 
+    server.get('/scripts/apis/metodosPago.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'scripts', 'apis', 'metodosPago.js'));
+    });
+
+    server.get('/scripts/apis/vendedores.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'scripts', 'apis', 'vendedores.js'));
+    });
+
+    server.get('/scripts/apis/boletas.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'scripts', 'apis', 'boletas.js'));
+    });
+
+    server.get('/scripts/apis/imprimir.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'scripts', 'apis', 'imprimir.js'));
+    });
+
+    server.get('/scripts/apis/tipoLente.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'scripts', 'apis', 'tiposLente.js'));
+    });
+
     server.get('/vista/opciones/scripts/datosEmpresa.js', (req, res) => {
         res.sendFile(path.join(baseDir, 'public', 'vista', 'opciones', 'scripts', 'datosEmpresa.js'));
     });
@@ -143,6 +195,22 @@ function setupRoutes(server,baseDir) {
 
     server.get('/vista/opciones/scripts/monedas.js', (req, res) => {
         res.sendFile(path.join(baseDir, 'public', 'vista', 'opciones', 'scripts', 'monedas.js'));
+    });
+
+    server.get('/vista/opciones/scripts/metodosPago.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'opciones', 'scripts', 'metodosPago.js'));
+    });
+
+    server.get('/vista/opciones/scripts/vendedores.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'opciones', 'scripts', 'vendedores.js'));
+    });
+
+    server.get('/vista/opciones/scripts/tipoLente.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'opciones', 'scripts', 'tipoLente.js'));
+    });
+
+    server.get('/vista/opciones/scripts/boleta.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'opciones', 'scripts', 'boleta.js'));
     });
 
     server.get('/vista/opciones/scripts/whatsappMessages.js', (req, res) => {
@@ -225,8 +293,20 @@ function setupRoutes(server,baseDir) {
         res.sendFile(path.join(baseDir, 'public', 'vista', 'ventas', 'scripts', 'ver-ventas.js'));
     });
 
+    server.get('/vista/informes/scripts/ventas.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'informes', 'scripts', 'ventas.js'));
+    });
+
+    server.get('/vista/informes/scripts/ventasSemana.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vista', 'informes', 'scripts', 'ventasSemana.js'));
+    });
+
     server.get('/estilos/global.css', (req, res) => {
         res.sendFile(path.join(baseDir, 'public', 'estilos', 'global.css'));
+    });
+
+    server.get('/estilos/mensajes.css', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'mensajes.css'));
     });
 
     server.get('/estilos/index.css', (req, res) => {
@@ -255,6 +335,14 @@ function setupRoutes(server,baseDir) {
 
     server.get('/estilos/calugas.css', (req, res) => {
         res.sendFile(path.join(baseDir, 'public', 'estilos', 'calugas.css'));
+    });
+
+    server.get('/estilos/graficos.css', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'graficos.css'));
+    });
+
+    server.get('/estilos/modal-eliminar.css', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'modal-eliminar.css'));
     });
 
     server.get('/estilos/fontawesome/css/all.css', (req, res) => {

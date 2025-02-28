@@ -5,6 +5,7 @@ let cotizacionesTotales = []; // Almacena todas las cotizaciones
 cargarCotizaciones();
 
 async function cargarCotizaciones() {
+    document.getElementById("filtrarCliente").focus();
     const cotizaciones = await obtenerCotizaciones(); // Obtén la lista completa de cotizaciones
     cotizacionesTotales = cotizaciones; // Guarda la lista total
     cargarTabla(cotizaciones, paginaActual); // Carga la tabla con la primera página
@@ -40,23 +41,26 @@ function cargarTabla(cotizaciones, pagina) {
         tdId.textContent = cotizacion.id;
         tr.appendChild(tdId);
 
-        // Crear y agregar el td nombre
-        const tdNombre = document.createElement("td");
-        tdNombre.textContent = cotizacion.cliente.nombre; // Asumiendo que cada cotización tiene un clienteNombre
-        tr.appendChild(tdNombre);
+        if(cotizacion.cliente != null ){
+            // Crear y agregar el td nombre
+            const tdNombre = document.createElement("td");
+            tdNombre.textContent = cotizacion.cliente.nombre; // Asumiendo que cada cotización tiene un clienteNombre
+            tr.appendChild(tdNombre);
+
+        }else{
+            const tdNombre = document.createElement("td");
+            tdNombre.textContent = "anónimo"; // Asumiendo que cada cotización tiene un clienteNombre
+            tr.appendChild(tdNombre);
+        }
 
         // Crear y agregar el td fecha
         const tdFecha = document.createElement("td");
-        tdFecha.textContent = cotizacion.fechaInicio; // Fecha de la cotización
+        tdFecha.textContent = cotizacion.fecha; // Fecha de la cotización
         tr.appendChild(tdFecha);
-
-        const tdFechaTermino = document.createElement("td");
-        tdFechaTermino.textContent = cotizacion.fechaTermino; // Fecha de la cotización
-        tr.appendChild(tdFechaTermino);
 
         // Crear y agregar el td monto
         const tdMonto = document.createElement("td");
-        tdMonto.textContent = cotizacion.totalGeneral; // Monto de la cotización
+        tdMonto.textContent = cotizacion.total; // Monto de la cotización
         tr.appendChild(tdMonto);
 
         // Crear y agregar el td acciones
@@ -134,7 +138,15 @@ function cambiarPagina(nuevaPagina) {
 function aplicarFiltros() {
     const clienteFiltro = document.getElementById("filtrarCliente").value.toLowerCase();
     const fechaInicioFiltro = document.getElementById("fechaInicio").value;
-    const fechaTerminoFiltro = document.getElementById("fechaTermino").value;
+
+    const fecha = new Date(fechaInicioFiltro);
+
+    let fechaLocal = '';
+
+    if (fechaInicioFiltro) {
+        const [year, month, day] = fechaInicioFiltro.split('-');
+        fechaLocal = `${parseInt(day)}/${parseInt(month)}/${year}`; // Convertir al formato esperado (DD/MM/YYYY)
+    }
 
     // Filtrar las cotizaciones según los valores de los filtros
     let cotizacionesFiltradas = cotizacionesTotales;
@@ -147,13 +159,7 @@ function aplicarFiltros() {
 
     if (fechaInicioFiltro) {
         cotizacionesFiltradas = cotizacionesFiltradas.filter(cotizacion =>
-            cotizacion.fechaInicio >= fechaInicioFiltro
-        );
-    }
-
-    if (fechaTerminoFiltro) {
-        cotizacionesFiltradas = cotizacionesFiltradas.filter(cotizacion =>
-            cotizacion.fechaTermino <= fechaTerminoFiltro
+            cotizacion.fecha == fechaLocal
         );
     }
 
@@ -198,36 +204,22 @@ const formCotizacion = document.getElementById("formCotizacion");
 async function abrirModalCotizacion(id) {
     const cotizacion = await obtenerCotizacionPorId(id);
     modalCotizacion.style.display = "flex";
-    document.getElementById("clienteNombre").value = cotizacion.cliente.nombre;
-    document.getElementById("fechaInicioModal").value = cotizacion.fechaInicio;
-    document.getElementById("fechaTerminoModal").value = cotizacion.fechaTermino;
-    document.getElementById("totalGeneral").value = cotizacion.totalGeneral;
-    document.getElementById("totalSinIva").value = cotizacion.totalSinIVA;
-    const listadoPRoductos = document.getElementById("productosList");
-    const listProductos = cotizacion.productos;
-    listadoPRoductos.innerHTML = "";
-    listProductos.forEach(e => {
-        const tr = document.createElement("tr");
-         
-        const tdNombre = document.createElement("td");
-        tdNombre.textContent = e.nombre;
-        tr.appendChild(tdNombre);
-
-        const tdCantidad = document.createElement("td");
-        tdCantidad.textContent = e.cantidad;
-        tr.appendChild(tdCantidad);
-
-        const tdValorUnitario = document.createElement("td");
-        tdValorUnitario.textContent = e.precio;
-        tr.appendChild(tdValorUnitario);
-
-        const tdValorTotal = document.createElement("td");
-        tdValorTotal.textContent = e.total;
-        tr.appendChild(tdValorTotal);
-
-        listadoPRoductos.appendChild(tr);
-    });
-
+    const fechaValida = convertirFecha(cotizacion.fecha);
+    if(cotizacion.cliente != null)
+        document.getElementById("clienteNombre").value = cotizacion.cliente.nombre;
+    else
+        document.getElementById("clienteNombre").value = "Anónimo";
+    document.getElementById("fechaInicioModal").value = fechaValida.toISOString().split('T')[0];
+    document.getElementById("totalGeneral").value = cotizacion.total;
+    document.getElementById("totalSinIva").value = parseInt(cotizacion.total * 0.81);
+    document.getElementById("esferaOD").value = cotizacion.cristales.esferaOD;
+    document.getElementById("cilindroOD").value = cotizacion.cristales.cilindroOD;
+    document.getElementById("ejeOD").value = cotizacion.cristales.ejeOD;
+    document.getElementById("esferaOI").value = cotizacion.cristales.esferaOI;
+    document.getElementById("cilindroOI").value = cotizacion.cristales.cilindroOI;
+    document.getElementById("ejeOI").value = cotizacion.cristales.ejeOI;
+    document.getElementById("DP").value = cotizacion.cristales.DP;
+    document.getElementById("ADD").value = cotizacion.cristales.ADD;
     document.getElementById("imprimirCotizacion").onclick = () => imprimirPDF(cotizacion);
     
     /*document.getElementById("cotizacionId").value = cotizacion.id;
@@ -235,6 +227,12 @@ async function abrirModalCotizacion(id) {
     document.getElementById("cotizacionFecha").value = cotizacion.fecha;
     document.getElementById("cotizacionMonto").value = cotizacion.monto;
     modalCotizacion.style.display = "flex";*/
+}
+
+function convertirFecha(cotizacionFecha) {
+    const partes = cotizacionFecha.split('/'); // Divide la fecha en partes [día, mes, año]
+    const fechaFormateada = `${partes[2]}-${partes[1].padStart(2, '0')}-${partes[0].padStart(2, '0')}`; // Formato YYYY-MM-DD
+    return new Date(fechaFormateada);
 }
 
 async function imprimirPDF(cotizacion){
@@ -292,4 +290,5 @@ async function actualizarCotizacionPorId(id, cotizacion) {
 function cerrarModal(event){
     event?.preventDefault();
     modalCotizacion.style.display = "none";
+    document.getElementById("filtrarCliente").focus();
 }

@@ -56,3 +56,26 @@ async function actualizarVenta(id, actualizacion) {
     }
 }
 
+async function obtenerVentasHoy() {
+    try {
+        const response = await fetch(`http://localhost:3001/api/ventas/hoy`);
+        if (!response.ok) throw new Error('Error al obtener las ventas del día');
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error al obtener las ventas del día:', error);
+        return null;
+    }
+}
+
+async function obtenerVentasSemana() {
+    try {
+        const response = await fetch(`http://localhost:3001/api/ventas/semana`);
+        if (!response.ok) throw new Error('Error al obtener las ventas de la semana');
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error al obtener las ventas de la semana:', error);
+        return null;
+    }
+}

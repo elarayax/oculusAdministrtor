@@ -12,10 +12,14 @@ const cristalesRoutes = require('./apis/cristalesRoutes');
 const metodosPagoRoutes = require('./apis/metodosPagoRoutes');
 const marcosRoutes = require('./apis/marcosRoutes');
 const conveniosRoutes = require('./apis/conveniosRoutes');
-const whastsappMessagesRoutes = require('./apis/whatsappMessagesRoutes');
+//const whastsappMessagesRoutes = require('./apis/whatsappMessagesRoutes');
 const ventasRoutes = require('./apis/ventasRoutes');
+const vendedoresRoutes = require('./apis/vendedoresRoutes');
+const imprimirRoutes = require('./apis/imprimirRoutes');
+const boletaRoutes = require('./apis/boletaRoutes');
+const tipoLentes = require('./apis/tipoLentes');
 
-function setupAppRoutes(server, baseDir, userDataPath, actualizarClientesWebSocket) {
+function setupAppRoutes(server, baseDir, userDataPath, actualizarClientesWebSocket, mainWindow) {
     setupRoutes(server, baseDir);
     empresaRoutes(server, userDataPath, actualizarClientesWebSocket);
     logoRoutes(server, userDataPath, actualizarClientesWebSocket);
@@ -29,8 +33,13 @@ function setupAppRoutes(server, baseDir, userDataPath, actualizarClientesWebSock
     metodosPagoRoutes(server, userDataPath, actualizarClientesWebSocket);
     marcosRoutes(server, userDataPath, actualizarClientesWebSocket);
     conveniosRoutes(server, userDataPath, actualizarClientesWebSocket);
-    whastsappMessagesRoutes(server);
+    //whastsappMessagesRoutes(server);
     ventasRoutes(server, userDataPath, actualizarClientesWebSocket);
+    vendedoresRoutes(server, userDataPath, actualizarClientesWebSocket);
+    imprimirRoutes(server, userDataPath, mainWindow);
+    boletaRoutes(server, userDataPath);
+    tipoLentes(server, userDataPath, actualizarClientesWebSocket);
+
 }
 
 module.exports = setupAppRoutes;

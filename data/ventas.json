@@ -1,1 +1,28 @@
-[]
+[
+    {
+        "categoria": "consultas",
+        "items": [],
+        "resta": false
+    },
+    {
+        "categoria": "montajistas",
+        "items": [],
+        "resta": false
+    },
+    {
+        "categoria": "cristales",
+        "reglas": [],
+        "resta": false
+    },
+    {
+        "categoria": "marcos",
+        "reglas": [],
+        "resta": false
+    },
+    {
+        "categoria": "otros",
+        "items": [],
+        "porcentaje": 0,
+        "resta": true
+    }
+]

@@ -8,13 +8,14 @@ async function getMetodosPago() {
         metodosPago = metodosPagos; 
         selectMetodosPago(metodosPago);
     } catch (error) {
-        alert("Error al cargar métodos de pago");
+        generarMensaje("red","Error al cargar métodos de pago");
     }
 }
 
 // Función para renderizar los métodos de pago en el select
 function selectMetodosPago(metodosPago) {
-    document.getElementById("totalVenta").innerText = venta.total.toFixed(2);
+    document.getElementById("totalVenta").innerText = "$"+(venta.total).toLocaleString("es-CL");
+    document.getElementById("pendienteVenta").innerText = "$"+(venta.total - venta.abonos).toLocaleString("es-CL");
     const select = document.getElementById("selectMetodoPago");
     select.innerHTML = ""; // Limpiar opciones previas
     const leOption = document.createElement("option");
@@ -32,12 +33,13 @@ function selectMetodosPago(metodosPago) {
 
 // Agregar funcionalidad al botón "Cambiar Precio"
 document.getElementById("btnCambiarPrecio").addEventListener("click", (event) => {
+
     event.preventDefault();
     const tabla = document.getElementById("tablaMetodosPago");
 
     // Verificar si ya existe la fila para cambiar precio
     if (document.getElementById("filaCambiarPrecio")) {
-        alert("Ya hay una fila para cambiar el precio.");
+        generarMensaje("red","Ya hay una fila para cambiar el precio.");
         return;
     }
 
@@ -53,10 +55,10 @@ document.getElementById("btnCambiarPrecio").addEventListener("click", (event) =>
     // Celda con el input para ingresar el nuevo precio
     const tdInput = document.createElement("td");
     const inputNuevoPrecio = document.createElement("input");
-    inputNuevoPrecio.type = "number";
-    inputNuevoPrecio.min = 0; // No permitir valores negativos
-    inputNuevoPrecio.step = "0.01"; // Permitir decimales
+    inputNuevoPrecio.type = "text";
     inputNuevoPrecio.placeholder = "Ingresa nuevo precio";
+    inputNuevoPrecio.setAttribute("oninput", "formatearNumero(this)");
+    inputNuevoPrecio.id = "inputNuevoPrecioAux";
     tdInput.appendChild(inputNuevoPrecio);
     nuevaFila.appendChild(tdInput);
 
@@ -68,15 +70,15 @@ document.getElementById("btnCambiarPrecio").addEventListener("click", (event) =>
 
     // Acción del botón "Guardar"
     btnGuardar.addEventListener("click", () => {
-        const nuevoPrecio = parseFloat(inputNuevoPrecio.value);
+        const nuevoPrecio = parseInt(inputNuevoPrecio.value.replace(/\./g, ""), 10);
         if (!isNaN(nuevoPrecio) && nuevoPrecio >= 0) {
             // Actualizar el total en la tabla
             venta.total = nuevoPrecio;
-            document.getElementById("totalVenta").innerText = nuevoPrecio.toFixed(2);
+            document.getElementById("totalVenta").innerText = "$"+nuevoPrecio.toLocaleString("es-CL");
             // Eliminar la fila después de guardar
             nuevaFila.remove();
         } else {
-            alert("Por favor, ingresa un precio válido.");
+            generarMensaje("red","Por favor, ingresa un precio válido.");
         }
     });
 
@@ -85,6 +87,7 @@ document.getElementById("btnCambiarPrecio").addEventListener("click", (event) =>
 
     // Agregar la fila a la tabla
     tabla.appendChild(nuevaFila);
+    document.getElementById("inputNuevoPrecioAux").focus();
 });
 
 document.getElementById("btnAbonarVenta").addEventListener("click", (event) => {
@@ -93,7 +96,7 @@ document.getElementById("btnAbonarVenta").addEventListener("click", (event) => {
 
     // Verificar si ya existe la fila para registrar abono
     if (document.getElementById("filaAbono")) {
-        alert("Ya hay una fila para registrar un abono.");
+        generarMensaje("red", "Ya hay una fila para registrar un abono.");
         return;
     }
 
@@ -109,10 +112,10 @@ document.getElementById("btnAbonarVenta").addEventListener("click", (event) => {
     // Celda para input del abono
     const tdInput = document.createElement("td");
     const inputAbono = document.createElement("input");
-    inputAbono.type = "number";
-    inputAbono.min = 0;
-    inputAbono.step = "0.01";
+    inputAbono.type = "text";
+    inputAbono.setAttribute("oninput", "formatearNumero(this)");
     inputAbono.placeholder = "Ingresa abono";
+    inputAbono.id = "inputAbono";
     tdInput.appendChild(inputAbono);
     nuevaFila.appendChild(tdInput);
 
@@ -124,25 +127,25 @@ document.getElementById("btnAbonarVenta").addEventListener("click", (event) => {
 
     // Acción del botón "Guardar Abono"
     btnGuardar.addEventListener("click", () => {
-        const montoAbono = parseFloat(inputAbono.value);
+        const montoAbono = parseInt(inputAbono.value.replace(/\./g, ""), 10);
 
         if (!isNaN(montoAbono)) {
             // Verificar que el abono no exceda el monto pendiente
             const pendiente = venta.total - venta.abonos;
             if (montoAbono > pendiente) {
-                alert("El abono no puede exceder el monto pendiente.");
+                generarMensaje("red", "El abono no puede exceder el monto pendiente.");
                 return;
             }
 
             // Actualizar abonos y el pendiente
             venta.abonos = montoAbono;
-            document.getElementById("totalAbonos").innerText = venta.abonos.toFixed(2);
-            document.getElementById("pendienteVenta").innerText = (venta.total - venta.abonos).toFixed(2);
+            document.getElementById("totalAbonos").innerText = "$" + (venta.abonos).toLocaleString("es-CL");
+            document.getElementById("pendienteVenta").innerText = "$" + (venta.total - venta.abonos).toLocaleString("es-CL");
 
             // Eliminar fila después de guardar
             nuevaFila.remove();
         } else {
-            alert("Por favor, ingresa un monto válido.");
+            generarMensaje("red", "Por favor, ingresa un monto válido.");
         }
     });
 
@@ -151,16 +154,17 @@ document.getElementById("btnAbonarVenta").addEventListener("click", (event) => {
 
     // Agregar fila a la tabla
     tabla.appendChild(nuevaFila);
+    document.getElementById("inputAbono").focus();
 });
 
-function casiListo(){
-    const totalAbonos = parseFloat(document.getElementById("totalAbonos").innerText);
-    const pendiente = parseFloat(document.getElementById("pendienteVenta").innerText);
+function casiListo() {
+    const totalAbonos = parseInt(document.getElementById("totalAbonos").innerText.replace(/[^0-9]/g, ""), 10) || 0;
+    const pendiente = parseInt(document.getElementById("pendienteVenta").innerText.replace(/[^0-9]/g, ""), 10) || 0;
 
     const metodo = document.getElementById("selectMetodoPago").value;
 
-    if(metodo == "-1"){
-        alert("debe seleccionar un método de pago");
+    if (metodo == "-1") {
+        generarMensaje("red", "Debe seleccionar un método de pago");
         return;
     }
     

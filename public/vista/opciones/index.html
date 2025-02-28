@@ -6,6 +6,7 @@
     <title>Taxatio - Configuración entidad</title>
     <link rel="stylesheet" href="http://localhost:3001/estilos/global.css">
     <link rel="stylesheet" href="http://localhost:3001/estilos/botones.css">
+    <link rel="stylesheet" href="http://localhost:3001/estilos/mensajes.css">
 </head>
 <body>
     <h1 class="text-center">Configuración</h1>
@@ -108,7 +109,9 @@
             <button class="btn btn-primary" onclick="guardarDatos()">Guardar datos de su empresa</button>
         </div>
     </div>
+    <div id="mensaje-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
 </body>
 <script src="/scripts/apis/empresa.js"></script>
+<script src="http://localhost:3001/scripts/logic/mensajes.js"></script>
 <script src="/vista/opciones/scripts/datosEmpresa.js"></script>
 </html>
